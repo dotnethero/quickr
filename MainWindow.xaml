@@ -1,0 +1,47 @@
+﻿<Window x:Class="Quickr.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Quickr.ViewModels"
+        xmlns:vmdb="clr-namespace:Quickr.ViewModels.Database"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=False}"
+        Title="Quickr" Height="600" Width="900" FontSize="14" >
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Database">
+                <MenuItem Header="Connect..." Command="{Binding Connect}"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <Border BorderBrush="AliceBlue" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250" MinWidth="200"></ColumnDefinition>
+                    <ColumnDefinition Width="5"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TreeView Grid.Column="0" 
+                          BorderThickness="0" 
+                          VerticalAlignment="Stretch" 
+                          HorizontalAlignment="Stretch" 
+                          ScrollViewer.VerticalScrollBarVisibility="Auto"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          ItemsSource="{Binding Databases}">
+                    <TreeView.Resources>
+                        <HierarchicalDataTemplate DataType="{x:Type vmdb:DatabaseViewModel}" ItemsSource="{Binding Children}">
+                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type vmdb:FolderViewModel}" ItemsSource="{Binding Children}">
+                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                        </HierarchicalDataTemplate>
+                        <DataTemplate DataType="{x:Type vmdb:KeyViewModel}">
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </TreeView.Resources>
+                </TreeView>
+                <GridSplitter Grid.Column="1" Background="AliceBlue" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+            </Grid>
+        </Border>
+    </DockPanel>
+</Window>
