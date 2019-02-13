@@ -7,11 +7,11 @@
         xmlns:vmdb="clr-namespace:Quickr.ViewModels.Database"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=False}"
-        Title="Quickr" Height="600" Width="900" FontSize="14" >
+        Title="Quickr" Height="720" Width="980" FontSize="14" >
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Database">
-                <MenuItem Header="Connect..." Command="{Binding Connect}"></MenuItem>
+                <MenuItem Header="Connect..." Command="{Binding ConnectCommand}"></MenuItem>
             </MenuItem>
         </Menu>
         <Border BorderBrush="AliceBlue" BorderThickness="1">
@@ -27,29 +27,55 @@
                           HorizontalAlignment="Stretch" 
                           ScrollViewer.VerticalScrollBarVisibility="Auto"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                          ItemsSource="{Binding Databases}">
+                          ItemsSource="{Binding Databases}"
+                          SelectedItemChanged="OnSelectedItemChanged">
                     <TreeView.Resources>
                         <HierarchicalDataTemplate DataType="{x:Type vmdb:DatabaseViewModel}" ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <ContentControl Template="{StaticResource Database}" Width="20" />
-                                <TextBlock Text="{Binding Name}" FontWeight="Normal" />
+                                <ContentControl Template="{StaticResource Database}" Width="20" Focusable="False" />
+                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type vmdb:FolderViewModel}" ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <ContentControl Template="{StaticResource Folder}" Width="20" />
-                                <TextBlock Text="{Binding Name}" FontWeight="Normal" />
+                                <ContentControl Template="{StaticResource Folder}" Width="20" Focusable="False" />
+                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
                         <DataTemplate DataType="{x:Type vmdb:KeyViewModel}">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <ContentControl Template="{StaticResource Key}" Width="20" />
-                                <TextBlock Text="{Binding Name}" FontWeight="Normal" />
+                                <ContentControl Template="{StaticResource Key}" Width="20" Focusable="False" />
+                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
+                                <StackPanel.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Test"></MenuItem>
+                                    </ContextMenu>
+                                </StackPanel.ContextMenu>
                             </StackPanel>
                         </DataTemplate>
                     </TreeView.Resources>
                 </TreeView>
                 <GridSplitter Grid.Column="1" Background="AliceBlue" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+                <DockPanel Grid.Column="2" >
+                    <DataGrid 
+                        DockPanel.Dock="Top"
+                        MinHeight="200"
+                        ItemsSource="{Binding CurrentHashes}"
+                        CanUserSortColumns="False"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        HorizontalGridLinesBrush="LightGray"
+                        VerticalGridLinesBrush="LightGray">
+                    </DataGrid>
+                    <TextBox 
+                        DockPanel.Dock="Bottom"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto"
+                        Text="{Binding CurrentValue}" 
+                        IsReadOnly="True" 
+                        FontFamily="Consolas" 
+                        FontSize="12">
+                    </TextBox>
+                </DockPanel>
+                
             </Grid>
         </Border>
     </DockPanel>

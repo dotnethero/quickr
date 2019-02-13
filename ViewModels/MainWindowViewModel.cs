@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using Newtonsoft.Json;
 using Quickr.Annotations;
 using Quickr.Utils;
 using Quickr.ViewModels.Database;
@@ -10,16 +12,37 @@ namespace Quickr.ViewModels
 {
     internal class MainWindowViewModel: INotifyPropertyChanged
     {
-        public Command Connect { get; }
+        public ICommand ConnectCommand { get; }
+        public ICommand SelectCommand { get; }
 
         public DatabaseViewModel[] Databases { get; private set; }
+        public HashEntry[] CurrentHashes { get; set; }
+        public string CurrentValue { get; set; }
 
         public MainWindowViewModel()
         {
-            Connect = new Command(ConnectInternal);
+            ConnectCommand = new Command(Connect);
+            SelectCommand = new ParameterCommand(Select);
         }
 
-        private void ConnectInternal()
+        private void Select(object item)
+        {
+            if (item is KeyViewModel key)
+            {
+                CurrentHashes = key.GetHashes();
+                OnPropertyChanged(nameof(CurrentHashes));
+
+                var val = CurrentHashes.FirstOrDefault(x => x.Name == "value");
+                if (val != default(HashEntry))
+                {
+                    dynamic obj = JsonConvert.DeserializeObject(val.Value);
+                    CurrentValue = JsonConvert.SerializeObject(obj, Formatting.Indented);
+                    OnPropertyChanged(nameof(CurrentValue));
+                }
+            }
+        }
+
+        private void Connect()
         {
             var connection = RedisMultiplexer.Connect();
 
@@ -38,7 +61,7 @@ namespace Quickr.ViewModels
             OnPropertyChanged(nameof(Databases));
         }
 
-        private RedisKey[] GetKeys(IConnectionMultiplexer connection, int dbIndex)
+        private static RedisKey[] GetKeys(IConnectionMultiplexer connection, int dbIndex)
         {
             return connection
                 .GetServer()

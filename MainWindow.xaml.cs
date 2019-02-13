@@ -10,5 +10,10 @@ namespace Quickr
             InitializeComponent();
             DataContext = new MainWindowViewModel();
         }
+
+        private void OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            (DataContext as MainWindowViewModel)?.SelectCommand.Execute(e.NewValue);
+        }
     }
 }
