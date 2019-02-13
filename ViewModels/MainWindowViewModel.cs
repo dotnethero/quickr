@@ -2,41 +2,46 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Newtonsoft.Json;
 using Quickr.Annotations;
+using Quickr.Models;
+using Quickr.Services;
 using Quickr.Utils;
-using Quickr.ViewModels.Database;
 using StackExchange.Redis;
 
 namespace Quickr.ViewModels
 {
     internal class MainWindowViewModel: INotifyPropertyChanged
     {
+        private readonly RedisProxy _proxy;
+
         public ICommand ConnectCommand { get; }
         public ICommand SelectCommand { get; }
 
-        public DatabaseViewModel[] Databases { get; private set; }
-        public HashEntry[] CurrentHashes { get; set; }
-        public string CurrentValue { get; set; }
+        public DatabaseEntry[] Databases { get; private set; }
+        public HashEntry[] CurrentHashes { get; private set; }
+        public string CurrentValue { get; private set; }
 
         public MainWindowViewModel()
         {
+            // use DI later
+            _proxy = new RedisProxy();
+
+            // commands
             ConnectCommand = new Command(Connect);
             SelectCommand = new ParameterCommand(Select);
         }
 
         private void Select(object item)
         {
-            if (item is KeyViewModel key)
+            if (item is KeyEntry key)
             {
-                CurrentHashes = key.GetHashes();
+                CurrentHashes = _proxy.GetHashes(key);
                 OnPropertyChanged(nameof(CurrentHashes));
 
                 var val = CurrentHashes.FirstOrDefault(x => x.Name == "value");
                 if (val != default(HashEntry))
                 {
-                    dynamic obj = JsonConvert.DeserializeObject(val.Value);
-                    CurrentValue = JsonConvert.SerializeObject(obj, Formatting.Indented);
+                    CurrentValue = val.Value.PrettifyJson();
                     OnPropertyChanged(nameof(CurrentValue));
                 }
             }
@@ -44,29 +49,8 @@ namespace Quickr.ViewModels
 
         private void Connect()
         {
-            var connection = RedisMultiplexer.Connect();
-
-            var count = connection
-                .GetServer()
-                .ConfigGet("databases")
-                .FirstOrDefault()
-                .Value
-                .ToInt32();
-
-            Databases = Enumerable
-                .Range(0, count)
-                .Select(x => new DatabaseViewModel(x, GetKeys(connection, x)))
-                .ToArray();
-
+            Databases = _proxy.GetDatabases();
             OnPropertyChanged(nameof(Databases));
-        }
-
-        private static RedisKey[] GetKeys(IConnectionMultiplexer connection, int dbIndex)
-        {
-            return connection
-                .GetServer()
-                .Keys(dbIndex)
-                .ToArray();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

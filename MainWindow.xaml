@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Quickr.ViewModels"
-        xmlns:vmdb="clr-namespace:Quickr.ViewModels.Database"
+        xmlns:vmdb="clr-namespace:Quickr.Models"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=False}"
         Title="Quickr" Height="720" Width="980" FontSize="14" >
@@ -30,19 +30,19 @@
                           ItemsSource="{Binding Databases}"
                           SelectedItemChanged="OnSelectedItemChanged">
                     <TreeView.Resources>
-                        <HierarchicalDataTemplate DataType="{x:Type vmdb:DatabaseViewModel}" ItemsSource="{Binding Children}">
+                        <HierarchicalDataTemplate DataType="{x:Type vmdb:DatabaseEntry}" ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <ContentControl Template="{StaticResource Database}" Width="20" Focusable="False" />
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type vmdb:FolderViewModel}" ItemsSource="{Binding Children}">
+                        <HierarchicalDataTemplate DataType="{x:Type vmdb:FolderEntry}" ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <ContentControl Template="{StaticResource Folder}" Width="20" Focusable="False" />
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
-                        <DataTemplate DataType="{x:Type vmdb:KeyViewModel}">
+                        <DataTemplate DataType="{x:Type vmdb:KeyEntry}">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <ContentControl Template="{StaticResource Key}" Width="20" Focusable="False" />
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
@@ -69,7 +69,7 @@
                     <TextBox 
                         DockPanel.Dock="Bottom"
                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                        Text="{Binding CurrentValue}" 
+                        Text="{Binding CurrentValue, Mode=OneWay}" 
                         IsReadOnly="True" 
                         FontFamily="Consolas" 
                         FontSize="12">

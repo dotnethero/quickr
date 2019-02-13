@@ -56,15 +56,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Services\RedisProxy.cs" />
     <Compile Include="Utils\Command.cs" />
     <Compile Include="Utils\ParameterCommand.cs" />
     <Compile Include="Utils\RedisMultiplexer.cs" />
     <Compile Include="Utils\RedisExtensions.cs" />
     <Compile Include="Utils\StringExtensions.cs" />
-    <Compile Include="ViewModels\Database\DatabaseViewModel.cs" />
-    <Compile Include="ViewModels\Database\EntryViewModel.cs" />
-    <Compile Include="ViewModels\Database\FolderViewModel.cs" />
-    <Compile Include="ViewModels\Database\KeyViewModel.cs" />
+    <Compile Include="Models\DatabaseEntry.cs" />
+    <Compile Include="Models\TreeEntry.cs" />
+    <Compile Include="Models\FolderEntry.cs" />
+    <Compile Include="Models\KeyEntry.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

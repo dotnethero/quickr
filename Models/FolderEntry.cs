@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Quickr.ViewModels.Database
+namespace Quickr.Models
 {
-    internal class FolderViewModel : EntryViewModel
+    internal class FolderEntry : TreeEntry
     {
-        public List<KeyViewModel> Keys { get; } = new List<KeyViewModel>();
-        public List<FolderViewModel> Subfolders { get; } = new List<FolderViewModel>();
-        public List<EntryViewModel> Children => Subfolders.OrderBy(x => x.Name).OfType<EntryViewModel>().Concat(Keys.OrderBy(x => x.Name)).ToList();
+        public List<KeyEntry> Keys { get; } = new List<KeyEntry>();
+        public List<FolderEntry> Subfolders { get; } = new List<FolderEntry>();
+        public List<TreeEntry> Children => Subfolders.OrderBy(x => x.Name).OfType<TreeEntry>().Concat(Keys.OrderBy(x => x.Name)).ToList();
 
-        public FolderViewModel(string name): base(name)
+        public FolderEntry(int dbIndex, string name): base(dbIndex, name)
         {
         }
 
@@ -29,7 +29,7 @@ namespace Quickr.ViewModels.Database
             if (stack.Count == 1)
             {
                 var name = stack.Dequeue();
-                var key = new KeyViewModel(name, fullname);
+                var key = new KeyEntry(DbIndex, name, fullname);
                 Keys.Add(key);
             }
             else
@@ -40,11 +40,11 @@ namespace Quickr.ViewModels.Database
             }
         }
 
-        private FolderViewModel CreateFolder(string name)
+        private FolderEntry CreateFolder(string name)
         {
-            var existing = Children.OfType<FolderViewModel>().FirstOrDefault(x => x.Name == name);
+            var existing = Children.OfType<FolderEntry>().FirstOrDefault(x => x.Name == name);
             if (existing != null) return existing;
-            var folder = new FolderViewModel(name);
+            var folder = new FolderEntry(DbIndex, name);
             Subfolders.Add(folder);
             return folder;
         }
