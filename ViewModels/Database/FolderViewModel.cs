@@ -6,7 +6,9 @@ namespace Quickr.ViewModels.Database
 {
     internal class FolderViewModel : EntryViewModel
     {
-        public List<EntryViewModel> Children { get; } = new List<EntryViewModel>();
+        public List<KeyViewModel> Keys { get; } = new List<KeyViewModel>();
+        public List<FolderViewModel> Subfolders { get; } = new List<FolderViewModel>();
+        public List<EntryViewModel> Children => Subfolders.OrderBy(x => x.Name).OfType<EntryViewModel>().Concat(Keys.OrderBy(x => x.Name)).ToList();
 
         public FolderViewModel(string name): base(name)
         {
@@ -28,7 +30,7 @@ namespace Quickr.ViewModels.Database
             {
                 var name = stack.Dequeue();
                 var key = new KeyViewModel(name, fullname);
-                Children.Add(key);
+                Keys.Add(key);
             }
             else
             {
@@ -43,7 +45,7 @@ namespace Quickr.ViewModels.Database
             var existing = Children.OfType<FolderViewModel>().FirstOrDefault(x => x.Name == name);
             if (existing != null) return existing;
             var folder = new FolderViewModel(name);
-            Children.Add(folder);
+            Subfolders.Add(folder);
             return folder;
         }
 
