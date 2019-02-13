@@ -30,13 +30,22 @@
                           ItemsSource="{Binding Databases}">
                     <TreeView.Resources>
                         <HierarchicalDataTemplate DataType="{x:Type vmdb:DatabaseViewModel}" ItemsSource="{Binding Children}">
-                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <ContentControl Template="{StaticResource Database}" Width="20" />
+                                <TextBlock Text="{Binding Name}" FontWeight="Normal" />
+                            </StackPanel>
                         </HierarchicalDataTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type vmdb:FolderViewModel}" ItemsSource="{Binding Children}">
-                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <ContentControl Template="{StaticResource Folder}" Width="20" />
+                                <TextBlock Text="{Binding Name}" FontWeight="Normal" />
+                            </StackPanel>
                         </HierarchicalDataTemplate>
                         <DataTemplate DataType="{x:Type vmdb:KeyViewModel}">
-                            <TextBlock Text="{Binding Name}" />
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <ContentControl Template="{StaticResource Key}" Width="20" />
+                                <TextBlock Text="{Binding Name}" FontWeight="Normal" />
+                            </StackPanel>
                         </DataTemplate>
                     </TreeView.Resources>
                 </TreeView>
