@@ -20,7 +20,7 @@ namespace Quickr.Services
 
             return Enumerable
                 .Range(0, count)
-                .Select(x => new DatabaseEntry(x, GetKeys(x)))
+                .Select(x => new DatabaseEntry(x))
                 .ToArray();
         }
 
@@ -42,11 +42,11 @@ namespace Quickr.Services
             return db.StringGet(key.FullName);
         }
 
-        public RedisKey[] GetKeys(int dbIndex)
+        public RedisKey[] GetKeys(int dbIndex, RedisValue pattern = default)
         {
             return GetConnection()
                 .GetServer()
-                .Keys(dbIndex)
+                .Keys(dbIndex, pattern, 10)
                 .ToArray();
         }
 

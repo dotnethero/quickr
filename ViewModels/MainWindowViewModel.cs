@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -16,6 +17,7 @@ namespace Quickr.ViewModels
 
         public ICommand ConnectCommand { get; }
         public ICommand SelectCommand { get; }
+        public ICommand RefreshCommand { get; }
 
         public DatabaseEntry[] Databases { get; private set; }
         public HashEntry[] DataSet { get; private set; }
@@ -29,6 +31,16 @@ namespace Quickr.ViewModels
             // commands
             ConnectCommand = new Command(Connect);
             SelectCommand = new ParameterCommand(Select);
+            RefreshCommand = new ParameterCommand(Refresh);
+        }
+
+        private void Refresh(object item)
+        {
+            if (item is FolderEntry folder)
+            {
+                var keys =_proxy.GetKeys(folder.DbIndex, folder.FullName + "." + "*");
+                folder.UpdateChildren(keys);
+            }
         }
 
         private void Select(object item)
@@ -57,6 +69,10 @@ namespace Quickr.ViewModels
         private void Connect()
         {
             Databases = _proxy.GetDatabases();
+            foreach (var database in Databases)
+            {
+                database.UpdateChildren(_proxy.GetKeys(database.DbIndex));
+            }
             OnPropertyChanged(nameof(Databases));
         }
 

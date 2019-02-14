@@ -1,51 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using StackExchange.Redis;
 
 namespace Quickr.Models
 {
     internal class FolderEntry : TreeEntry
     {
-        public List<KeyEntry> Keys { get; } = new List<KeyEntry>();
-        public List<FolderEntry> Subfolders { get; } = new List<FolderEntry>();
-        public List<TreeEntry> Children => Subfolders.OrderBy(x => x.Name).OfType<TreeEntry>().Concat(Keys.OrderBy(x => x.Name)).ToList();
+        private readonly List<KeyEntry> _keys = new List<KeyEntry>();
+        private readonly List<FolderEntry> _subfolders = new List<FolderEntry>();
 
-        public FolderEntry(int dbIndex, string name): base(dbIndex, name)
+        public string FullName { get; }
+        public bool IsRoot { get; }
+
+        public List<TreeEntry> Children => _subfolders
+            .OrderBy(x => x.Name)
+            .OfType<TreeEntry>()
+            .Concat(_keys.OrderBy(x => x.Name))
+            .ToList();
+
+        public FolderEntry(int dbIndex, string name, string fullname, bool root): base(dbIndex, name)
         {
+            FullName = fullname;
+            IsRoot = root;
         }
 
-        public void Add(string fullname)
+        public void UpdateChildren(IEnumerable<RedisKey> keys)
         {
-            var parts = fullname
-                .Split(new[] { "." }, StringSplitOptions.None)
-                .Select(x => string.IsNullOrWhiteSpace(x) ? "(none)" : x);
-
-            var stack = new Queue<string>(parts);
-            Add(fullname, stack);
-        }
-
-        private void Add(string fullname, Queue<string> stack)
-        {
-            if (stack.Count == 1)
+            _keys.Clear();
+            _subfolders.Clear();
+            foreach (var key in keys.OrderBy(x => (string) x))
             {
-                var name = stack.Dequeue();
+                Add(key);
+            }
+            OnPropertyChanged(nameof(Children));
+        }
+
+        private void Add(string fullname)
+        {
+            var requiredStart = IsRoot ? "" : FullName + ".";
+            if (!fullname.StartsWith(requiredStart)) throw new InvalidOperationException();
+
+            var parts = fullname.Substring(requiredStart.Length).Split('.').ToList();
+            if (parts.Count == 1)
+            {
+                var name = string.IsNullOrWhiteSpace(parts[0]) ? "(none)" : parts[0];
                 var key = new KeyEntry(DbIndex, name, fullname);
-                Keys.Add(key);
+                _keys.Add(key);
             }
             else
             {
-                var name = stack.Dequeue();
-                var folder = CreateFolder(name);
-                folder.Add(fullname, stack);
+                var name = parts[0];
+                var fullFolderName = requiredStart + name;
+                var folder = CreateFolder(name, fullFolderName);
+                folder.Add(fullname);
             }
         }
 
-        private FolderEntry CreateFolder(string name)
+        private FolderEntry CreateFolder(string name, string fullname)
         {
             var existing = Children.OfType<FolderEntry>().FirstOrDefault(x => x.Name == name);
             if (existing != null) return existing;
-            var folder = new FolderEntry(DbIndex, name);
-            Subfolders.Add(folder);
+            var folder = new FolderEntry(DbIndex, name, fullname, false);
+            _subfolders.Add(folder);
             return folder;
         }
 
