@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 
 namespace Quickr.Utils
 {
@@ -7,7 +6,7 @@ namespace Quickr.Utils
     {
         internal static IServer GetServer(this IConnectionMultiplexer mp)
         {
-            return mp.GetServer(mp.GetEndPoints().First());
+            return mp.GetServer("localhost", 6379);
         }
     }
 }
