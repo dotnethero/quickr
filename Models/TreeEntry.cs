@@ -8,11 +8,13 @@ namespace Quickr.Models
     {
         public string Name { get; }
         public int DbIndex { get; }
+        public FolderEntry Parent { get; }
 
-        protected TreeEntry(int dbIndex, string name)
+        protected TreeEntry(int dbIndex, string name, FolderEntry parent)
         {
             DbIndex = dbIndex;
             Name = name;
+            Parent = parent;
         }
 
         public override string ToString()

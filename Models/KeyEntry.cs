@@ -4,7 +4,7 @@
     {
         public string FullName { get; }
 
-        public KeyEntry(int dbIndex, string name, string fullname): base(dbIndex, name)
+        public KeyEntry(int dbIndex, string name, string fullname, FolderEntry parent): base(dbIndex, name, parent)
         {
             FullName = fullname;
         }

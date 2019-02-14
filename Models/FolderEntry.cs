@@ -12,7 +12,7 @@ namespace Quickr.Models
 
         public string FullName { get; }
         public string SearchPattern => IsRoot ? "*" : FullName + "." + "*";
-        public bool IsRoot { get; }
+        public bool IsRoot => Parent == null;
 
         public List<TreeEntry> Children => _subfolders
             .OrderBy(x => x.Name)
@@ -20,10 +20,9 @@ namespace Quickr.Models
             .Concat(_keys.OrderBy(x => x.Name))
             .ToList();
 
-        public FolderEntry(int dbIndex, string name, string fullname, bool root): base(dbIndex, name)
+        public FolderEntry(int dbIndex, string name, string fullname, FolderEntry parent): base(dbIndex, name, parent)
         {
             FullName = fullname;
-            IsRoot = root;
         }
 
         public void UpdateChildren(IEnumerable<RedisKey> keys)
@@ -46,7 +45,7 @@ namespace Quickr.Models
             if (parts.Count == 1)
             {
                 var name = string.IsNullOrWhiteSpace(parts[0]) ? "(none)" : parts[0];
-                var key = new KeyEntry(DbIndex, name, fullname);
+                var key = new KeyEntry(DbIndex, name, fullname, this);
                 _keys.Add(key);
             }
             else
@@ -62,7 +61,7 @@ namespace Quickr.Models
         {
             var existing = Children.OfType<FolderEntry>().FirstOrDefault(x => x.Name == name);
             if (existing != null) return existing;
-            var folder = new FolderEntry(DbIndex, name, fullname, false);
+            var folder = new FolderEntry(DbIndex, name, fullname, this);
             _subfolders.Add(folder);
             return folder;
         }

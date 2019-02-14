@@ -18,6 +18,7 @@ namespace Quickr.ViewModels
         public ICommand ConnectCommand { get; }
         public ICommand SelectCommand { get; }
         public ICommand RefreshCommand { get; }
+        public ICommand DeleteCommand { get; }
 
         public DatabaseEntry[] Databases { get; private set; }
         public HashEntry[] DataSet { get; private set; }
@@ -32,6 +33,26 @@ namespace Quickr.ViewModels
             ConnectCommand = new Command(Connect);
             SelectCommand = new ParameterCommand(Select);
             RefreshCommand = new ParameterCommand(Refresh);
+            DeleteCommand = new ParameterCommand(Delete);
+        }
+
+        private void Delete(object item)
+        {
+            if (item is KeyEntry key)
+            {
+                var parent = key.Parent;
+                _proxy.Delete(key);
+                var keys =_proxy.GetKeys(parent.DbIndex, parent.SearchPattern);
+                parent.UpdateChildren(keys);
+            }
+
+            if (item is FolderEntry folder)
+            {
+                var parent = folder.Parent;
+                _proxy.Delete(folder);
+                var keys = _proxy.GetKeys(parent.DbIndex, parent.SearchPattern);
+                parent.UpdateChildren(keys);
+            }
         }
 
         private void Refresh(object item)

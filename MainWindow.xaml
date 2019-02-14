@@ -62,17 +62,27 @@
                                             Header="Refresh" 
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.RefreshCommand}"
                                             CommandParameter="{Binding}" />
+                                        <MenuItem 
+                                            Header="Delete" 
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.DeleteCommand}"
+                                            CommandParameter="{Binding}" />
                                     </ContextMenu>
                                 </StackPanel.ContextMenu>
                             </StackPanel>
                         </HierarchicalDataTemplate>
                         <DataTemplate DataType="{x:Type vmdb:KeyEntry}">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <StackPanel 
+                                Tag="{Binding ElementName=Root, Path=DataContext}"
+                                Orientation="Horizontal" 
+                                VerticalAlignment="Center">
                                 <ContentControl Template="{StaticResource Key}" Width="20" Focusable="False" />
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
                                 <StackPanel.ContextMenu>
                                     <ContextMenu>
-                                        <MenuItem Header="Test"></MenuItem>
+                                        <MenuItem 
+                                            Header="Delete" 
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.DeleteCommand}"
+                                            CommandParameter="{Binding}" />
                                     </ContextMenu>
                                 </StackPanel.ContextMenu>
                             </StackPanel>
