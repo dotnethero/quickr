@@ -90,12 +90,14 @@
                     </TreeView.Resources>
                 </TreeView>
                 <GridSplitter Grid.Column="1" Background="AliceBlue" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
-                <DockPanel Grid.Column="2" >
+                <DockPanel Grid.Column="2" Margin="5" >
                     <GroupBox 
                         DockPanel.Dock="Top"
                         VerticalAlignment="Top"
-                        Margin="8"
-                        Header="Properties">
+                        Margin="5"
+                        Padding="8"
+                        Header="Properties"
+                        BorderBrush="#FFABADB3">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" MinWidth="75" />
@@ -114,15 +116,18 @@
                     </GroupBox>
                     <DataGrid 
                         DockPanel.Dock="Top"
+                        Margin="5"
                         MinHeight="200"
                         ItemsSource="{Binding DataSet}"
                         CanUserSortColumns="False"
                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                         HorizontalGridLinesBrush="LightGray"
-                        VerticalGridLinesBrush="LightGray">
+                        VerticalGridLinesBrush="LightGray" HeadersVisibility="Column"
+                        BorderBrush="#FFABADB3">
                     </DataGrid>
                     <TextBox 
                         DockPanel.Dock="Bottom"
+                        Margin="5"
                         ScrollViewer.VerticalScrollBarVisibility="Auto"
                         Text="{Binding CurrentValue, Mode=OneWay}" 
                         IsReadOnly="True" 
