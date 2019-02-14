@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using StackExchange.Redis;
 
 namespace Quickr.Utils
@@ -12,8 +13,15 @@ namespace Quickr.Utils
 
         internal static string PrettifyJson(this RedisValue json)
         {
-            dynamic obj = JsonConvert.DeserializeObject(json);
-            return JsonConvert.SerializeObject(obj, Formatting.Indented);
+            try
+            {
+                var obj = JsonConvert.DeserializeObject(json);
+                return JsonConvert.SerializeObject(obj, Formatting.Indented);
+            }
+            catch (JsonReaderException)
+            {
+                return json;
+            }
         }
     }
 }

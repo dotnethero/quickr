@@ -24,11 +24,22 @@ namespace Quickr.Services
                 .ToArray();
         }
 
+        public RedisType GetType(KeyEntry key)
+        {
+            var db = GetDatabase(key.DbIndex);
+            return db.KeyType(key.FullName);
+        }
+
         public HashEntry[] GetHashes(KeyEntry key)
         {
-            return GetConnection()
-                .GetDatabase(key.DbIndex)
-                .HashGetAll(key.FullName);
+            var db = GetDatabase(key.DbIndex);
+            return db.HashGetAll(key.FullName);
+        }
+
+        public RedisValue? GetString(KeyEntry key)
+        {
+            var db = GetDatabase(key.DbIndex);
+            return db.StringGet(key.FullName);
         }
 
         public RedisKey[] GetKeys(int dbIndex)
@@ -37,6 +48,11 @@ namespace Quickr.Services
                 .GetServer()
                 .Keys(dbIndex)
                 .ToArray();
+        }
+
+        private IDatabase GetDatabase(int dbIndex)
+        {
+            return GetConnection().GetDatabase(dbIndex);
         }
 
         private IConnectionMultiplexer GetConnection()

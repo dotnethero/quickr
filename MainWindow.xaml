@@ -60,7 +60,7 @@
                     <DataGrid 
                         DockPanel.Dock="Top"
                         MinHeight="200"
-                        ItemsSource="{Binding CurrentHashes}"
+                        ItemsSource="{Binding DataSet}"
                         CanUserSortColumns="False"
                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                         HorizontalGridLinesBrush="LightGray"

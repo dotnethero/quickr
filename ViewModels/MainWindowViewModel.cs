@@ -18,7 +18,7 @@ namespace Quickr.ViewModels
         public ICommand SelectCommand { get; }
 
         public DatabaseEntry[] Databases { get; private set; }
-        public HashEntry[] CurrentHashes { get; private set; }
+        public HashEntry[] DataSet { get; private set; }
         public string CurrentValue { get; private set; }
 
         public MainWindowViewModel()
@@ -35,15 +35,22 @@ namespace Quickr.ViewModels
         {
             if (item is KeyEntry key)
             {
-                CurrentHashes = _proxy.GetHashes(key);
-                OnPropertyChanged(nameof(CurrentHashes));
-
-                var val = CurrentHashes.FirstOrDefault(x => x.Name == "value");
-                if (val != default(HashEntry))
+                var type = _proxy.GetType(key);
+                switch (type)
                 {
-                    CurrentValue = val.Value.PrettifyJson();
-                    OnPropertyChanged(nameof(CurrentValue));
+                    case RedisType.Hash:
+                        DataSet = _proxy.GetHashes(key);
+                        CurrentValue = GetValueFromHash(DataSet);
+                        break;
+
+                    case RedisType.String:
+                        DataSet = null;
+                        CurrentValue = _proxy.GetString(key);
+                        break;
                 }
+
+                OnPropertyChanged(nameof(DataSet));
+                OnPropertyChanged(nameof(CurrentValue));
             }
         }
 
@@ -59,6 +66,12 @@ namespace Quickr.ViewModels
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private static string GetValueFromHash(HashEntry[] dataSet)
+        {
+            var val = dataSet?.FirstOrDefault(x => x.Name == "value");
+            return val.HasValue && val != default(HashEntry) ? val.Value.Value.PrettifyJson() : null;
         }
     }
 }
