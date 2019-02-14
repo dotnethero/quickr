@@ -2,8 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Quickr"
+             xmlns:converters="clr-namespace:Quickr.Converters"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <converters:NullVisibilityConverter x:Key="NullVisibilityConverter" />
         <ControlTemplate x:Key="Database">
             <Viewbox Width="16" Height="16" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
                 <Rectangle Width="16" Height="16">

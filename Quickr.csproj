@@ -57,6 +57,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\NullVisibilityConverter.cs" />
+    <Compile Include="KeyView.xaml.cs">
+      <DependentUpon>KeyView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Services\RedisProxy.cs" />
     <Compile Include="Utils\Command.cs" />
@@ -68,7 +72,12 @@
     <Compile Include="Models\TreeEntry.cs" />
     <Compile Include="Models\FolderEntry.cs" />
     <Compile Include="Models\KeyEntry.cs" />
+    <Compile Include="ViewModels\KeyViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Page Include="KeyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

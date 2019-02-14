@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Quickr.Annotations;
@@ -22,10 +19,7 @@ namespace Quickr.ViewModels
         public ICommand DeleteCommand { get; }
 
         public DatabaseEntry[] Databases { get; private set; }
-        public HashEntry[] DataSet { get; private set; }
-        public string Name { get; private set; }
-        public string Expiration { get; private set; }
-        public string CurrentValue { get; private set; }
+        public KeyViewModel Current { get; private set; }
 
         public MainWindowViewModel()
         {
@@ -73,26 +67,27 @@ namespace Quickr.ViewModels
             {
                 var type = _proxy.GetType(key);
                 var ttl = _proxy.GetTimeToLive(key);
+                var vm = new KeyViewModel();
                 switch (type)
                 {
                     case RedisType.Hash:
-                        DataSet = _proxy.GetHashes(key);
-                        CurrentValue = GetValueFromHash(DataSet);
+                        vm.DataSet = _proxy.GetHashes(key);
                         break;
 
                     case RedisType.String:
-                        DataSet = null;
-                        CurrentValue = _proxy.GetString(key);
+                        vm.Value = _proxy.GetString(key);
                         break;
                 }
 
-                Name = key.FullName;
-                Expiration = ttl.ToString();
-
-                OnPropertyChanged(nameof(Name));
-                OnPropertyChanged(nameof(Expiration));
-                OnPropertyChanged(nameof(DataSet));
-                OnPropertyChanged(nameof(CurrentValue));
+                vm.Name = key.FullName;
+                vm.Expiration = ttl.ToString();
+                Current = vm;
+                OnPropertyChanged(nameof(Current));
+            }
+            else
+            {
+                Current = null;
+                OnPropertyChanged(nameof(Current));
             }
         }
 
@@ -112,12 +107,6 @@ namespace Quickr.ViewModels
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private static string GetValueFromHash(HashEntry[] dataSet)
-        {
-            var val = dataSet?.FirstOrDefault(x => x.Name == "value");
-            return val.HasValue && val != default(HashEntry) ? val.Value.Value.PrettifyJson() : null;
         }
     }
 }
