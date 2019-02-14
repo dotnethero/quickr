@@ -12,6 +12,8 @@ namespace Quickr.Utils
 
         internal static string PrettifyJson(this RedisValue json)
         {
+            if (!json.HasValue) return json;
+            if (!json.StartsWith("{") && !json.StartsWith("[")) return json;
             try
             {
                 var obj = JsonConvert.DeserializeObject(json);

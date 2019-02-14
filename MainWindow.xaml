@@ -29,11 +29,12 @@
                           HorizontalAlignment="Stretch" 
                           ScrollViewer.VerticalScrollBarVisibility="Auto"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                          ItemsSource="{Binding Databases}"
+                          ItemsSource="{Binding Databases, Mode=OneWay}"
+                          VirtualizingStackPanel.IsVirtualizing="True"
                           SelectedItemChanged="OnSelectedItemChanged"
                           PreviewMouseRightButtonDown="BeforeRightClick">
                     <TreeView.Resources>
-                        <HierarchicalDataTemplate DataType="{x:Type model:DatabaseEntry}" ItemsSource="{Binding Children}">
+                        <HierarchicalDataTemplate DataType="{x:Type model:DatabaseEntry}" ItemsSource="{Binding Children, Mode=OneWay}">
                             <StackPanel 
                                 Tag="{Binding ElementName=Root, Path=DataContext}"
                                 Orientation="Horizontal" 
@@ -50,7 +51,7 @@
                                 </StackPanel.ContextMenu>
                             </StackPanel>
                         </HierarchicalDataTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type model:FolderEntry}" ItemsSource="{Binding Children}">
+                        <HierarchicalDataTemplate DataType="{x:Type model:FolderEntry}" ItemsSource="{Binding Children, Mode=OneWay}">
                             <StackPanel 
                                 Tag="{Binding ElementName=Root, Path=DataContext}"
                                 Orientation="Horizontal" 

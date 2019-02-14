@@ -36,16 +36,23 @@
             DockPanel.Dock="Top"
             Margin="5"
             MinHeight="200"
-            ItemsSource="{Binding DataSet}"
+            ItemsSource="{Binding DataSet, Mode=OneWay}"
             CanUserSortColumns="False"
+            AutoGenerateColumns="False"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            VirtualizingStackPanel.IsVirtualizing="True"
             HorizontalGridLinesBrush="LightGray"
             VerticalGridLinesBrush="LightGray" HeadersVisibility="Column"
             BorderBrush="#FFABADB3"
             SelectedItem="{Binding Hash}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=OneWay}" Width="Auto" MinWidth="90"></DataGridTextColumn>
+                <DataGridTextColumn Header="Value" Binding="{Binding Value, Mode=OneWay}" Width="*"></DataGridTextColumn>
+            </DataGrid.Columns>
         </DataGrid>
         <Grid DockPanel.Dock="Bottom" Margin="5">
             <TextBox 
+                MinHeight="200"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                 Text="{Binding Value, Mode=OneWay}" 
                 TextWrapping="{Binding Path=IsChecked, ElementName=WordWrap, Converter={StaticResource BooleanToTextWrappingConverter}}"
