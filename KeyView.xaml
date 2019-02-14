@@ -32,6 +32,7 @@
             </Grid>
         </GroupBox>
         <DataGrid 
+            Visibility="{Binding Path=DataSet, Converter={StaticResource NullCollapsedConverter}}"
             DockPanel.Dock="Top"
             Margin="5"
             MinHeight="200"

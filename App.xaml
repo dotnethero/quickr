@@ -4,7 +4,8 @@
              xmlns:converters="clr-namespace:Quickr.Converters"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <converters:NullVisibilityConverter x:Key="NullVisibilityConverter" />
+        <converters:NullHiddenConverter x:Key="NullHiddenConverter" />
+        <converters:NullCollapsedConverter x:Key="NullCollapsedConverter" />
         <converters:BooleanToTextWrappingConverter x:Key="BooleanToTextWrappingConverter" />
         <ControlTemplate x:Key="Database">
             <Viewbox Width="16" Height="16">

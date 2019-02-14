@@ -91,7 +91,7 @@
                     </TreeView.Resources>
                 </TreeView>
                 <GridSplitter Grid.Column="1" Background="AliceBlue" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
-                <quickr:KeyView Grid.Column="2" DataContext="{Binding Current, Mode=OneWay}" Visibility="{Binding Converter={StaticResource NullVisibilityConverter}}" />
+                <quickr:KeyView Grid.Column="2" DataContext="{Binding Current, Mode=OneWay}" Visibility="{Binding Converter={StaticResource NullHiddenConverter}}" />
             </Grid>
         </Border>
     </DockPanel>

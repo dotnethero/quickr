@@ -58,7 +58,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BooleanToTextWrappingConverter.cs" />
-    <Compile Include="Converters\NullVisibilityConverter.cs" />
+    <Compile Include="Converters\NullCollapsedConverter.cs" />
+    <Compile Include="Converters\NullHiddenConverter.cs" />
     <Compile Include="KeyView.xaml.cs">
       <DependentUpon>KeyView.xaml</DependentUpon>
     </Compile>
