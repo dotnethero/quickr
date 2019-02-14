@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Quickr.Models;
 using Quickr.Utils;
 using StackExchange.Redis;
@@ -28,6 +29,12 @@ namespace Quickr.Services
         {
             var db = GetDatabase(key.DbIndex);
             return db.KeyType(key.FullName);
+        }
+
+        public TimeSpan? GetTimeToLive(KeyEntry key)
+        {
+            var db = GetDatabase(key.DbIndex);
+            return db.KeyTimeToLive(key.FullName);
         }
 
         public HashEntry[] GetHashes(KeyEntry key)

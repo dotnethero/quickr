@@ -91,6 +91,27 @@
                 </TreeView>
                 <GridSplitter Grid.Column="1" Background="AliceBlue" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
                 <DockPanel Grid.Column="2" >
+                    <GroupBox 
+                        DockPanel.Dock="Top"
+                        VerticalAlignment="Top"
+                        Margin="8"
+                        Header="Properties">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" MinWidth="75" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Right">Name:</TextBlock>
+                            <TextBlock Grid.Column="0" Grid.Row="2" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Right">Expiration:</TextBlock>
+                            <TextBox Grid.Column="1" Grid.Row="0" Height="24" Margin="2" VerticalAlignment="Center" VerticalContentAlignment="Center" Text="{Binding Name, Mode=OneWay}" />
+                            <TextBox Grid.Column="1" Grid.Row="2" Height="24" Margin="2" VerticalAlignment="Center" VerticalContentAlignment="Center" Text="{Binding Expiration, Mode=OneWay}" />
+                        </Grid>
+                    </GroupBox>
                     <DataGrid 
                         DockPanel.Dock="Top"
                         MinHeight="200"

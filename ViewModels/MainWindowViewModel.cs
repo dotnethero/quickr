@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -22,6 +23,8 @@ namespace Quickr.ViewModels
 
         public DatabaseEntry[] Databases { get; private set; }
         public HashEntry[] DataSet { get; private set; }
+        public string Name { get; private set; }
+        public string Expiration { get; private set; }
         public string CurrentValue { get; private set; }
 
         public MainWindowViewModel()
@@ -69,6 +72,7 @@ namespace Quickr.ViewModels
             if (item is KeyEntry key)
             {
                 var type = _proxy.GetType(key);
+                var ttl = _proxy.GetTimeToLive(key);
                 switch (type)
                 {
                     case RedisType.Hash:
@@ -82,6 +86,11 @@ namespace Quickr.ViewModels
                         break;
                 }
 
+                Name = key.FullName;
+                Expiration = ttl.ToString();
+
+                OnPropertyChanged(nameof(Name));
+                OnPropertyChanged(nameof(Expiration));
                 OnPropertyChanged(nameof(DataSet));
                 OnPropertyChanged(nameof(CurrentValue));
             }
