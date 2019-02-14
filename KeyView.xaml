@@ -43,14 +43,23 @@
             BorderBrush="#FFABADB3"
             SelectedItem="{Binding Hash}">
         </DataGrid>
-        <TextBox 
-            DockPanel.Dock="Bottom"
-            Margin="5"
-            ScrollViewer.VerticalScrollBarVisibility="Auto"
-            Text="{Binding Value, Mode=OneWay}" 
-            IsReadOnly="True" 
-            FontFamily="Consolas" 
-            FontSize="12">
-        </TextBox>
+        <Grid DockPanel.Dock="Bottom" Margin="5">
+            <TextBox 
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                Text="{Binding Value, Mode=OneWay}" 
+                TextWrapping="{Binding Path=IsChecked, ElementName=WordWrap, Converter={StaticResource BooleanToTextWrappingConverter}}"
+                IsReadOnly="True" 
+                FontFamily="Consolas" 
+                FontSize="12">
+            </TextBox>
+            <CheckBox
+                Name="WordWrap"
+                Margin="0,0,25,8"
+                VerticalContentAlignment="Bottom"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom">
+                text wrapping
+            </CheckBox>
+        </Grid>
     </DockPanel>
 </UserControl>
