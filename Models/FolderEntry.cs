@@ -11,6 +11,7 @@ namespace Quickr.Models
         private readonly List<FolderEntry> _subfolders = new List<FolderEntry>();
 
         public string FullName { get; }
+        public string SearchPattern => IsRoot ? "*" : FullName + "." + "*";
         public bool IsRoot { get; }
 
         public List<TreeEntry> Children => _subfolders

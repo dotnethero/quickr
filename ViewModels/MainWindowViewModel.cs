@@ -38,7 +38,7 @@ namespace Quickr.ViewModels
         {
             if (item is FolderEntry folder)
             {
-                var keys =_proxy.GetKeys(folder.DbIndex, folder.FullName + "." + "*");
+                var keys =_proxy.GetKeys(folder.DbIndex, folder.SearchPattern);
                 folder.UpdateChildren(keys);
             }
         }
