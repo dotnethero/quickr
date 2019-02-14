@@ -36,6 +36,18 @@ namespace Quickr.Models
             OnPropertyChanged(nameof(Children));
         }
 
+        public void RemoveChild(KeyEntry key)
+        {
+            _keys.Remove(key);
+            OnPropertyChanged(nameof(Children));
+        }
+
+        public void RemoveChild(FolderEntry folder)
+        {
+            _subfolders.Remove(folder);
+            OnPropertyChanged(nameof(Children));
+        }
+
         private void Add(string fullname)
         {
             var requiredStart = IsRoot ? "" : FullName + ".";

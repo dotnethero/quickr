@@ -39,16 +39,14 @@ namespace Quickr.ViewModels
             {
                 var parent = key.Parent;
                 _proxy.Delete(key);
-                var keys =_proxy.GetKeys(parent.DbIndex, parent.SearchPattern);
-                parent.UpdateChildren(keys);
+                parent.RemoveChild(key);
             }
 
             if (item is FolderEntry folder)
             {
                 var parent = folder.Parent;
                 _proxy.Delete(folder);
-                var keys = _proxy.GetKeys(parent.DbIndex, parent.SearchPattern);
-                parent.UpdateChildren(keys);
+                parent.RemoveChild(folder);
             }
         }
 
