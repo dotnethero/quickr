@@ -28,7 +28,8 @@
                           ScrollViewer.VerticalScrollBarVisibility="Auto"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           ItemsSource="{Binding Databases}"
-                          SelectedItemChanged="OnSelectedItemChanged">
+                          SelectedItemChanged="OnSelectedItemChanged"
+                          PreviewMouseRightButtonDown="BeforeRightClick">
                     <TreeView.Resources>
                         <HierarchicalDataTemplate DataType="{x:Type vmdb:DatabaseEntry}" ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
