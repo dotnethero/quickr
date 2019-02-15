@@ -14,11 +14,18 @@ namespace Quickr.Models
         public string SearchPattern => IsRoot ? "*" : FullName + "." + "*";
         public bool IsRoot => Parent == null;
 
-        public List<TreeEntry> Children => _subfolders
-            .OrderBy(x => x.Name)
-            .OfType<TreeEntry>()
-            .Concat(_keys.OrderBy(x => x.Name))
-            .ToList();
+        public List<TreeEntry> Children
+        {
+            get
+            {
+                var children = new List<TreeEntry>(_subfolders.Count + _keys.Count);
+                _subfolders.Sort(Compare);
+                _keys.Sort(Compare);
+                children.AddRange(_subfolders);
+                children.AddRange(_keys);
+                return children;
+            }
+        }
 
         public FolderEntry(int dbIndex, string name, string fullname, FolderEntry parent): base(dbIndex, name, parent)
         {
@@ -29,7 +36,7 @@ namespace Quickr.Models
         {
             _keys.Clear();
             _subfolders.Clear();
-            foreach (var key in keys.OrderBy(x => (string) x))
+            foreach (var key in keys)
             {
                 Add(key);
             }
@@ -71,11 +78,16 @@ namespace Quickr.Models
 
         private FolderEntry CreateFolder(string name, string fullname)
         {
-            var existing = Children.OfType<FolderEntry>().FirstOrDefault(x => x.Name == name);
+            var existing = _subfolders.Find(x => x.FullName == fullname);
             if (existing != null) return existing;
             var folder = new FolderEntry(DbIndex, name, fullname, this);
             _subfolders.Add(folder);
             return folder;
+        }
+
+        private static int Compare(TreeEntry a, TreeEntry b)
+        {
+            return string.Compare(a.Name, b.Name, StringComparison.Ordinal);
         }
 
         public override string ToString()
