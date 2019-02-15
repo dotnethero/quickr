@@ -66,7 +66,7 @@ namespace Quickr.Services
         {
             return GetConnection()
                 .GetServer()
-                .Keys(dbIndex, pattern)
+                .Keys(dbIndex, pattern, 50000)
                 .ToArray();
         }
 
