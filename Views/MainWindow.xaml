@@ -1,4 +1,4 @@
-﻿<Window x:Class="Quickr.MainWindow"
+﻿<Window x:Class="Quickr.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,6 +6,7 @@
         xmlns:vm="clr-namespace:Quickr.ViewModels"
         xmlns:model="clr-namespace:Quickr.Models"
         xmlns:quickr="clr-namespace:Quickr"
+        xmlns:views="clr-namespace:Quickr.Views"
         mc:Ignorable="d"
         x:Name="Root"
         d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=False}"
@@ -92,7 +93,7 @@
                     </TreeView.Resources>
                 </TreeView>
                 <GridSplitter Grid.Column="1" Background="AliceBlue" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
-                <quickr:KeyView Grid.Column="2" DataContext="{Binding Current, Mode=OneWay}" Visibility="{Binding Converter={StaticResource NullHiddenConverter}}" />
+                <views:KeyView Grid.Column="2" DataContext="{Binding Current, Mode=OneWay}" Visibility="{Binding Converter={StaticResource NullHiddenConverter}}" />
             </Grid>
         </Border>
     </DockPanel>

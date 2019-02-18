@@ -5,7 +5,7 @@ using System.Windows.Media;
 using Quickr.Models;
 using Quickr.ViewModels;
 
-namespace Quickr
+namespace Quickr.Views
 {
     public partial class MainWindow : Window
     {

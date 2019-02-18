@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Quickr
+namespace Quickr.Views
 {
     /// <summary>
     /// Interaction logic for ConnectWindow.xaml
