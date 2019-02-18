@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Quickr.Annotations;
@@ -91,6 +92,11 @@ namespace Quickr.ViewModels
 
         private void Connect()
         {
+            var conn = new ConnectWindow();
+            conn.DataContext = new object();
+            conn.ShowDialog();
+
+            _proxy.ChangeConnection(new DnsEndPoint("localhost", 6379));
             Databases = _proxy.GetDatabases();
             foreach (var database in Databases)
             {

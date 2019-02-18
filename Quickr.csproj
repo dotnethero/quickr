@@ -57,6 +57,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ConnectWindow.xaml.cs">
+      <DependentUpon>ConnectWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\BooleanToTextWrappingConverter.cs" />
     <Compile Include="Converters\NullCollapsedConverter.cs" />
     <Compile Include="Converters\NullHiddenConverter.cs" />
@@ -67,8 +70,6 @@
     <Compile Include="Services\RedisProxy.cs" />
     <Compile Include="Utils\Command.cs" />
     <Compile Include="Utils\ParameterCommand.cs" />
-    <Compile Include="Utils\RedisMultiplexer.cs" />
-    <Compile Include="Utils\RedisExtensions.cs" />
     <Compile Include="Utils\StringExtensions.cs" />
     <Compile Include="Models\DatabaseEntry.cs" />
     <Compile Include="Models\TreeEntry.cs" />
@@ -76,6 +77,10 @@
     <Compile Include="Models\KeyEntry.cs" />
     <Compile Include="ViewModels\KeyViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Page Include="ConnectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="KeyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
+using System.Windows.Markup.Localizer;
 using Quickr.Models;
 using Quickr.Utils;
 using StackExchange.Redis;
@@ -9,11 +11,11 @@ namespace Quickr.Services
     internal class RedisProxy
     {
         private IConnectionMultiplexer _connection;
+        private EndPoint _endPoint;
 
         public DatabaseEntry[] GetDatabases()
         {
-            var count = GetConnection()
-                .GetServer()
+            var count = GetServer()
                 .ConfigGet("databases")
                 .FirstOrDefault()
                 .Value
@@ -64,10 +66,27 @@ namespace Quickr.Services
 
         public RedisKey[] GetKeys(int dbIndex, RedisValue pattern = default)
         {
-            return GetConnection()
-                .GetServer()
+            return GetServer()
                 .Keys(dbIndex, pattern, 50000)
                 .ToArray();
+        }
+
+        public void ChangeConnection(EndPoint endPoint)
+        {
+            _connection?.Dispose();
+            _connection = null;
+
+            var options = new ConfigurationOptions
+            {
+                AllowAdmin = true,
+                EndPoints =
+                {
+                    endPoint
+                }
+            };
+
+            _endPoint = endPoint;
+            _connection = ConnectionMultiplexer.Connect(options);
         }
 
         private IDatabase GetDatabase(int dbIndex)
@@ -75,9 +94,14 @@ namespace Quickr.Services
             return GetConnection().GetDatabase(dbIndex);
         }
 
+        private IServer GetServer()
+        {
+            return GetConnection().GetServer(_connection.GetEndPoints().First());
+        }
+
         private IConnectionMultiplexer GetConnection()
         {
-            return _connection ?? (_connection = RedisMultiplexer.Connect());
+            return _connection ?? throw new InvalidOperationException();
         }
     }
 }
