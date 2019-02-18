@@ -71,11 +71,12 @@ namespace Quickr.Services
                 .ToArray();
         }
 
-        public void ChangeConnection(EndPoint endPoint)
+        public void ChangeConnection(EndPointModel model)
         {
             _connection?.Dispose();
             _connection = null;
 
+            var endPoint = new DnsEndPoint(model.Server, model.Port);
             var options = new ConfigurationOptions
             {
                 AllowAdmin = true,

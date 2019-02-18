@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Quickr.Annotations;
@@ -28,7 +27,7 @@ namespace Quickr.ViewModels
             _proxy = new RedisProxy();
 
             // commands
-            ConnectCommand = new Command(Connect);
+            ConnectCommand = new ParameterCommand(Connect);
             SelectCommand = new ParameterCommand(Select);
             RefreshCommand = new ParameterCommand(Refresh);
             DeleteCommand = new ParameterCommand(Delete);
@@ -90,19 +89,18 @@ namespace Quickr.ViewModels
             }
         }
 
-        private void Connect()
+        private void Connect(object model)
         {
-            var conn = new ConnectWindow();
-            conn.DataContext = new object();
-            conn.ShowDialog();
-
-            _proxy.ChangeConnection(new DnsEndPoint("localhost", 6379));
-            Databases = _proxy.GetDatabases();
-            foreach (var database in Databases)
+            if (model is EndPointModel endPoint)
             {
-                database.UpdateChildren(_proxy.GetKeys(database.DbIndex));
+                _proxy.ChangeConnection(endPoint);
+                Databases = _proxy.GetDatabases();
+                foreach (var database in Databases)
+                {
+                    database.UpdateChildren(_proxy.GetKeys(database.DbIndex));
+                }
+                OnPropertyChanged(nameof(Databases));
             }
-            OnPropertyChanged(nameof(Databases));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

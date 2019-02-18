@@ -66,6 +66,7 @@
     <Compile Include="KeyView.xaml.cs">
       <DependentUpon>KeyView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\EndPointModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Services\RedisProxy.cs" />
     <Compile Include="Utils\Command.cs" />

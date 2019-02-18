@@ -13,7 +13,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Database">
-                <MenuItem Header="Connect..." Command="{Binding ConnectCommand}"></MenuItem>
+                <MenuItem Header="Connect..." Click="OnConnect"></MenuItem>
             </MenuItem>
         </Menu>
         <Border BorderBrush="AliceBlue" BorderThickness="1">

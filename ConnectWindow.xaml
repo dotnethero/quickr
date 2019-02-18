@@ -36,7 +36,7 @@
         </GroupBox>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,5">
             <Button Margin="2" Padding="15,5" IsCancel="True">Cancel</Button>
-            <Button Margin="2" Padding="15,5" IsDefault="True">Connect</Button>
+            <Button Margin="2" Padding="15,5" IsDefault="True" Click="OnConnect">Connect</Button>
         </StackPanel>
     </Grid>
 </Window>

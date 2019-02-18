@@ -2,21 +2,37 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Quickr.Models;
 using Quickr.ViewModels;
 
 namespace Quickr
 {
     public partial class MainWindow : Window
     {
+        private MainWindowViewModel ViewModel { get; }
+
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
+            ViewModel = new MainWindowViewModel();
+            DataContext = ViewModel;
+        }
+
+        private void OnConnect(object sender, RoutedEventArgs e)
+        {
+            var conn = new ConnectWindow();
+            var model = new EndPointModel("localhost", 6379);
+            conn.DataContext = model;
+            conn.Owner = this;
+            if (conn.ShowDialog() == true)
+            {
+                ViewModel.ConnectCommand.Execute(model);
+            }
         }
 
         private void OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            (DataContext as MainWindowViewModel)?.SelectCommand.Execute(e.NewValue);
+            ViewModel.SelectCommand.Execute(e.NewValue);
         }
 
         private void BeforeRightClick(object sender, MouseButtonEventArgs e)

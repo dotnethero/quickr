@@ -11,5 +11,11 @@ namespace Quickr
         {
             InitializeComponent();
         }
+
+        private void OnConnect(object sender, RoutedEventArgs e)
+        {
+            // check connection
+            DialogResult = true;
+        }
     }
 }
