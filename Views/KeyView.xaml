@@ -4,6 +4,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:vm="clr-namespace:Quickr.ViewModels"
+    xmlns:redis="clr-namespace:StackExchange.Redis;assembly=StackExchange.Redis"
+    xmlns:utils="clr-namespace:Quickr.Utils"
     mc:Ignorable="d" 
     d:DataContext="{d:DesignInstance Type=vm:KeyViewModel, IsDesignTimeCreatable=False}"
     d:DesignHeight="450" d:DesignWidth="800">
@@ -32,11 +34,11 @@
             </Grid>
         </GroupBox>
         <DataGrid 
-            Visibility="{Binding Path=DataSet, Converter={StaticResource NullCollapsedConverter}}"
+            Visibility="{Binding Path=Table, Converter={StaticResource NullCollapsedConverter}}"
             DockPanel.Dock="Top"
             Margin="5"
             MinHeight="200"
-            ItemsSource="{Binding DataSet, Mode=OneWay}"
+            ItemsSource="{Binding Table, Mode=OneWay}"
             CanUserSortColumns="False"
             AutoGenerateColumns="False"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -44,10 +46,38 @@
             HorizontalGridLinesBrush="LightGray"
             VerticalGridLinesBrush="LightGray" HeadersVisibility="Column"
             BorderBrush="#FFABADB3"
-            SelectedItem="{Binding Hash}">
+            SelectedItem="{Binding Current}">
+            <DataGrid.Resources>
+                <utils:BindingProxy x:Key="Proxy" DataContext="{Binding}" />
+            </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=OneWay}" Width="Auto" MinWidth="90"></DataGridTextColumn>
-                <DataGridTextColumn Header="Value" Binding="{Binding Value, Mode=OneWay}" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn 
+                    Header="Name" 
+                    Visibility="{Binding 
+                        Path=DataContext.(vm:KeyViewModel.Table), 
+                        Source={StaticResource Proxy},
+                        Converter={StaticResource CollectionTypeConverter}, 
+                        ConverterParameter={x:Type redis:HashEntry}}" 
+                    Binding="{Binding (redis:HashEntry.Name), Mode=OneWay}" 
+                    Width="Auto" MinWidth="90" />
+                <DataGridTextColumn 
+                    Header="Value" 
+                    Visibility="{Binding 
+                        Path=DataContext.(vm:KeyViewModel.Table), 
+                        Source={StaticResource Proxy},
+                        Converter={StaticResource CollectionTypeConverter}, 
+                        ConverterParameter={x:Type redis:HashEntry}}" 
+                    Binding="{Binding (redis:HashEntry.Value), Mode=OneWay}" 
+                    Width="*" />
+                <DataGridTextColumn 
+                    Header="Value" 
+                    Visibility="{Binding 
+                        Path=DataContext.(vm:KeyViewModel.Table), 
+                        Source={StaticResource Proxy},
+                        Converter={StaticResource CollectionTypeConverter}, 
+                        ConverterParameter={x:Type redis:RedisValue}}" 
+                    Binding="{Binding ., Mode=OneWay}" 
+                    Width="*" />
             </DataGrid.Columns>
         </DataGrid>
         <Grid DockPanel.Dock="Bottom" Margin="5">

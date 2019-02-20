@@ -7,6 +7,7 @@
         <converters:NullHiddenConverter x:Key="NullHiddenConverter" />
         <converters:NullCollapsedConverter x:Key="NullCollapsedConverter" />
         <converters:BooleanToTextWrappingConverter x:Key="BooleanToTextWrappingConverter" />
+        <converters:CollectionTypeConverter x:Key="CollectionTypeConverter" />
         <ControlTemplate x:Key="Database">
             <Viewbox Width="16" Height="16">
                 <Rectangle Width="16" Height="16">

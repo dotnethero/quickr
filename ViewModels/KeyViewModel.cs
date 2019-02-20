@@ -9,33 +9,72 @@ namespace Quickr.ViewModels
 {
     internal class KeyViewModel: INotifyPropertyChanged
     {
-        private HashEntry? _hash;
-        private HashEntry[] _dataSet;
+        private object _table;
+        private object _current;
+        private string _value;
 
         public string Name { get; set; }
         public string Expiration { get; set; }
-        public string Value { get; set; }
 
-        public HashEntry[] DataSet
+        public object Table
         {
-            get => _dataSet;
+            get => _table;
             set
             {
-                _dataSet = value;
-                // OnPropertyChanged();
-                Hash = value?.FirstOrDefault(x => x.Name == "value");
+                switch (value)
+                {
+                    case HashEntry[] hashSet:
+                        _table = hashSet;
+                        Current = hashSet.FirstOrDefault(x => x.Name == "value");
+                        break;
+
+                    case RedisValue[] list:
+                        _table = list;
+                        Current = list.FirstOrDefault();
+                        break;
+
+                    default:
+                        _table = null;
+                        Current = null;
+                        break;
+                }
+                OnPropertyChanged();
             }
         }
 
-        public HashEntry? Hash
+        public object Current
         {
-            get => _hash;
+            get => _current;
             set
             {
-                _hash = value;
-                Value = value?.Value.PrettifyJson();
+                switch (value)
+                {
+                    case HashEntry hash:
+                        _current = hash;
+                        Value = hash.Value.PrettifyJson();
+                        break;
+
+                    case RedisValue rval:
+                        _current = rval;
+                        Value = rval.PrettifyJson();
+                        break;
+
+                    default:
+                        _current = null;
+                        Value = null;
+                        break;
+                }
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(Value));
+            }
+        }
+
+        public string Value
+        {
+            get => _value;
+            set
+            {
+                _value = value;
+                OnPropertyChanged();
             }
         }
 

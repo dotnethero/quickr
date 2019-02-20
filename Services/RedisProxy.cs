@@ -45,6 +45,12 @@ namespace Quickr.Services
             return db.HashGetAll(key.FullName);
         }
 
+        public RedisValue[] GetList(KeyEntry key)
+        {
+            var db = GetDatabase(key.DbIndex);
+            return db.ListRange(key.FullName);
+        }
+
         public RedisValue? GetString(KeyEntry key)
         {
             var db = GetDatabase(key.DbIndex);

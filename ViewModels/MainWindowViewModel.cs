@@ -69,7 +69,11 @@ namespace Quickr.ViewModels
                 switch (type)
                 {
                     case RedisType.Hash:
-                        vm.DataSet = _proxy.GetHashes(key);
+                        vm.Table = _proxy.GetHashes(key);
+                        break;
+
+                    case RedisType.List:
+                        vm.Table = _proxy.GetList(key);
                         break;
 
                     case RedisType.String:
