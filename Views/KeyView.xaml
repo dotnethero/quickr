@@ -70,6 +70,24 @@
                     Binding="{Binding (redis:HashEntry.Value), Mode=OneWay}" 
                     Width="*" />
                 <DataGridTextColumn 
+                    Header="Score" 
+                    Visibility="{Binding 
+                        Path=DataContext.(vm:KeyViewModel.Table), 
+                        Source={StaticResource Proxy},
+                        Converter={StaticResource CollectionTypeConverter}, 
+                        ConverterParameter={x:Type redis:SortedSetEntry}}" 
+                    Binding="{Binding (redis:SortedSetEntry.Score), Mode=OneWay}" 
+                    Width="Auto" MinWidth="90" />
+                <DataGridTextColumn 
+                    Header="Element" 
+                    Visibility="{Binding 
+                        Path=DataContext.(vm:KeyViewModel.Table), 
+                        Source={StaticResource Proxy},
+                        Converter={StaticResource CollectionTypeConverter}, 
+                        ConverterParameter={x:Type redis:SortedSetEntry}}" 
+                    Binding="{Binding (redis:SortedSetEntry.Element), Mode=OneWay}" 
+                    Width="*" />
+                <DataGridTextColumn 
                     Header="Value" 
                     Visibility="{Binding 
                         Path=DataContext.(vm:KeyViewModel.Table), 

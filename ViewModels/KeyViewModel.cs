@@ -28,6 +28,11 @@ namespace Quickr.ViewModels
                         Current = hashSet.FirstOrDefault(x => x.Name == "value");
                         break;
 
+                    case SortedSetEntry[] sorted:
+                        _table = sorted;
+                        Current = sorted.FirstOrDefault();
+                        break;
+
                     case RedisValue[] list:
                         _table = list;
                         Current = list.FirstOrDefault();
@@ -52,6 +57,11 @@ namespace Quickr.ViewModels
                     case HashEntry hash:
                         _current = hash;
                         Value = hash.Value.PrettifyJson();
+                        break;
+
+                    case SortedSetEntry zset:
+                        _current = zset;
+                        Value = zset.Element.PrettifyJson();
                         break;
 
                     case RedisValue rval:

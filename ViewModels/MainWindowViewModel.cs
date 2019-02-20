@@ -76,7 +76,16 @@ namespace Quickr.ViewModels
                         vm.Table = _proxy.GetList(key);
                         break;
 
+                    case RedisType.Set:
+                        vm.Table = _proxy.GetUnsortedSet(key);
+                        break;
+
+                    case RedisType.SortedSet:
+                        vm.Table = _proxy.GetSortedSet(key);
+                        break;
+
                     case RedisType.String:
+                        vm.Table = null;
                         vm.Value = _proxy.GetString(key);
                         break;
                 }

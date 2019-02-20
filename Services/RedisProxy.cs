@@ -51,6 +51,18 @@ namespace Quickr.Services
             return db.ListRange(key.FullName);
         }
 
+        public RedisValue[] GetUnsortedSet(KeyEntry key)
+        {
+            var db = GetDatabase(key.DbIndex);
+            return db.SetMembers(key.FullName);
+        }
+
+        public SortedSetEntry[] GetSortedSet(KeyEntry key)
+        {
+            var db = GetDatabase(key.DbIndex);
+            return db.SortedSetRangeByRankWithScores(key.FullName);
+        }
+
         public RedisValue? GetString(KeyEntry key)
         {
             var db = GetDatabase(key.DbIndex);
