@@ -48,52 +48,43 @@
             BorderBrush="#FFABADB3"
             SelectedItem="{Binding Current}">
             <DataGrid.Resources>
-                <utils:BindingProxy x:Key="Proxy" DataContext="{Binding}" />
+                <utils:BindingProxy x:Key="VisibleForHashEntry" DataContext="{Binding 
+                    Path=Table, 
+                    Converter={StaticResource CollectionTypeConverter}, 
+                    ConverterParameter={x:Type redis:HashEntry}}" />
+                <utils:BindingProxy x:Key="VisibleForSortedSetEntry" DataContext="{Binding 
+                    Path=Table, 
+                    Converter={StaticResource CollectionTypeConverter}, 
+                    ConverterParameter={x:Type redis:SortedSetEntry}}" />
+                <utils:BindingProxy x:Key="VisibleForRedisValue" DataContext="{Binding 
+                    Path=Table, 
+                    Converter={StaticResource CollectionTypeConverter}, 
+                    ConverterParameter={x:Type redis:RedisValue}}" />
             </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn 
-                    Header="Name" 
-                    Visibility="{Binding 
-                        Path=DataContext.(vm:KeyViewModel.Table), 
-                        Source={StaticResource Proxy},
-                        Converter={StaticResource CollectionTypeConverter}, 
-                        ConverterParameter={x:Type redis:HashEntry}}" 
+                    Header="Name"
+                    Visibility="{Binding Path=DataContext, Source={StaticResource VisibleForHashEntry}}" 
                     Binding="{Binding (redis:HashEntry.Name), Mode=OneWay}" 
                     Width="Auto" MinWidth="90" />
                 <DataGridTextColumn 
                     Header="Value" 
-                    Visibility="{Binding 
-                        Path=DataContext.(vm:KeyViewModel.Table), 
-                        Source={StaticResource Proxy},
-                        Converter={StaticResource CollectionTypeConverter}, 
-                        ConverterParameter={x:Type redis:HashEntry}}" 
+                    Visibility="{Binding Path=DataContext, Source={StaticResource VisibleForHashEntry}}" 
                     Binding="{Binding (redis:HashEntry.Value), Mode=OneWay}" 
                     Width="*" />
                 <DataGridTextColumn 
                     Header="Score" 
-                    Visibility="{Binding 
-                        Path=DataContext.(vm:KeyViewModel.Table), 
-                        Source={StaticResource Proxy},
-                        Converter={StaticResource CollectionTypeConverter}, 
-                        ConverterParameter={x:Type redis:SortedSetEntry}}" 
+                    Visibility="{Binding Path=DataContext, Source={StaticResource VisibleForSortedSetEntry}}"
                     Binding="{Binding (redis:SortedSetEntry.Score), Mode=OneWay}" 
                     Width="Auto" MinWidth="90" />
                 <DataGridTextColumn 
                     Header="Element" 
-                    Visibility="{Binding 
-                        Path=DataContext.(vm:KeyViewModel.Table), 
-                        Source={StaticResource Proxy},
-                        Converter={StaticResource CollectionTypeConverter}, 
-                        ConverterParameter={x:Type redis:SortedSetEntry}}" 
+                    Visibility="{Binding Path=DataContext, Source={StaticResource VisibleForSortedSetEntry}}"
                     Binding="{Binding (redis:SortedSetEntry.Element), Mode=OneWay}" 
                     Width="*" />
                 <DataGridTextColumn 
                     Header="Value" 
-                    Visibility="{Binding 
-                        Path=DataContext.(vm:KeyViewModel.Table), 
-                        Source={StaticResource Proxy},
-                        Converter={StaticResource CollectionTypeConverter}, 
-                        ConverterParameter={x:Type redis:RedisValue}}" 
+                    Visibility="{Binding Path=DataContext, Source={StaticResource VisibleForRedisValue}}"
                     Binding="{Binding ., Mode=OneWay}" 
                     Width="*" />
             </DataGrid.Columns>
