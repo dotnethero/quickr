@@ -43,6 +43,13 @@ namespace Quickr.Models
             OnPropertyChanged(nameof(Children));
         }
 
+        public void RemoveChildren()
+        {
+            _keys.Clear();
+            _subfolders.Clear();
+            OnPropertyChanged(nameof(Children));
+        }
+
         public void RemoveChild(KeyEntry key)
         {
             _keys.Remove(key);

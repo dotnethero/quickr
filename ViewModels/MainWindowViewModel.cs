@@ -35,18 +35,24 @@ namespace Quickr.ViewModels
 
         private void Delete(object item)
         {
-            if (item is KeyEntry key)
+            switch (item)
             {
-                var parent = key.Parent;
-                _proxy.Delete(key);
-                parent.RemoveChild(key);
-            }
+                case DatabaseEntry database:
+                    _proxy.Flush(database);
+                    database.RemoveChildren();
+                    return;
 
-            if (item is FolderEntry folder)
-            {
-                var parent = folder.Parent;
-                _proxy.Delete(folder);
-                parent.RemoveChild(folder);
+                case FolderEntry folder:
+                    var folderParent = folder.Parent;
+                    _proxy.Delete(folder);
+                    folderParent.RemoveChild(folder);
+                    break;
+
+                case KeyEntry key:
+                    var keyParent = key.Parent;
+                    _proxy.Delete(key);
+                    keyParent.RemoveChild(key);
+                    break;
             }
         }
 

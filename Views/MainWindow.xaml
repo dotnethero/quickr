@@ -48,6 +48,10 @@
                                             Header="Refresh" 
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.RefreshCommand}"
                                             CommandParameter="{Binding}" />
+                                        <MenuItem 
+                                            Header="Flush" 
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.DeleteCommand}"
+                                            CommandParameter="{Binding}" />
                                     </ContextMenu>
                                 </StackPanel.ContextMenu>
                             </StackPanel>

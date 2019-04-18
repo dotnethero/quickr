@@ -69,17 +69,22 @@ namespace Quickr.Services
             return db.StringGet(key.FullName);
         }
 
-        public RedisValue? Delete(KeyEntry key)
+        public bool Delete(KeyEntry key)
         {
             var db = GetDatabase(key.DbIndex);
             return db.KeyDelete(key.FullName);
         }
 
-        public RedisValue? Delete(FolderEntry folder)
+        public long Delete(FolderEntry folder)
         {
             var db = GetDatabase(folder.DbIndex);
             var keys = GetKeys(folder.DbIndex, folder.SearchPattern);
             return db.KeyDelete(keys);
+        }
+
+        public void Flush(DatabaseEntry database)
+        {
+            GetServer().FlushDatabase(database.DbIndex);
         }
 
         public RedisKey[] GetKeys(int dbIndex, RedisValue pattern = default)
