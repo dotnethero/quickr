@@ -82,6 +82,11 @@ namespace Quickr.Services
             return db.KeyDelete(keys);
         }
 
+        public long GetSize(DatabaseEntry database)
+        {
+            return GetServer().DatabaseSize(database.DbIndex);
+        }
+
         public void Flush(DatabaseEntry database)
         {
             GetServer().FlushDatabase(database.DbIndex);

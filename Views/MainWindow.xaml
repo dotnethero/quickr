@@ -97,7 +97,16 @@
                     </TreeView.Resources>
                 </TreeView>
                 <GridSplitter Grid.Column="1" Background="AliceBlue" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
-                <views:KeyView Grid.Column="2" DataContext="{Binding Current, Mode=OneWay}" Visibility="{Binding Converter={StaticResource NullHiddenConverter}}" />
+                <ContentControl Grid.Column="2" DataContext="{Binding Current, Mode=OneWay}" Content="{Binding}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type vm:KeyViewModel}">
+                            <views:KeyView DataContext="{Binding}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:DatabaseViewModel}">
+                            <views:DatabaseView DataContext="{Binding}" />
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
             </Grid>
         </Border>
     </DockPanel>

@@ -62,12 +62,16 @@
     </ApplicationDefinition>
     <Compile Include="Converters\CollectionTypeConverter.cs" />
     <Compile Include="Utils\BindingProxy.cs" />
+    <Compile Include="ViewModels\DatabaseViewModel.cs" />
     <Compile Include="Views\ConnectWindow.xaml.cs">
       <DependentUpon>ConnectWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BooleanToTextWrappingConverter.cs" />
     <Compile Include="Converters\NullCollapsedConverter.cs" />
     <Compile Include="Converters\NullHiddenConverter.cs" />
+    <Compile Include="Views\DatabaseView.xaml.cs">
+      <DependentUpon>DatabaseView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\KeyView.xaml.cs">
       <DependentUpon>KeyView.xaml</DependentUpon>
     </Compile>
@@ -86,6 +90,10 @@
     <Page Include="Views\ConnectWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DatabaseView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\KeyView.xaml">
       <SubType>Designer</SubType>

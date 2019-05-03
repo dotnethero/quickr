@@ -19,7 +19,7 @@ namespace Quickr.ViewModels
         public ICommand DeleteCommand { get; }
 
         public DatabaseEntry[] Databases { get; private set; }
-        public KeyViewModel Current { get; private set; }
+        public object Current { get; private set; }
 
         public MainWindowViewModel()
         {
@@ -98,6 +98,14 @@ namespace Quickr.ViewModels
 
                 vm.Name = key.FullName;
                 vm.Expiration = ttl.ToString();
+                Current = vm;
+                OnPropertyChanged(nameof(Current));
+            }
+            else if (item is DatabaseEntry db)
+            {
+                var size = _proxy.GetSize(db);
+                var vm = new DatabaseViewModel();
+                vm.KeyCount = size;
                 Current = vm;
                 OnPropertyChanged(nameof(Current));
             }
