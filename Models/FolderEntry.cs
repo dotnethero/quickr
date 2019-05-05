@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Quickr.Utils;
 using StackExchange.Redis;
 
 namespace Quickr.Models
@@ -11,7 +12,7 @@ namespace Quickr.Models
         private readonly List<FolderEntry> _subfolders = new List<FolderEntry>();
 
         public string FullName { get; }
-        public string SearchPattern => IsRoot ? "*" : FullName + "." + "*";
+        public string SearchPattern => IsRoot ? "*" : FullName + Constants.RegionSeparator + "*";
         public bool IsRoot => Parent == null;
 
         public List<TreeEntry> Children
@@ -64,10 +65,10 @@ namespace Quickr.Models
 
         private void Add(string fullname)
         {
-            var requiredStart = IsRoot ? "" : FullName + ".";
+            var requiredStart = IsRoot ? "" : FullName + Constants.RegionSeparator;
             if (!fullname.StartsWith(requiredStart)) throw new InvalidOperationException();
 
-            var parts = fullname.Substring(requiredStart.Length).Split('.').ToList();
+            var parts = fullname.Substring(requiredStart.Length).Split(Constants.RegionSeparator).ToList();
             if (parts.Count == 1)
             {
                 var name = string.IsNullOrWhiteSpace(parts[0]) ? "(none)" : parts[0];

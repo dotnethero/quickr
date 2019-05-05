@@ -62,6 +62,7 @@
     </ApplicationDefinition>
     <Compile Include="Converters\CollectionTypeConverter.cs" />
     <Compile Include="Utils\BindingProxy.cs" />
+    <Compile Include="Utils\Constants.cs" />
     <Compile Include="ViewModels\DatabaseViewModel.cs" />
     <Compile Include="Views\ConnectWindow.xaml.cs">
       <DependentUpon>ConnectWindow.xaml</DependentUpon>
