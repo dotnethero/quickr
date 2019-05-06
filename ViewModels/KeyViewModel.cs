@@ -12,9 +12,37 @@ namespace Quickr.ViewModels
         private object _table;
         private object _current;
         private string _value;
+        private string _name;
+        private string _expiration;
 
-        public string Name { get; set; }
-        public string Expiration { get; set; }
+        public string OriginalName { get; set; }
+        public string OriginalExpiration { get; set; }
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(PropertiesChanged));
+            }
+        }
+        
+        public string Expiration
+        {
+            get => _expiration;
+            set
+            {
+                _expiration = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(PropertiesChanged));
+            }
+        }
+
+        public bool PropertiesChanged => 
+            OriginalName != Name ||
+            OriginalExpiration != Expiration;
 
         public object Table
         {

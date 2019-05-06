@@ -97,7 +97,9 @@ namespace Quickr.ViewModels
                 }
 
                 vm.Name = key.FullName;
+                vm.OriginalName = key.FullName;
                 vm.Expiration = ttl.ToString();
+                vm.OriginalExpiration = ttl.ToString();
                 Current = vm;
                 OnPropertyChanged(nameof(Current));
             }

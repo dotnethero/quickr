@@ -60,6 +60,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\CollectionTypeConverter.cs" />
     <Compile Include="Utils\BindingProxy.cs" />
     <Compile Include="Utils\Constants.cs" />
