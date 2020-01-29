@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
-using System.Windows.Markup.Localizer;
 using Quickr.Models;
 using Quickr.Utils;
 using StackExchange.Redis;
@@ -25,6 +24,38 @@ namespace Quickr.Services
                 .Range(0, count)
                 .Select(x => new DatabaseEntry(x))
                 .ToArray();
+        }
+
+        public KeyData GetKeyData(KeyEntry key)
+        {
+            var model = new KeyData
+            {
+                Entry = key, 
+                Type = GetType(key)
+            };
+            switch (model.Type)
+            {
+                case RedisType.Hash:
+                    model.Data = GetHashes(key);
+                    break;
+
+                case RedisType.List:
+                    model.Data = GetList(key);
+                    break;
+
+                case RedisType.Set:
+                    model.Data = GetUnsortedSet(key);
+                    break;
+
+                case RedisType.SortedSet:
+                    model.Data = GetSortedSet(key);
+                    break;
+
+                case RedisType.String:
+                    model.Data = GetString(key);
+                    break;
+            }
+            return model;
         }
 
         public RedisType GetType(KeyEntry key)
@@ -63,13 +94,13 @@ namespace Quickr.Services
             return db.SortedSetRangeByRankWithScores(key.FullName);
         }
 
-        public RedisValue? GetString(KeyEntry key)
+        public RedisValue GetString(KeyEntry key)
         {
             var db = GetDatabase(key.DbIndex);
             return db.StringGet(key.FullName);
         }
 
-        public RedisValue? SetString(KeyEntry key, string value)
+        public bool SetString(KeyEntry key, string value)
         {
             var db = GetDatabase(key.DbIndex);
             return db.StringSet(key.FullName, value);

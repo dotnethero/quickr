@@ -19,10 +19,9 @@ namespace Quickr.ViewModels
         private ValueViewModel _value;
         private TimeSpan? _expiration;
 
-        public string OriginalName { get; }
+        public KeyEntry KeyEntry { get; }
+        public KeyData KeyData { get; }
         public TimeSpan? OriginalExpiration { get; }
-        public RedisType Type { get; }
-        public KeyEntry Key { get; }
 
         public string Name
         {
@@ -47,7 +46,7 @@ namespace Quickr.ViewModels
         }
 
         public bool PropertiesChanged => 
-            OriginalName != Name ||
+            KeyEntry.FullName != Name ||
             OriginalExpiration != Expiration;
 
         public object Table
@@ -133,49 +132,38 @@ namespace Quickr.ViewModels
             // use DI later
             _proxy = proxy;
 
-            // properties
-            var type = _proxy.GetType(key);
-            var ttl = _proxy.GetTimeToLive(key);
-            switch (type)
+            KeyEntry = key;
+            KeyData = _proxy.GetKeyData(key);
+            OriginalExpiration = _proxy.GetTimeToLive(key);
+
+            Name = key.FullName;
+            Expiration = OriginalExpiration;
+
+            switch (KeyData.Type)
             {
                 case RedisType.Hash:
-                    Table = _proxy.GetHashes(key);
-                    break;
-
                 case RedisType.List:
-                    Table = _proxy.GetList(key);
-                    break;
-
                 case RedisType.Set:
-                    Table = _proxy.GetUnsortedSet(key);
-                    break;
-
                 case RedisType.SortedSet:
-                    Table = _proxy.GetSortedSet(key);
+                    Table = KeyData.Data;
                     break;
 
                 case RedisType.String:
                     Table = null;
-                    Value = new ValueViewModel(_proxy.GetString(key).Value);
+                    Value = new ValueViewModel((RedisValue) KeyData.Data);
                     break;
             }
-
-            Key = key;
-            Type = type;
-            OriginalName = key.FullName;
-            OriginalExpiration = ttl;
-
-            Name = OriginalName;
-            Expiration = OriginalExpiration;
         }
 
         private void SaveValue(object sender, EventArgs eventArgs)
         {
-            switch (Type)
+            var updatedValue = Value.CurrentValue;
+            switch (KeyData.Type)
             {
                 case RedisType.String:
-                    _proxy.SetString(Key, Value.CurrentValue);
-                    Value = new ValueViewModel(_proxy.GetString(Key).Value);
+                    _proxy.SetString(KeyEntry, updatedValue);
+                    KeyData.Data = updatedValue;
+                    Value = new ValueViewModel(updatedValue);
                     break;
             }
         }
