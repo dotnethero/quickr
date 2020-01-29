@@ -6,6 +6,7 @@
     xmlns:vm="clr-namespace:Quickr.ViewModels"
     xmlns:redis="clr-namespace:StackExchange.Redis;assembly=StackExchange.Redis"
     xmlns:utils="clr-namespace:Quickr.Utils"
+    xmlns:views="clr-namespace:Quickr.Views"
     mc:Ignorable="d" 
     d:DataContext="{d:DesignInstance Type=vm:KeyViewModel, IsDesignTimeCreatable=False}"
     d:DesignHeight="450" d:DesignWidth="800">
@@ -96,24 +97,9 @@
                     Width="*" />
             </DataGrid.Columns>
         </DataGrid>
-        <Grid DockPanel.Dock="Bottom" Margin="5">
-            <TextBox 
-                MinHeight="200"
-                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                Text="{Binding Value, Mode=OneWay}" 
-                TextWrapping="{Binding Path=IsChecked, ElementName=WordWrap, Converter={StaticResource BooleanToTextWrappingConverter}}"
-                IsReadOnly="True" 
-                FontFamily="Consolas" 
-                FontSize="12">
-            </TextBox>
-            <CheckBox
-                Name="WordWrap"
-                Margin="0,0,25,8"
-                VerticalContentAlignment="Bottom"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom">
-                text wrapping
-            </CheckBox>
-        </Grid>
+        <views:ValueEditor 
+            DockPanel.Dock="Bottom" 
+            DataContext="{Binding Value}" 
+            Margin="5" />
     </DockPanel>
 </UserControl>

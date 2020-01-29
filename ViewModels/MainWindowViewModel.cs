@@ -69,38 +69,7 @@ namespace Quickr.ViewModels
         {
             if (item is KeyEntry key)
             {
-                var type = _proxy.GetType(key);
-                var ttl = _proxy.GetTimeToLive(key);
-                var vm = new KeyViewModel();
-                switch (type)
-                {
-                    case RedisType.Hash:
-                        vm.Table = _proxy.GetHashes(key);
-                        break;
-
-                    case RedisType.List:
-                        vm.Table = _proxy.GetList(key);
-                        break;
-
-                    case RedisType.Set:
-                        vm.Table = _proxy.GetUnsortedSet(key);
-                        break;
-
-                    case RedisType.SortedSet:
-                        vm.Table = _proxy.GetSortedSet(key);
-                        break;
-
-                    case RedisType.String:
-                        vm.Table = null;
-                        vm.Value = _proxy.GetString(key);
-                        break;
-                }
-
-                vm.Name = key.FullName;
-                vm.OriginalName = key.FullName;
-                vm.Expiration = ttl.ToString();
-                vm.OriginalExpiration = ttl.ToString();
-                Current = vm;
+                Current = new KeyViewModel(key, _proxy);
                 OnPropertyChanged(nameof(Current));
             }
             else if (item is DatabaseEntry db)

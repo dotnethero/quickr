@@ -1,22 +1,28 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Quickr.Annotations;
-using Quickr.Utils;
+using Quickr.Models;
+using Quickr.Services;
 using StackExchange.Redis;
 
 namespace Quickr.ViewModels
 {
     internal class KeyViewModel: INotifyPropertyChanged
     {
+        private readonly RedisProxy _proxy;
         private object _table;
         private object _current;
-        private string _value;
-        private string _name;
-        private string _expiration;
 
-        public string OriginalName { get; set; }
-        public string OriginalExpiration { get; set; }
+        private string _name;
+        private ValueViewModel _value;
+        private TimeSpan? _expiration;
+
+        public string OriginalName { get; }
+        public TimeSpan? OriginalExpiration { get; }
+        public RedisType Type { get; }
+        public KeyEntry Key { get; }
 
         public string Name
         {
@@ -29,7 +35,7 @@ namespace Quickr.ViewModels
             }
         }
         
-        public string Expiration
+        public TimeSpan? Expiration
         {
             get => _expiration;
             set
@@ -84,17 +90,17 @@ namespace Quickr.ViewModels
                 {
                     case HashEntry hash:
                         _current = hash;
-                        Value = hash.Value.PrettifyJson();
+                        Value = new ValueViewModel(hash.Value);
                         break;
 
                     case SortedSetEntry zset:
                         _current = zset;
-                        Value = zset.Element.PrettifyJson();
+                        Value = new ValueViewModel(zset.Element);
                         break;
 
                     case RedisValue rval:
                         _current = rval;
-                        Value = rval.PrettifyJson();
+                        Value = new ValueViewModel(rval);
                         break;
 
                     default:
@@ -106,13 +112,71 @@ namespace Quickr.ViewModels
             }
         }
 
-        public string Value
+        public ValueViewModel Value
         {
             get => _value;
             set
             {
+                if (_value != null) 
+                    Value.OnValueSaved -= SaveValue;
+
                 _value = value;
                 OnPropertyChanged();
+
+                if (_value != null) 
+                    Value.OnValueSaved += SaveValue;
+            }
+        }
+
+        public KeyViewModel(KeyEntry key, RedisProxy proxy)
+        {
+            // use DI later
+            _proxy = proxy;
+
+            // properties
+            var type = _proxy.GetType(key);
+            var ttl = _proxy.GetTimeToLive(key);
+            switch (type)
+            {
+                case RedisType.Hash:
+                    Table = _proxy.GetHashes(key);
+                    break;
+
+                case RedisType.List:
+                    Table = _proxy.GetList(key);
+                    break;
+
+                case RedisType.Set:
+                    Table = _proxy.GetUnsortedSet(key);
+                    break;
+
+                case RedisType.SortedSet:
+                    Table = _proxy.GetSortedSet(key);
+                    break;
+
+                case RedisType.String:
+                    Table = null;
+                    Value = new ValueViewModel(_proxy.GetString(key).Value);
+                    break;
+            }
+
+            Key = key;
+            Type = type;
+            OriginalName = key.FullName;
+            OriginalExpiration = ttl;
+
+            Name = OriginalName;
+            Expiration = OriginalExpiration;
+        }
+
+        private void SaveValue(object sender, EventArgs eventArgs)
+        {
+            switch (Type)
+            {
+                case RedisType.String:
+                    _proxy.SetString(Key, Value.CurrentValue);
+                    Value = new ValueViewModel(_proxy.GetString(Key).Value);
+                    break;
             }
         }
 

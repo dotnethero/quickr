@@ -69,6 +69,12 @@ namespace Quickr.Services
             return db.StringGet(key.FullName);
         }
 
+        public RedisValue? SetString(KeyEntry key, string value)
+        {
+            var db = GetDatabase(key.DbIndex);
+            return db.StringSet(key.FullName, value);
+        }
+
         public bool Delete(KeyEntry key)
         {
             var db = GetDatabase(key.DbIndex);
