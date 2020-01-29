@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quickr", "Quickr.csproj", "{AE693B0B-8423-433C-8884-47FA87DB7B6B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quickr", "Quickr.csproj", "{A386BC5B-A1F3-44A0-8F35-E0C95E95DC52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AE693B0B-8423-433C-8884-47FA87DB7B6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE693B0B-8423-433C-8884-47FA87DB7B6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE693B0B-8423-433C-8884-47FA87DB7B6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE693B0B-8423-433C-8884-47FA87DB7B6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A386BC5B-A1F3-44A0-8F35-E0C95E95DC52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A386BC5B-A1F3-44A0-8F35-E0C95E95DC52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A386BC5B-A1F3-44A0-8F35-E0C95E95DC52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A386BC5B-A1F3-44A0-8F35-E0C95E95DC52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {32D2265C-5766-46A6-A58A-A604B001618A}
+		SolutionGuid = {3CE381D1-284B-4EE9-B115-5063F821A243}
 	EndGlobalSection
 EndGlobal
