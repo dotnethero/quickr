@@ -4,7 +4,7 @@ using System.Linq;
 using Quickr.Utils;
 using StackExchange.Redis;
 
-namespace Quickr.Models
+namespace Quickr.Models.Keys
 {
     internal class FolderEntry : TreeEntry
     {

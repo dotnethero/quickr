@@ -1,13 +1,13 @@
 ﻿using System.Windows.Controls;
 
-namespace Quickr.Views
+namespace Quickr.Views.Data
 {
     /// <summary>
     /// Interaction logic for KeyView.xaml
     /// </summary>
-    public partial class KeyView : UserControl
+    public partial class StringView : UserControl
     {
-        public KeyView()
+        public StringView()
         {
             InitializeComponent();
         }

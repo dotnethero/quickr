@@ -5,16 +5,26 @@ using System.Windows.Input;
 using Quickr.Utils;
 using StackExchange.Redis;
 
-namespace Quickr.ViewModels
+namespace Quickr.ViewModels.Data
 {
     internal class ValueViewModel : INotifyPropertyChanged
     {
         private string _currentValue;
+        private string _originalValue;
 
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
 
-        public string OriginalValue { get; }
+        public string OriginalValue
+        {
+            get => _originalValue;
+            set
+            {
+                _originalValue = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ValueChanged));
+            }
+        }
 
         public string CurrentValue
         {

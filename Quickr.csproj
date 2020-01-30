@@ -17,4 +17,16 @@
     <PackageReference Include="StackExchange.Redis" Version="2.0.601" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Views\Data\UnsortedSetView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Data\HashSetView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Data\StringView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

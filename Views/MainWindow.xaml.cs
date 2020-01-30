@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Quickr.Models;
+using Quickr.Services;
 using Quickr.ViewModels;
 
 namespace Quickr.Views
@@ -14,7 +15,7 @@ namespace Quickr.Views
         public MainWindow()
         {
             InitializeComponent();
-            ViewModel = new MainWindowViewModel();
+            ViewModel = new MainWindowViewModel(new RedisProxy());
             DataContext = ViewModel;
         }
 

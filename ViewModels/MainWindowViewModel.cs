@@ -3,8 +3,10 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Quickr.Annotations;
 using Quickr.Models;
+using Quickr.Models.Keys;
 using Quickr.Services;
 using Quickr.Utils;
+using Quickr.ViewModels.Data;
 using StackExchange.Redis;
 
 namespace Quickr.ViewModels
@@ -12,6 +14,7 @@ namespace Quickr.ViewModels
     internal class MainWindowViewModel: INotifyPropertyChanged
     {
         private readonly RedisProxy _proxy;
+        private object _current;
 
         public ICommand ConnectCommand { get; }
         public ICommand SelectCommand { get; }
@@ -19,12 +22,20 @@ namespace Quickr.ViewModels
         public ICommand DeleteCommand { get; }
 
         public DatabaseEntry[] Databases { get; private set; }
-        public object Current { get; private set; }
 
-        public MainWindowViewModel()
+        public object Current
         {
-            // use DI later
-            _proxy = new RedisProxy();
+            get => _current;
+            set
+            {
+                _current = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public MainWindowViewModel(RedisProxy proxy)
+        {
+            _proxy = proxy;
 
             // commands
             ConnectCommand = new ParameterCommand(Connect);
@@ -67,23 +78,41 @@ namespace Quickr.ViewModels
 
         private void Select(object item)
         {
-            if (item is KeyEntry key)
+            switch (item)
             {
-                Current = new KeyViewModel(key, _proxy);
-                OnPropertyChanged(nameof(Current));
+                case KeyEntry key:
+                    Current = GetKeyViewModel(key);
+                    break;
+
+                case DatabaseEntry db:
+                    var size = _proxy.GetSize(db);
+                    var vm = new DatabaseViewModel();
+                    vm.KeyCount = size;
+                    Current = vm;
+                    break;
+
+                default:
+                    Current = null;
+                    break;
             }
-            else if (item is DatabaseEntry db)
+        }
+
+        private object GetKeyViewModel(KeyEntry key)
+        {
+            var type = _proxy.GetType(key);
+            switch (type)
             {
-                var size = _proxy.GetSize(db);
-                var vm = new DatabaseViewModel();
-                vm.KeyCount = size;
-                Current = vm;
-                OnPropertyChanged(nameof(Current));
-            }
-            else
-            {
-                Current = null;
-                OnPropertyChanged(nameof(Current));
+                case RedisType.String:
+                    return new StringViewModel(_proxy, key);
+
+                case RedisType.Set:
+                    return new UnsortedSetViewModel(_proxy, key);
+
+                case RedisType.Hash:
+                    return new HashSetViewModel(_proxy, key);
+
+                default:
+                    return null;
             }
         }
 

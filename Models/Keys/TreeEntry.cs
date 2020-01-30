@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using Quickr.Annotations;
 
-namespace Quickr.Models
+namespace Quickr.Models.Keys
 {
     internal abstract class TreeEntry: INotifyPropertyChanged
     {

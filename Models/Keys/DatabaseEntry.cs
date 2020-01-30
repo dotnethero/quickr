@@ -1,4 +1,4 @@
-﻿namespace Quickr.Models
+﻿namespace Quickr.Models.Keys
 {
     internal class DatabaseEntry: FolderEntry
     {
