@@ -14,18 +14,11 @@
             DockPanel.Dock="Top"
             VerticalAlignment="Top"
             Margin="5" />
-        <DataGrid 
+        <DataGrid
             DockPanel.Dock="Top"
-            Margin="5"
-            MinHeight="200"
-            ItemsSource="{Binding Entries, Mode=OneWay}"
-            CanUserSortColumns="False"
-            AutoGenerateColumns="False"
-            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
             VirtualizingStackPanel.IsVirtualizing="True"
-            HorizontalGridLinesBrush="LightGray"
-            VerticalGridLinesBrush="LightGray" HeadersVisibility="Column"
-            BorderBrush="#FFABADB3"
+            Style="{StaticResource Elements}"
+            ItemsSource="{Binding Entries, Mode=OneWay}"
             SelectedItem="{Binding Current}">
             <DataGrid.Columns>
                 <DataGridTextColumn 

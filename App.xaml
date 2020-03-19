@@ -9,6 +9,17 @@
         <converters:BooleanToTextWrappingConverter x:Key="BooleanToTextWrappingConverter" />
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:CollectionTypeConverter x:Key="CollectionTypeConverter" />
+        <Style x:Key="Elements" TargetType="DataGrid">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="MinHeight" Value="200" />
+            <Setter Property="HeadersVisibility" Value="Column" />
+            <Setter Property="CanUserSortColumns" Value="False" />
+            <Setter Property="AutoGenerateColumns" Value="False" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="HorizontalGridLinesBrush" Value="LightGray" />
+            <Setter Property="VerticalGridLinesBrush" Value="LightGray" />
+            <Setter Property="BorderBrush" Value="#FFABADB3" />
+        </Style>
         <ControlTemplate x:Key="Database">
             <Viewbox Width="16" Height="16">
                 <Rectangle Width="16" Height="16">

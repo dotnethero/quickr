@@ -16,17 +16,11 @@
             Margin="5" />
         <DataGrid 
             DockPanel.Dock="Top"
-            Margin="5"
-            MinHeight="200"
-            ItemsSource="{Binding Entries, Mode=OneWay}"
-            CanUserSortColumns="True"
-            AutoGenerateColumns="False"
-            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
             VirtualizingStackPanel.IsVirtualizing="True"
-            HorizontalGridLinesBrush="LightGray"
-            VerticalGridLinesBrush="LightGray" HeadersVisibility="Column"
-            BorderBrush="#FFABADB3"
-            SelectedItem="{Binding Current}">
+            Style="{StaticResource Elements}"
+            ItemsSource="{Binding Entries, Mode=OneWay}"
+            SelectedItem="{Binding Current}"
+            CanUserSortColumns="True">
             <DataGrid.Columns>
                 <DataGridTextColumn 
                     Header="Value"
