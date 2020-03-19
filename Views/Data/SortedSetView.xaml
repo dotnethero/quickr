@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="Quickr.Views.Data.SortedSetView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:views="clr-namespace:Quickr.Views.Data"
+    xmlns:data="clr-namespace:Quickr.ViewModels.Data"
+    mc:Ignorable="d" 
+    d:DataContext="{d:DesignInstance Type=data:SortedSetViewModel, IsDesignTimeCreatable=False}"
+    d:DesignHeight="450" d:DesignWidth="800">
+    <DockPanel Margin="5" >
+        <views:PropertiesEditor
+            DataContext="{Binding Path=Properties}"
+            DockPanel.Dock="Top"
+            VerticalAlignment="Top"
+            Margin="5" />
+        <DataGrid 
+            DockPanel.Dock="Top"
+            Margin="5"
+            MinHeight="200"
+            ItemsSource="{Binding Entries, Mode=OneWay}"
+            CanUserSortColumns="False"
+            AutoGenerateColumns="False"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            VirtualizingStackPanel.IsVirtualizing="True"
+            HorizontalGridLinesBrush="LightGray"
+            VerticalGridLinesBrush="LightGray" HeadersVisibility="Column"
+            BorderBrush="#FFABADB3"
+            SelectedItem="{Binding Current}">
+            <DataGrid.Columns>
+                <DataGridTextColumn 
+                    Header="Score"
+                    Binding="{Binding Path=Score, Mode=OneWay}" 
+                    Width="Auto" MinWidth="90" />
+                <DataGridTextColumn 
+                    Header="Value" 
+                    Binding="{Binding Path=Element, Mode=OneWay}" 
+                    Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <views:ValueEditor 
+            DataContext="{Binding Path=Current}" 
+            DockPanel.Dock="Bottom" 
+            Margin="5" />
+    </DockPanel>
+</UserControl>

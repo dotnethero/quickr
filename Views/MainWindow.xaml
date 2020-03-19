@@ -108,8 +108,14 @@
                         <DataTemplate DataType="{x:Type data:UnsortedSetViewModel}">
                             <keyViews:UnsortedSetView DataContext="{Binding}" />
                         </DataTemplate>
+                        <DataTemplate DataType="{x:Type data:SortedSetViewModel}">
+                            <keyViews:SortedSetView DataContext="{Binding}" />
+                        </DataTemplate>
                         <DataTemplate DataType="{x:Type data:HashSetViewModel}">
                             <keyViews:HashSetView DataContext="{Binding}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type data:ListViewModel}">
+                            <keyViews:ListView DataContext="{Binding}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type vm:DatabaseViewModel}">
                             <views:DatabaseView DataContext="{Binding}" />

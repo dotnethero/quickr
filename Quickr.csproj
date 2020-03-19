@@ -18,6 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\Data\SortedSetView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Data\ListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Data\UnsortedSetView.xaml">
       <SubType>Designer</SubType>
     </Page>

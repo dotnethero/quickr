@@ -111,6 +111,14 @@ namespace Quickr.ViewModels
                 case RedisType.Hash:
                     return new HashSetViewModel(_proxy, key);
 
+                case RedisType.List:
+                    return new ListViewModel(_proxy, key);
+                    break;
+
+                case RedisType.SortedSet:
+                    return new SortedSetViewModel(_proxy, key);
+                    break;
+
                 default:
                     return null;
             }
