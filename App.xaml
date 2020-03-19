@@ -1,8 +1,7 @@
 ﻿<Application x:Class="Quickr.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converters="clr-namespace:Quickr.Converters"
-             StartupUri="Views/MainWindow.xaml">
+             xmlns:converters="clr-namespace:Quickr.Converters">
     <Application.Resources>
         <converters:NullHiddenConverter x:Key="NullHiddenConverter" />
         <converters:NullCollapsedConverter x:Key="NullCollapsedConverter" />

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Autofac;
 using Quickr.Annotations;
 using Quickr.Models;
 using Quickr.Models.Keys;
@@ -14,6 +15,8 @@ namespace Quickr.ViewModels
     internal class MainWindowViewModel: INotifyPropertyChanged
     {
         private readonly RedisProxy _proxy;
+        private readonly KeyViewModelFactory _kvmFactory;
+
         private object _current;
 
         public ICommand ConnectCommand { get; }
@@ -33,9 +36,10 @@ namespace Quickr.ViewModels
             }
         }
 
-        public MainWindowViewModel(RedisProxy proxy)
+        public MainWindowViewModel(RedisProxy proxy, KeyViewModelFactory kvmFactory)
         {
             _proxy = proxy;
+            _kvmFactory = kvmFactory;
 
             // commands
             ConnectCommand = new ParameterCommand(Connect);
@@ -81,7 +85,7 @@ namespace Quickr.ViewModels
             switch (item)
             {
                 case KeyEntry key:
-                    Current = GetKeyViewModel(key);
+                    Current = _kvmFactory.CreateViewModel(key);
                     break;
 
                 case DatabaseEntry db:
@@ -94,33 +98,6 @@ namespace Quickr.ViewModels
                 default:
                     Current = null;
                     break;
-            }
-        }
-
-        private object GetKeyViewModel(KeyEntry key)
-        {
-            var type = _proxy.GetType(key);
-            switch (type)
-            {
-                case RedisType.String:
-                    return new StringViewModel(_proxy, key);
-
-                case RedisType.Set:
-                    return new UnsortedSetViewModel(_proxy, key);
-
-                case RedisType.Hash:
-                    return new HashSetViewModel(_proxy, key);
-
-                case RedisType.List:
-                    return new ListViewModel(_proxy, key);
-                    break;
-
-                case RedisType.SortedSet:
-                    return new SortedSetViewModel(_proxy, key);
-                    break;
-
-                default:
-                    return null;
             }
         }
 

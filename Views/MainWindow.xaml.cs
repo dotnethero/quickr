@@ -12,11 +12,11 @@ namespace Quickr.Views
     {
         private MainWindowViewModel ViewModel { get; }
 
-        public MainWindow()
+        internal MainWindow(MainWindowViewModel viewModel)
         {
             InitializeComponent();
-            ViewModel = new MainWindowViewModel(new RedisProxy());
-            DataContext = ViewModel;
+            ViewModel = viewModel;
+            DataContext = viewModel;
         }
 
         private void OnConnect(object sender, RoutedEventArgs e)
