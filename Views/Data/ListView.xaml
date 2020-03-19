@@ -30,7 +30,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <views:ValueEditor 
-            DataContext="{Binding Path=Current}" 
+            DataContext="{Binding Path=Value}" 
             DockPanel.Dock="Bottom" 
             Margin="5" />
     </DockPanel>
