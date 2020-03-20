@@ -8,13 +8,12 @@ namespace Quickr.ViewModels.Data
     {
         public StringViewModel(RedisProxy proxy, KeyEntry key): base(proxy, key)
         {
-            Value = new ValueViewModel(proxy.GetString(key));
+            Value = new ValueViewModel(Proxy.GetString(Key));
         }
 
         protected override void OnValueSaved(object sender, EventArgs e)
         {
             Proxy.SetString(Key, Value.CurrentValue);
-            Value = new ValueViewModel(Value.CurrentValue);
         }
     }
 }

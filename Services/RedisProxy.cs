@@ -44,13 +44,19 @@ namespace Quickr.Services
             var db = GetDatabase(key.DbIndex);
             return db.HashGetAll(key.FullName);
         }
+        
+        public bool HashSet(KeyEntry key, RedisValue hashField, RedisValue value)
+        {
+            var db = GetDatabase(key.DbIndex);
+            return db.HashSet(key.FullName, hashField, value);
+        }
 
         public RedisValue[] GetList(KeyEntry key)
         {
             var db = GetDatabase(key.DbIndex);
             return db.ListRange(key.FullName);
         }
-
+        
         public RedisValue[] GetUnsortedSet(KeyEntry key)
         {
             var db = GetDatabase(key.DbIndex);

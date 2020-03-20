@@ -1,6 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
 using Quickr.Models.Keys;
 using Quickr.Services;
 using StackExchange.Redis;
@@ -11,7 +10,7 @@ namespace Quickr.ViewModels.Data
     {
         private RedisValue _current;
 
-        public RedisValue[] Entries { get; set; }
+        public ObservableCollection<RedisValue> Entries { get; set; }
 
         public RedisValue Current
         {
@@ -26,12 +25,16 @@ namespace Quickr.ViewModels.Data
 
         public ListViewModel(RedisProxy proxy, KeyEntry key): base(proxy, key)
         {
-            Entries = proxy.GetList(key);
+            Entries = new ObservableCollection<RedisValue>(Proxy.GetList(Key));
         }
 
         protected override void OnValueSaved(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Proxy.HashSet(Key, Current.Name, Value.CurrentValue);
+            var index = Entries.IndexOf(Current);
+            var entry = new RedisValue(Value.CurrentValue);
+            Entries[index] = entry;
+            Current = entry;
         }
     }
 }

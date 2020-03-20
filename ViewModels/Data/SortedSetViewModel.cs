@@ -24,7 +24,7 @@ namespace Quickr.ViewModels.Data
         
         public SortedSetViewModel(RedisProxy proxy, KeyEntry key): base(proxy, key)
         {
-            Entries = proxy.GetSortedSet(key);
+            Entries = Proxy.GetSortedSet(Key);
         }
 
         protected override void OnValueSaved(object sender, EventArgs e)

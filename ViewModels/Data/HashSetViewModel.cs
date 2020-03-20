@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using Quickr.Models.Keys;
 using Quickr.Services;
 using StackExchange.Redis;
@@ -9,7 +10,7 @@ namespace Quickr.ViewModels.Data
     {
         private HashEntry _current;
 
-        public HashEntry[] Entries { get; set; }
+        public ObservableCollection<HashEntry> Entries { get; set; }
 
         public HashEntry Current
         {
@@ -24,12 +25,16 @@ namespace Quickr.ViewModels.Data
 
         public HashSetViewModel(RedisProxy proxy, KeyEntry key): base(proxy, key)
         {
-            Entries = proxy.GetHashes(key);
+            Entries = new ObservableCollection<HashEntry>(Proxy.GetHashes(Key));
         }
 
         protected override void OnValueSaved(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Proxy.HashSet(Key, Current.Name, Value.CurrentValue);
+            var index = Entries.IndexOf(Current);
+            var entry = new HashEntry(Current.Name, Value.CurrentValue);
+            Entries[index] = entry;
+            Current = entry;
         }
     }
 }

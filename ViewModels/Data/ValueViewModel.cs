@@ -48,6 +48,7 @@ namespace Quickr.ViewModels.Data
         private void Save()
         {
             OnValueSaved?.Invoke(this, EventArgs.Empty);
+            OriginalValue = CurrentValue;
         }
 
         private void Cancel()
