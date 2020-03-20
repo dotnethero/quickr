@@ -4,27 +4,17 @@ using Quickr.Services;
 
 namespace Quickr.ViewModels.Data
 {
-    internal class StringViewModel: BaseViewModel
+    internal class StringViewModel: BaseKeyViewModel
     {
-        private readonly RedisProxy _proxy;
-
-        public KeyEntry Key { get; }
-        public PropertiesViewModel Properties { get; }
-        public ValueViewModel Value { get; set; }
-
-        public StringViewModel(RedisProxy proxy, KeyEntry key)
+        public StringViewModel(RedisProxy proxy, KeyEntry key): base(proxy, key)
         {
-            _proxy = proxy;
-            Key = key;
-            Properties = new PropertiesViewModel(proxy, key);
             Value = new ValueViewModel(proxy.GetString(key));
-            Value.OnValueSaved += OnValueSaved;
         }
 
-        private void OnValueSaved(object sender, EventArgs e)
+        protected override void OnValueSaved(object sender, EventArgs e)
         {
-            _proxy.SetString(Key, Value.CurrentValue);
-            Value.OriginalValue = Value.CurrentValue;
+            Proxy.SetString(Key, Value.CurrentValue);
+            Value = new ValueViewModel(Value.CurrentValue);
         }
     }
 }

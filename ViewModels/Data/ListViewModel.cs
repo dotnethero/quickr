@@ -7,14 +7,11 @@ using StackExchange.Redis;
 
 namespace Quickr.ViewModels.Data
 {
-    internal class ListViewModel: BaseViewModel
+    internal class ListViewModel: BaseKeyViewModel
     {
         private RedisValue _current;
-        private ValueViewModel _value;
 
-        public KeyEntry Key { get; }
         public RedisValue[] Entries { get; set; }
-        public PropertiesViewModel Properties { get; }
 
         public RedisValue Current
         {
@@ -27,33 +24,12 @@ namespace Quickr.ViewModels.Data
             }
         }
 
-        public ValueViewModel Value
+        public ListViewModel(RedisProxy proxy, KeyEntry key): base(proxy, key)
         {
-            get => _value;
-            set
-            {
-                if (_value != null)
-                {
-                    _value.OnValueSaved -= SaveEntry;
-                    _value = value;
-                    _value.OnValueSaved += SaveEntry;
-                }
-                else
-                {
-                    _value = value;
-                }
-                OnPropertyChanged();
-            }
-        }
-
-        public ListViewModel(RedisProxy proxy, KeyEntry key)
-        {
-            Key = key;
             Entries = proxy.GetList(key);
-            Properties = new PropertiesViewModel(proxy, key);
         }
 
-        private void SaveEntry(object sender, EventArgs e)
+        protected override void OnValueSaved(object sender, EventArgs e)
         {
             throw new NotImplementedException();
         }

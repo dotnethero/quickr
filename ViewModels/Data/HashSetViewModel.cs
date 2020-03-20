@@ -5,14 +5,11 @@ using StackExchange.Redis;
 
 namespace Quickr.ViewModels.Data
 {
-    internal class HashSetViewModel: BaseViewModel
+    internal class HashSetViewModel: BaseKeyViewModel
     {
         private HashEntry _current;
-        private ValueViewModel _value;
 
-        public KeyEntry Key { get; }
         public HashEntry[] Entries { get; set; }
-        public PropertiesViewModel Properties { get; }
 
         public HashEntry Current
         {
@@ -25,33 +22,12 @@ namespace Quickr.ViewModels.Data
             }
         }
 
-        public ValueViewModel Value
+        public HashSetViewModel(RedisProxy proxy, KeyEntry key): base(proxy, key)
         {
-            get => _value;
-            set
-            {
-                if (_value != null)
-                {
-                    _value.OnValueSaved -= SaveEntry;
-                    _value = value;
-                    _value.OnValueSaved += SaveEntry;
-                }
-                else
-                {
-                    _value = value;
-                }
-                OnPropertyChanged();
-            }
-        }
-
-        public HashSetViewModel(RedisProxy proxy, KeyEntry key)
-        {
-            Key = key;
             Entries = proxy.GetHashes(key);
-            Properties = new PropertiesViewModel(proxy, key);
         }
 
-        private void SaveEntry(object sender, EventArgs e)
+        protected override void OnValueSaved(object sender, EventArgs e)
         {
             throw new NotImplementedException();
         }
