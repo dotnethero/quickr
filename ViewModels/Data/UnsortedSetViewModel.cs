@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using Quickr.Models.Keys;
 using Quickr.Services;
 using StackExchange.Redis;
@@ -9,7 +10,7 @@ namespace Quickr.ViewModels.Data
     {
         private RedisValue _current;
 
-        public RedisValue[] Entries { get; set; }
+        public ObservableCollection<RedisValue> Entries { get; set; }
 
         public RedisValue Current
         {
@@ -24,12 +25,18 @@ namespace Quickr.ViewModels.Data
 
         public UnsortedSetViewModel(RedisProxy proxy, KeyEntry key): base(proxy, key)
         {
-            Entries = Proxy.GetUnsortedSet(Key);
+            Entries = new ObservableCollection<RedisValue>(Proxy.GetUnsortedSet(Key));
         }
 
         protected override void OnValueSaved(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            var index = Entries.IndexOf(Current);
+            var entry = new RedisValue(Value.CurrentValue);
+            Proxy.UnsortedSetRemove(Key, Value.OriginalValue); // TODO: incorrect paradigm, make add & remove
+            Proxy.UnsortedSetAdd(Key, Value.CurrentValue);
+            Entries.RemoveAt(index);
+            Entries.Insert(0, entry);
+            Current = entry;
         }
     }
 }
