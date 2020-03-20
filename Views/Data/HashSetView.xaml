@@ -30,6 +30,14 @@
                     Binding="{Binding Path=Value, Mode=OneWay}" 
                     Width="*" />
             </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem 
+                        Header="Delete" 
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItems}" 
+                        Command="{Binding DeleteCommand}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
         </DataGrid>
         <views:ValueEditor 
             DataContext="{Binding Path=Value}" 

@@ -62,6 +62,12 @@ namespace Quickr.Services
             var db = GetDatabase(key.DbIndex);
             return db.HashSet(key.FullName, hashField, value);
         }
+        
+        public long HashDelete(KeyEntry key, RedisValue[] hashFields)
+        {
+            var db = GetDatabase(key.DbIndex);
+            return db.HashDelete(key.FullName, hashFields);
+        }
 
         public RedisValue[] GetList(KeyEntry key)
         {
