@@ -4,8 +4,6 @@ using Quickr.Services;
 using Quickr.ViewModels.Data;
 using StackExchange.Redis;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Quickr.Utils
 {
@@ -23,26 +21,15 @@ namespace Quickr.Utils
         public object CreateViewModel(KeyEntry key)
         {
             var type = _proxy.GetType(key);
-            switch (type)
+            return type switch
             {
-                case RedisType.String:
-                    return Resolve<StringViewModel>(key);
-
-                case RedisType.Set:
-                    return Resolve<UnsortedSetViewModel>(key);
-
-                case RedisType.Hash:
-                    return Resolve<HashSetViewModel>(key);
-
-                case RedisType.List:
-                    return Resolve<ListViewModel>(key);
-
-                case RedisType.SortedSet:
-                    return Resolve<SortedSetViewModel>(key);
-
-                default:
-                    return null;
-            }
+                RedisType.String => Resolve<StringViewModel>(key),
+                RedisType.Set => Resolve<UnsortedSetViewModel>(key),
+                RedisType.Hash => Resolve<HashSetViewModel>(key),
+                RedisType.List => Resolve<ListViewModel>(key),
+                RedisType.SortedSet => Resolve<SortedSetViewModel>(key),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         private T Resolve<T>(KeyEntry key)

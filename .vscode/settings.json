@@ -1,0 +1,10 @@
+{
+    "files.exclude": {
+        "*.DotSettings": true,
+        "*.DotSettings.user": true,
+        "**/.vs": true,
+        "**/.vscode": true,
+        "**/bin": true,
+        "**/obj": true
+    }
+}
