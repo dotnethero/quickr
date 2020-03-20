@@ -52,6 +52,10 @@
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.RefreshCommand}"
                                             CommandParameter="{Binding}" />
                                         <MenuItem 
+                                            Header="Mark all as expired" 
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.MarkAsExpiredCommand}"
+                                            CommandParameter="{Binding}" />
+                                        <MenuItem 
                                             Header="Flush" 
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.DeleteCommand}"
                                             CommandParameter="{Binding}" />
@@ -73,6 +77,10 @@
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.RefreshCommand}"
                                             CommandParameter="{Binding}" />
                                         <MenuItem 
+                                            Header="Mark all as expired" 
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.MarkAsExpiredCommand}"
+                                            CommandParameter="{Binding}" />
+                                        <MenuItem 
                                             Header="Delete" 
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.DeleteCommand}"
                                             CommandParameter="{Binding}" />
@@ -89,6 +97,10 @@
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
                                 <StackPanel.ContextMenu>
                                     <ContextMenu>
+                                        <MenuItem 
+                                            Header="Mark as expired" 
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.MarkAsExpiredCommand}"
+                                            CommandParameter="{Binding}" />
                                         <MenuItem 
                                             Header="Delete" 
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.DeleteCommand}"

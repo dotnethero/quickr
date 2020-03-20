@@ -33,6 +33,13 @@ namespace Quickr.Models.Keys
             FullName = fullname;
         }
 
+        public IEnumerable<KeyEntry> GetKeys()
+        {
+            return _subfolders
+                .SelectMany(f => f.GetKeys())
+                .Concat(_keys);
+        }
+
         public void UpdateChildren(IEnumerable<RedisKey> keys)
         {
             _keys.Clear();

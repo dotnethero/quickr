@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Linq;
+using System.Windows.Input;
 using Quickr.Models;
 using Quickr.Models.Keys;
 using Quickr.Services;
@@ -17,6 +19,7 @@ namespace Quickr.ViewModels
         public ICommand SelectCommand { get; }
         public ICommand RefreshCommand { get; }
         public ICommand DeleteCommand { get; }
+        public ICommand MarkAsExpiredCommand { get; set; }
 
         public DatabaseEntry[] Databases { get; private set; }
 
@@ -40,6 +43,7 @@ namespace Quickr.ViewModels
             SelectCommand = new ParameterCommand(Select);
             RefreshCommand = new ParameterCommand(Refresh);
             DeleteCommand = new ParameterCommand(Delete);
+            MarkAsExpiredCommand = new ParameterCommand(MarkAsExpired);
         }
 
         private void Delete(object item)
@@ -60,6 +64,37 @@ namespace Quickr.ViewModels
                 case KeyEntry key:
                     var keyParent = key.Parent;
                     _proxy.Delete(key);
+                    keyParent.RemoveChild(key);
+                    break;
+            }
+        }
+        
+        private void MarkAsExpired(object item)
+        {
+            void MarkFolder(FolderEntry folder)
+            {
+                folder // may affect performance
+                    .GetKeys()
+                    .ToList()
+                    .ForEach(x => _proxy.SetTimeToLive(x, TimeSpan.Zero));
+            }
+
+            switch (item)
+            {
+                case DatabaseEntry database:
+                    MarkFolder(database);
+                    database.RemoveChildren();
+                    return;
+
+                case FolderEntry folder:
+                    var folderParent = folder.Parent;
+                    MarkFolder(folder);
+                    folderParent.RemoveChild(folder);
+                    break;
+
+                case KeyEntry key:
+                    var keyParent = key.Parent;
+                    _proxy.SetTimeToLive(key, TimeSpan.Zero);
                     keyParent.RemoveChild(key);
                     break;
             }
