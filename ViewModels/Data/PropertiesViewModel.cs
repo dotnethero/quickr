@@ -1,12 +1,10 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using Quickr.Models.Keys;
 using Quickr.Services;
 
 namespace Quickr.ViewModels.Data
 {
-    internal class PropertiesViewModel: INotifyPropertyChanged
+    internal class PropertiesViewModel: BaseViewModel
     {
         private string _name;
         private TimeSpan? _expiration;
@@ -48,12 +46,5 @@ namespace Quickr.ViewModels.Data
         public bool PropertiesChanged =>
             OriginalName != Name ||
             OriginalExpiration != Expiration;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

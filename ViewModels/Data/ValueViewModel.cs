@@ -1,13 +1,11 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Quickr.Utils;
 using StackExchange.Redis;
 
 namespace Quickr.ViewModels.Data
 {
-    internal class ValueViewModel : INotifyPropertyChanged
+    internal class ValueViewModel : BaseViewModel
     {
         private string _currentValue;
         private string _originalValue;
@@ -57,13 +55,7 @@ namespace Quickr.ViewModels.Data
             CurrentValue = OriginalValue;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
         public event ValueSavedEventHandler OnValueSaved;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 
     public delegate void ValueSavedEventHandler(object sender, EventArgs e);

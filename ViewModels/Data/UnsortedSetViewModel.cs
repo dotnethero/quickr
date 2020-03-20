@@ -3,11 +3,12 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Quickr.Models.Keys;
 using Quickr.Services;
+using Quickr.Utils;
 using StackExchange.Redis;
 
 namespace Quickr.ViewModels.Data
 {
-    internal class UnsortedSetViewModel: INotifyPropertyChanged
+    internal class UnsortedSetViewModel: BaseViewModel
     {
         private RedisValue _current;
         private ValueViewModel _value;
@@ -56,13 +57,6 @@ namespace Quickr.ViewModels.Data
         private void SaveEntry(object sender, EventArgs e)
         {
             throw new NotImplementedException();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

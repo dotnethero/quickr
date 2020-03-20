@@ -7,7 +7,7 @@ using StackExchange.Redis;
 
 namespace Quickr.ViewModels.Data
 {
-    internal class SortedSetViewModel : INotifyPropertyChanged
+    internal class SortedSetViewModel : BaseViewModel
     {
         private SortedSetEntry _current;
         private ValueViewModel _value;
@@ -56,13 +56,6 @@ namespace Quickr.ViewModels.Data
         private void SaveEntry(object sender, EventArgs e)
         {
             throw new NotImplementedException();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

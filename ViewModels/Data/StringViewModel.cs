@@ -4,7 +4,7 @@ using Quickr.Services;
 
 namespace Quickr.ViewModels.Data
 {
-    internal class StringViewModel
+    internal class StringViewModel: BaseViewModel
     {
         private readonly RedisProxy _proxy;
 

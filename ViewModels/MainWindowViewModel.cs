@@ -1,18 +1,12 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
-using Autofac;
-using Quickr.Annotations;
+﻿using System.Windows.Input;
 using Quickr.Models;
 using Quickr.Models.Keys;
 using Quickr.Services;
 using Quickr.Utils;
-using Quickr.ViewModels.Data;
-using StackExchange.Redis;
 
 namespace Quickr.ViewModels
 {
-    internal class MainWindowViewModel: INotifyPropertyChanged
+    internal class MainWindowViewModel: BaseViewModel
     {
         private readonly RedisProxy _proxy;
         private readonly KeyViewModelFactory _kvmFactory;
@@ -113,14 +107,6 @@ namespace Quickr.ViewModels
                 }
                 OnPropertyChanged(nameof(Databases));
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
