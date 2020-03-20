@@ -38,6 +38,18 @@ namespace Quickr.Services
             var db = GetDatabase(key.DbIndex);
             return db.KeyTimeToLive(key.FullName);
         }
+        
+        public bool SetTimeToLive(KeyEntry key, TimeSpan? timeSpan)
+        {
+            var db = GetDatabase(key.DbIndex);
+            return db.KeyExpire(key.FullName, timeSpan);
+        }
+        
+        public bool RenameKey(KeyEntry key, string name)
+        {
+            var db = GetDatabase(key.DbIndex);
+            return db.KeyRename(key.FullName, name);
+        }
 
         public HashEntry[] GetHashes(KeyEntry key)
         {
