@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <GroupBox 
-            Padding="8,8,8,2"
+            Padding="8,8,3,2"
             Header="Properties"
             BorderBrush="#FFABADB3">
             <Grid>

@@ -17,6 +17,10 @@ namespace Quickr.Views
             InitializeComponent();
             ViewModel = viewModel;
             DataContext = viewModel;
+
+            // for test purposes
+            var model = new EndPointModel("localhost", 6379);
+            ViewModel.ConnectCommand.Execute(model);
         }
 
         private void OnConnect(object sender, RoutedEventArgs e)
