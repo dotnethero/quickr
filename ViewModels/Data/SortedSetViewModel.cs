@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using Quickr.Models.Keys;
 using Quickr.Services;
 using StackExchange.Redis;
@@ -9,7 +10,7 @@ namespace Quickr.ViewModels.Data
     {
         private SortedSetEntry _current;
 
-        public SortedSetEntry[] Entries { get; set; }
+        public ObservableCollection<SortedSetEntry> Entries { get; set; }
 
         public SortedSetEntry Current
         {
@@ -24,12 +25,17 @@ namespace Quickr.ViewModels.Data
         
         public SortedSetViewModel(RedisProxy proxy, KeyEntry key): base(proxy, key)
         {
-            Entries = Proxy.GetSortedSet(Key);
+            Entries = new ObservableCollection<SortedSetEntry>(Proxy.GetSortedSet(Key));
         }
 
         protected override void OnValueSaved(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            var index = Entries.IndexOf(Current);
+            var entry = new SortedSetEntry(Value.CurrentValue, Current.Score);
+            Proxy.SortedSetRemove(Key, Value.OriginalValue); // TODO: incorrect paradigm, make add & remove
+            Proxy.SortedSetAdd(Key, Value.CurrentValue, Current.Score);
+            Entries[index] = entry;
+            Current = entry;
         }
     }
 }
