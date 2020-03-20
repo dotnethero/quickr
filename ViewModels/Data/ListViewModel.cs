@@ -30,7 +30,11 @@ namespace Quickr.ViewModels.Data
 
         protected override void OnValueSaved(object sender, EventArgs e)
         {
-            
+            var index = Entries.IndexOf(Current);
+            var entry = new RedisValue(Value.CurrentValue);
+            Proxy.ListSet(Key, index, Value.CurrentValue);
+            Entries[index] = entry;
+            Current = entry;
         }
     }
 }

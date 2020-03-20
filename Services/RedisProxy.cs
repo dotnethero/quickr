@@ -57,6 +57,12 @@ namespace Quickr.Services
             return db.ListRange(key.FullName);
         }
         
+        public void ListSet(KeyEntry key, int index, RedisValue value)
+        {
+            var db = GetDatabase(key.DbIndex);
+            db.ListSetByIndex(key.FullName, index, value);
+        }
+
         public RedisValue[] GetUnsortedSet(KeyEntry key)
         {
             var db = GetDatabase(key.DbIndex);
