@@ -6,7 +6,19 @@ namespace Quickr.Models.Keys
 {
     internal abstract class TreeEntry: INotifyPropertyChanged
     {
-        public string Name { get; }
+        private string _name;
+
+        public string Name
+        {
+            get => _name;
+            protected set
+            {
+                if (value == _name) return;
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
+
         public int DbIndex { get; }
         public FolderEntry Parent { get; }
 

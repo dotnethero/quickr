@@ -40,6 +40,14 @@ namespace Quickr.Models.Keys
                 .Concat(_keys);
         }
 
+        public bool IsKeyBelongHere(string fullname)
+        {
+            var requiredStart = IsRoot ? "" : FullName + Constants.RegionSeparator;
+            if (!fullname.StartsWith(requiredStart)) return false;
+            var parts = fullname.Substring(requiredStart.Length).Split(Constants.RegionSeparator).ToList();
+            return parts.Count == 1;
+        }
+
         public void UpdateChildren(IEnumerable<RedisKey> keys)
         {
             _keys.Clear();
@@ -67,6 +75,12 @@ namespace Quickr.Models.Keys
         public void RemoveChild(FolderEntry folder)
         {
             _subfolders.Remove(folder);
+            OnPropertyChanged(nameof(Children));
+        }
+
+        public void AddChild(string fullname)
+        {
+            Add(fullname);
             OnPropertyChanged(nameof(Children));
         }
 
