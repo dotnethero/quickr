@@ -28,7 +28,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Margin="5,5,8,5"
-            Visibility="{Binding Path=ValueChanged, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
+            Visibility="{Binding Path=IsValueChanged, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
             <Button Margin="2" Width="80" Height="28" Command="{Binding SaveCommand}">Save</Button>
             <Button Margin="2" Width="80" Height="28" Command="{Binding CancelCommand}">Cancel</Button>
         </StackPanel>

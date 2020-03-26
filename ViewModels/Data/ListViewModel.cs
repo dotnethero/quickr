@@ -28,7 +28,7 @@ namespace Quickr.ViewModels.Data
             Entries = new ObservableCollection<RedisValue>(Proxy.GetList(Key));
         }
 
-        protected override void OnValueSaved(object sender, EventArgs e)
+        protected void OnValueSaved(object sender, EventArgs e)
         {
             var index = Entries.IndexOf(Current);
             var entry = new RedisValue(Value.CurrentValue);

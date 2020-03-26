@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Quickr.Annotations;
 using Quickr.Models.Keys;
 using Quickr.Services;
 using Quickr.Utils;
@@ -25,7 +28,6 @@ namespace Quickr.ViewModels.Data
             set
             {
                 _current = value;
-                Value = _current != null ? new ValueViewModel(_current.Value) : null;
                 OnPropertyChanged();
             }
         }
@@ -60,10 +62,52 @@ namespace Quickr.ViewModels.Data
             }
         }
 
-        protected override void OnValueSaved(object sender, EventArgs e)
+        [NotifyPropertyChangedInvocator]
+        protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            if (propertyName == nameof(Current))
+            {
+                if (Current != null)
+                {
+                    Value = new ValueViewModel(Current.OriginalValue, Current.CurrentValue);
+                    Value.ValueSaved += OnValueSaved;
+                    Value.ValueDiscarded += OnValueDiscarded;
+                    Value.PropertyChanged += OnValuePropertyChanged;
+                    Current.PropertyChanged += OnCurrentPropertyChanged;
+                }
+                else
+                {
+                    Value = null;
+                }
+            }
+            base.OnPropertyChanged(propertyName);
+        }
+
+        private void OnValuePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ValueViewModel.CurrentValue))
+            {
+                Current.CurrentValue = Value.CurrentValue;
+            }
+        }
+
+        private void OnCurrentPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(HashEntryViewModel.CurrentValue))
+            {
+                Value.CurrentValue = Current.CurrentValue;
+            }
+        }
+
+        private void OnValueSaved(object sender, EventArgs e)
         {
             Proxy.HashSet(Key, Current.Name, Value.CurrentValue);
-            Current.Value = Value.CurrentValue;
+            Current.OriginalValue = Value.OriginalValue;
+        }
+        
+        private void OnValueDiscarded(object sender, EventArgs e)
+        {
+            Current.CurrentValue = Value.CurrentValue;
         }
     }
 }

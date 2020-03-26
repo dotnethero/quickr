@@ -9,6 +9,9 @@ namespace Quickr.ViewModels.Data
     {
         private string _currentValue;
         private string _originalValue;
+        
+        public event EventHandler ValueSaved;
+        public event EventHandler ValueDiscarded;
 
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
@@ -18,9 +21,10 @@ namespace Quickr.ViewModels.Data
             get => _originalValue;
             set
             {
+                if (_originalValue == value) return;
                 _originalValue = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(ValueChanged));
+                OnPropertyChanged(nameof(IsValueChanged));
             }
         }
 
@@ -29,35 +33,43 @@ namespace Quickr.ViewModels.Data
             get => _currentValue;
             set
             {
+                if (_currentValue == value) return;
                 _currentValue = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(ValueChanged));
+                OnPropertyChanged(nameof(IsValueChanged));
             }
         }
 
-        public bool ValueChanged => CurrentValue != OriginalValue;
+        public bool IsValueChanged => CurrentValue != OriginalValue;
 
-        public ValueViewModel(RedisValue originalValue)
+        private ValueViewModel()
         {
-            OriginalValue = originalValue;
-            CurrentValue = originalValue;
             SaveCommand = new Command(Save);
             CancelCommand = new Command(Cancel);
         }
 
+        public ValueViewModel(RedisValue originalValue): this()
+        {
+            OriginalValue = originalValue;
+            CurrentValue = originalValue;
+        }
+        
+        public ValueViewModel(RedisValue originalValue, RedisValue currentValue): this()
+        {
+            _originalValue = originalValue;
+            _currentValue = currentValue;
+        }
+
         private void Save()
         {
-            OnValueSaved?.Invoke(this, EventArgs.Empty);
             OriginalValue = CurrentValue;
+            ValueSaved?.Invoke(this, EventArgs.Empty);
         }
 
         private void Cancel()
         {
             CurrentValue = OriginalValue;
+            ValueDiscarded?.Invoke(this, EventArgs.Empty);
         }
-
-        public event ValueSavedEventHandler OnValueSaved;
     }
-
-    public delegate void ValueSavedEventHandler(object sender, EventArgs e);
 }

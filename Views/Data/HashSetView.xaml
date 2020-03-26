@@ -29,8 +29,7 @@
                         Width="Auto" MinWidth="90" />
                     <DataGridTextColumn 
                         Header="Value" 
-                        Binding="{Binding Path=Value, Mode=TwoWay}" 
-                        IsReadOnly="True"
+                        Binding="{Binding Path=CurrentValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                         Width="*" />
                 </DataGrid.Columns>
                 <DataGrid.ContextMenu>

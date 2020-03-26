@@ -11,7 +11,7 @@ namespace Quickr.ViewModels.Data
             Value = new ValueViewModel(Proxy.GetString(Key));
         }
 
-        protected override void OnValueSaved(object sender, EventArgs e)
+        protected void OnValueSaved(object sender, EventArgs e)
         {
             Proxy.SetString(Key, Value.CurrentValue);
         }

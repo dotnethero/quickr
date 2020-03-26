@@ -1,5 +1,4 @@
-﻿using System;
-using Quickr.Models.Keys;
+﻿using Quickr.Models.Keys;
 using Quickr.Services;
 
 namespace Quickr.ViewModels.Data
@@ -19,10 +18,6 @@ namespace Quickr.ViewModels.Data
             set
             {
                 _value = value;
-                if (_value != null)
-                {
-                    _value.OnValueSaved += OnValueSaved;
-                }
                 OnPropertyChanged();
             }
         }
@@ -34,7 +29,5 @@ namespace Quickr.ViewModels.Data
             Properties = new PropertiesViewModel(proxy, key);
             Value = null;
         }
-
-        protected abstract void OnValueSaved(object sender, EventArgs e);
     }
 }

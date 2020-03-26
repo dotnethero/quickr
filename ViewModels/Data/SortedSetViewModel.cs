@@ -28,7 +28,7 @@ namespace Quickr.ViewModels.Data
             Entries = new ObservableCollection<SortedSetEntry>(Proxy.GetSortedSet(Key));
         }
 
-        protected override void OnValueSaved(object sender, EventArgs e)
+        protected void OnValueSaved(object sender, EventArgs e)
         {
             var index = Entries.IndexOf(Current);
             var entry = new SortedSetEntry(Value.CurrentValue, Current.Score);

@@ -5,8 +5,8 @@ namespace Quickr.ViewModels.Data
     internal class HashEntryViewModel : BaseViewModel
     {
         private string _name;
-        private string _value;
-        private bool _isSaved;
+        private string _currentValue;
+        private string _originalValue;
 
         public string Name
         {
@@ -17,33 +17,39 @@ namespace Quickr.ViewModels.Data
                 OnPropertyChanged();
             }
         }
-
-        public string Value
-        {
-            get => _value;
-            set
-            {
-                _value = value;
-                OnPropertyChanged();
-            }
-        }
         
-        public bool IsSaved
+        public string OriginalValue
         {
-            get => _isSaved;
+            get => _originalValue;
             set
             {
-                _isSaved = value;
+                if (_originalValue == value) return;
+                _originalValue = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(IsValueSaved));
             }
         }
+
+        public string CurrentValue
+        {
+            get => _currentValue;
+            set
+            {
+                if (_currentValue == value) return;
+                _currentValue = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsValueSaved));
+            }
+        }
+
+        public bool IsValueSaved => OriginalValue == CurrentValue;
 
         public static HashEntryViewModel FromHashEntry(HashEntry entry) => 
             new HashEntryViewModel
             {
                 Name = entry.Name, 
-                Value = entry.Value,
-                IsSaved = true
+                CurrentValue = entry.Value,
+                OriginalValue = entry.Value
             };
     }
 }
