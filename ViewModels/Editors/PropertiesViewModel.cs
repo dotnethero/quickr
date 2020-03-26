@@ -1,8 +1,6 @@
 ﻿using System;
-using Quickr.Models.Keys;
-using Quickr.Services;
 
-namespace Quickr.ViewModels.Data
+namespace Quickr.ViewModels.Editors
 {
     internal class PropertiesViewModel: BaseEditorViewModel
     {

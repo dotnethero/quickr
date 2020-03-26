@@ -9,6 +9,7 @@ using Quickr.Annotations;
 using Quickr.Models.Keys;
 using Quickr.Services;
 using Quickr.Utils;
+using Quickr.ViewModels.Editors;
 using StackExchange.Redis;
 
 namespace Quickr.ViewModels.Data
@@ -17,7 +18,7 @@ namespace Quickr.ViewModels.Data
     {
         private HashEntryViewModel _current;
 
-        public ICommand AddCommand { get; set; }
+        public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
 
         public ObservableCollection<HashEntryViewModel> Entries { get; set; }
@@ -44,7 +45,7 @@ namespace Quickr.ViewModels.Data
 
         private void Add()
         {
-            var item = new HashEntryViewModel();
+            var item = HashEntryViewModel.Empty();
             Entries.Add(item);
         }
 

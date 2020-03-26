@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using Quickr.Models.Keys;
 using Quickr.Services;
+using Quickr.ViewModels.Editors;
 using StackExchange.Redis;
 
 namespace Quickr.ViewModels.Data

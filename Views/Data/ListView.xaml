@@ -14,21 +14,38 @@
             DockPanel.Dock="Top"
             VerticalAlignment="Top"
             Margin="5" />
-        <DataGrid 
-            DockPanel.Dock="Top"
-            VirtualizingStackPanel.IsVirtualizing="True"
-            Style="{StaticResource Elements}"
-            ItemsSource="{Binding Entries, Mode=OneWay}"
-            SelectedItem="{Binding Current}"
-            CanUserSortColumns="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn 
-                    Header="Value"
-                    Binding="{Binding Path=., Mode=OneWay}" 
-                    Width="*" 
-                    MinWidth="90" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <Grid DockPanel.Dock="Top">
+            <DataGrid 
+                VirtualizingStackPanel.IsVirtualizing="True"
+                Style="{StaticResource Elements}"
+                ItemsSource="{Binding Entries, Mode=OneWay}"
+                SelectedItem="{Binding Current}"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn 
+                        Header="Value"
+                        Binding="{Binding Path=CurrentValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                        Width="*" 
+                        MinWidth="90" />
+                </DataGrid.Columns>
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem 
+                            Header="Delete" 
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItems}" 
+                            Command="{Binding DeleteCommand}" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>
+            <StackPanel 
+                Orientation="Horizontal" 
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="5,5,13,13">
+                <Button Margin="2" Width="80" Height="28" Command="{Binding AddCommand}">Add</Button>
+            </StackPanel>
+        </Grid>
         <views:ValueEditor 
             DataContext="{Binding Path=Value}" 
             DockPanel.Dock="Bottom" 

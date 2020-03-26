@@ -68,7 +68,7 @@ namespace Quickr.Services
             var db = GetDatabase(key.DbIndex);
             return db.HashDelete(key.FullName, hashFields);
         }
-
+        
         public RedisValue[] GetList(KeyEntry key)
         {
             var db = GetDatabase(key.DbIndex);
@@ -79,6 +79,20 @@ namespace Quickr.Services
         {
             var db = GetDatabase(key.DbIndex);
             db.ListSetByIndex(key.FullName, index, value);
+        }
+
+        public void ListRightPush(KeyEntry key, RedisValue value)
+        {
+            var db = GetDatabase(key.DbIndex);
+            db.ListRightPush(key.FullName, value);
+        }
+
+        public void ListDelete(KeyEntry key, int index)
+        {
+            var uniqueName =  "\u0001" + Guid.NewGuid();
+            var db = GetDatabase(key.DbIndex);
+            db.ListSetByIndex(key.FullName, index, uniqueName);
+            db.ListRemove(key.FullName, uniqueName, 1);
         }
 
         public RedisValue[] GetUnsortedSet(KeyEntry key)

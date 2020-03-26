@@ -2,9 +2,9 @@
 using System.Windows.Input;
 using Quickr.Utils;
 
-namespace Quickr.ViewModels
+namespace Quickr.ViewModels.Editors
 {
-    internal class BaseEditorViewModel: BaseViewModel
+    internal abstract class BaseEditorViewModel: BaseViewModel
     {
         public event EventHandler ValueSaved;
         public event EventHandler ValueDiscarded;

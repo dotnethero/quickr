@@ -1,6 +1,6 @@
 ﻿using StackExchange.Redis;
 
-namespace Quickr.ViewModels.Data
+namespace Quickr.ViewModels.Editors
 {
     internal class ValueViewModel : BaseEditorViewModel
     {

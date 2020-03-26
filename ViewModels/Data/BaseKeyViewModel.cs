@@ -1,6 +1,7 @@
 ﻿using System;
 using Quickr.Models.Keys;
 using Quickr.Services;
+using Quickr.ViewModels.Editors;
 
 namespace Quickr.ViewModels.Data
 {
