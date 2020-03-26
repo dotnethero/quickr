@@ -66,21 +66,6 @@ namespace Quickr.ViewModels.Data
             }
         }
 
-        private void OnValueSaved(object sender, EventArgs e)
-        {
-            if (Current.IsNew)
-            {
-                Proxy.ListRightPush(Key, Value.CurrentValue);
-                Current.OriginalValue = Current.CurrentValue;
-            }
-            else
-            {
-                var index = Entries.IndexOf(Current);
-                Proxy.ListSet(Key, index, Value.CurrentValue);
-                Current.OriginalValue = Current.CurrentValue;
-            }
-        }
-
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             if (propertyName == nameof(Current))
@@ -118,6 +103,21 @@ namespace Quickr.ViewModels.Data
             if (e.PropertyName == nameof(HashEntryViewModel.CurrentValue))
             {
                 Value.CurrentValue = Current.CurrentValue;
+            }
+        }
+
+        private void OnValueSaved(object sender, EventArgs e)
+        {
+            if (Current.IsNew)
+            {
+                Proxy.ListRightPush(Key, Value.CurrentValue);
+                Current.OriginalValue = Current.CurrentValue;
+            }
+            else
+            {
+                var index = Entries.IndexOf(Current);
+                Proxy.ListSet(Key, index, Value.CurrentValue);
+                Current.OriginalValue = Current.CurrentValue;
             }
         }
 

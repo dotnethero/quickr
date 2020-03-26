@@ -110,10 +110,10 @@ namespace Quickr.Services
             db.SetAdd(key.FullName, value);
         }
         
-        public void UnsortedSetRemove(KeyEntry key, RedisValue value)
+        public void UnsortedSetRemove(KeyEntry key, RedisValue[] values)
         {
             var db = GetDatabase(key.DbIndex);
-            db.SetRemove(key.FullName, value);
+            db.SetRemove(key.FullName, values);
         }
 
         public SortedSetEntry[] GetSortedSet(KeyEntry key)
@@ -128,10 +128,10 @@ namespace Quickr.Services
             db.SortedSetAdd(key.FullName, value, score);
         }
         
-        public void SortedSetRemove(KeyEntry key, RedisValue value)
+        public void SortedSetRemove(KeyEntry key, RedisValue[] values)
         {
             var db = GetDatabase(key.DbIndex);
-            db.SortedSetRemove(key.FullName, value);
+            db.SortedSetRemove(key.FullName, values);
         }
 
         public RedisValue GetString(KeyEntry key)

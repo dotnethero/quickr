@@ -6,7 +6,7 @@ namespace Quickr.ViewModels.Data
     {
         public string Name { get; set; }
 
-        public static HashEntryViewModel FromHashEntry(HashEntry entry) => new HashEntryViewModel(entry);
+        public static HashEntryViewModel FromEntry(HashEntry entry) => new HashEntryViewModel(entry);
         public static HashEntryViewModel Empty() => new HashEntryViewModel();
 
         protected HashEntryViewModel()

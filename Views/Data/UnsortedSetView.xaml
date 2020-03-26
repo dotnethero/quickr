@@ -14,21 +14,51 @@
             DockPanel.Dock="Top"
             VerticalAlignment="Top"
             Margin="5" />
-        <DataGrid 
-            DockPanel.Dock="Top"
-            VirtualizingStackPanel.IsVirtualizing="True"
-            Style="{StaticResource Elements}"
-            ItemsSource="{Binding Entries, Mode=OneWay}"
-            SelectedItem="{Binding Current}"
-            CanUserSortColumns="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn 
-                    Header="Value"
-                    Binding="{Binding Path=., Mode=OneWay}" 
-                    Width="*" 
-                    MinWidth="90" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <Grid DockPanel.Dock="Top">
+            <DataGrid
+                DockPanel.Dock="Top"
+                VirtualizingStackPanel.IsVirtualizing="True"
+                Style="{StaticResource Elements}"
+                ItemsSource="{Binding Entries, Mode=OneWay}"
+                SelectedItem="{Binding Current}"
+                CanUserSortColumns="True">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn
+                        Header="Value"
+                        Width="*"
+                        MinWidth="90">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate DataType="data:UnsortedSetEntryViewModel">
+                                <TextBlock Text="{Binding Path=CurrentValue}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate DataType="data:UnsortedSetEntryViewModel">
+                                <TextBox 
+                                    BorderThickness="0"
+                                    IsEnabled="{Binding Path=IsNew}"
+                                    Text="{Binding Path=CurrentValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem 
+                            Header="Delete" 
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItems}" 
+                            Command="{Binding DeleteCommand}" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>
+            <StackPanel 
+                Orientation="Horizontal" 
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="5,5,13,13">
+                <Button Margin="2" Width="80" Height="28" Command="{Binding AddCommand}">Add</Button>
+            </StackPanel>
+        </Grid>
         <views:ValueEditor 
             DataContext="{Binding Path=Value}" 
             DockPanel.Dock="Bottom" 

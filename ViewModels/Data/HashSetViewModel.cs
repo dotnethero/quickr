@@ -37,7 +37,7 @@ namespace Quickr.ViewModels.Data
         {
             Entries = new ObservableCollection<HashEntryViewModel>(Proxy
                 .GetHashes(Key)
-                .Select(HashEntryViewModel.FromHashEntry));
+                .Select(HashEntryViewModel.FromEntry));
 
             AddCommand = new Command(Add);
             DeleteCommand = new ParameterCommand(Delete);
