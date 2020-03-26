@@ -87,12 +87,15 @@ namespace Quickr.Services
             db.ListRightPush(key.FullName, value);
         }
 
-        public void ListDelete(KeyEntry key, int index)
+        public void ListDelete(KeyEntry key, int[] indexes)
         {
-            var uniqueName =  "\u0001" + Guid.NewGuid();
+            var name =  "\u0001#removed";
             var db = GetDatabase(key.DbIndex);
-            db.ListSetByIndex(key.FullName, index, uniqueName);
-            db.ListRemove(key.FullName, uniqueName, 1);
+            foreach (var index in indexes)
+            {
+                db.ListSetByIndex(key.FullName, index, name);
+            }
+            db.ListRemove(key.FullName, name, 0);
         }
 
         public RedisValue[] GetUnsortedSet(KeyEntry key)

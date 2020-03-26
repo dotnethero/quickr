@@ -58,11 +58,7 @@ namespace Quickr.ViewModels.Data
                     .Select(Entries.IndexOf)
                     .ToArray();
 
-                foreach (var index in indexes)
-                {
-                    Proxy.ListDelete(Key, index);
-                }
-
+                Proxy.ListDelete(Key, indexes);
                 foreach (var entry in entries)
                 {
                     Entries.Remove(entry);
