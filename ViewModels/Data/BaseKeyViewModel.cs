@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Input;
 using Quickr.Models.Keys;
 using Quickr.Services;
 using Quickr.ViewModels.Editors;
