@@ -53,7 +53,10 @@ namespace Quickr.ViewModels.Data
             if (parameter is IList items)
             {
                 var entries = items.Cast<HashEntryViewModel>().ToList();
-                var fields = entries.Select(x => (RedisValue) x.Name).ToArray();
+                var fields = entries
+                    .Where(x => x.OriginalValue != null)
+                    .Select(x => (RedisValue) x.Name)
+                    .ToArray();
                 Proxy.HashDelete(Key, fields);
                 foreach (var entry in entries)
                 {
@@ -93,6 +96,10 @@ namespace Quickr.ViewModels.Data
 
         private void OnCurrentPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == nameof(HashEntryViewModel.OriginalValue))
+            {
+                Value.OriginalValue = Current.OriginalValue;
+            }
             if (e.PropertyName == nameof(HashEntryViewModel.CurrentValue))
             {
                 Value.CurrentValue = Current.CurrentValue;
@@ -101,13 +108,16 @@ namespace Quickr.ViewModels.Data
 
         private void OnValueSaved(object sender, EventArgs e)
         {
-            Proxy.HashSet(Key, Current.Name, Value.CurrentValue);
-            Current.OriginalValue = Value.OriginalValue;
+            if (string.IsNullOrEmpty(Current.Name)) return;
+            if (Entries.Any(x => x.Name == Current.Name && x != Current)) return;
+
+            Proxy.HashSet(Key, Current.Name, Current.CurrentValue);
+            Current.OriginalValue = Current.CurrentValue;
         }
         
         private void OnValueDiscarded(object sender, EventArgs e)
         {
-            Current.CurrentValue = Value.CurrentValue;
+            Current.CurrentValue = Current.OriginalValue;
         }
     }
 }

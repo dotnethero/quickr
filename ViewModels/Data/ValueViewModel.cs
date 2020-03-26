@@ -62,13 +62,11 @@ namespace Quickr.ViewModels.Data
 
         private void Save()
         {
-            OriginalValue = CurrentValue;
             ValueSaved?.Invoke(this, EventArgs.Empty);
         }
 
         private void Cancel()
         {
-            CurrentValue = OriginalValue;
             ValueDiscarded?.Invoke(this, EventArgs.Empty);
         }
     }

@@ -27,6 +27,7 @@ namespace Quickr.ViewModels.Data
                 _originalValue = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsValueSaved));
+                OnPropertyChanged(nameof(IsNew));
             }
         }
 
@@ -43,6 +44,7 @@ namespace Quickr.ViewModels.Data
         }
 
         public bool IsValueSaved => OriginalValue == CurrentValue;
+        public bool IsNew => OriginalValue == null;
 
         public static HashEntryViewModel FromHashEntry(HashEntry entry) => 
             new HashEntryViewModel
