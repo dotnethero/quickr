@@ -1,21 +1,22 @@
-﻿using Quickr.Models.Keys;
+﻿using System;
+using Quickr.Models.Keys;
 using Quickr.Services;
 
 namespace Quickr.ViewModels.Data
 {
     internal abstract class BaseKeyViewModel : BaseViewModel
     {
-        public PropertiesViewModel Properties { get; }
+        private ValueViewModel _value;
 
         protected KeyEntry Key { get; }
         protected RedisProxy Proxy { get; }
 
-        private ValueViewModel _value;
+        public PropertiesViewModel Properties { get; protected set; }
 
         public ValueViewModel Value
         {
             get => _value;
-            set
+            protected set
             {
                 _value = value;
                 OnPropertyChanged();
@@ -26,8 +27,39 @@ namespace Quickr.ViewModels.Data
         {
             Proxy = proxy;
             Key = key;
-            Properties = new PropertiesViewModel(proxy, key);
+            Properties = CreatePropertiesViewModel();
             Value = null;
+        }
+
+        private PropertiesViewModel CreatePropertiesViewModel()
+        {
+            var name = Key.FullName;
+            var expiration = Proxy.GetTimeToLive(Key);
+            var props = new PropertiesViewModel(name, expiration);
+            props.ValueSaved += OnPropertiesSaved;
+            props.ValueDiscarded += OnPropertiesDiscarded;
+            return props;
+        }
+
+        private void OnPropertiesSaved(object sender, EventArgs args)
+        {
+            if (Properties.Expiration != Properties.OriginalExpiration)
+            {
+                Proxy.SetTimeToLive(Key, Properties.Expiration);
+                Properties.OriginalExpiration = Properties.Expiration;
+            }
+            if (Properties.Name != Properties.OriginalName)
+            {
+                Proxy.RenameKey(Key, Properties.Name);
+                Key.FullName = Properties.Name;
+                Properties.OriginalName = Properties.Name;
+            }
+        }
+        
+        private void OnPropertiesDiscarded(object sender, EventArgs args)
+        {
+            Properties.Name = Properties.OriginalName;
+            Properties.Expiration = Properties.OriginalExpiration;
         }
     }
 }

@@ -1,21 +1,12 @@
-﻿using System;
-using System.Windows.Input;
-using Quickr.Utils;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 
 namespace Quickr.ViewModels.Data
 {
-    internal class ValueViewModel : BaseViewModel
+    internal class ValueViewModel : BaseEditorViewModel
     {
         private string _currentValue;
         private string _originalValue;
         
-        public event EventHandler ValueSaved;
-        public event EventHandler ValueDiscarded;
-
-        public ICommand SaveCommand { get; }
-        public ICommand CancelCommand { get; }
-
         public string OriginalValue
         {
             get => _originalValue;
@@ -42,32 +33,16 @@ namespace Quickr.ViewModels.Data
 
         public bool IsValueChanged => CurrentValue != OriginalValue;
 
-        private ValueViewModel()
-        {
-            SaveCommand = new Command(Save);
-            CancelCommand = new Command(Cancel);
-        }
-
-        public ValueViewModel(RedisValue originalValue): this()
+        public ValueViewModel(RedisValue originalValue)
         {
             OriginalValue = originalValue;
             CurrentValue = originalValue;
         }
         
-        public ValueViewModel(RedisValue originalValue, RedisValue currentValue): this()
+        public ValueViewModel(RedisValue originalValue, RedisValue currentValue)
         {
             _originalValue = originalValue;
             _currentValue = currentValue;
-        }
-
-        private void Save()
-        {
-            ValueSaved?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void Cancel()
-        {
-            ValueDiscarded?.Invoke(this, EventArgs.Empty);
         }
     }
 }

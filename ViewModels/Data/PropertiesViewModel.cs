@@ -1,29 +1,22 @@
 ﻿using System;
-using System.Windows.Input;
 using Quickr.Models.Keys;
 using Quickr.Services;
-using Quickr.Utils;
 
 namespace Quickr.ViewModels.Data
 {
-    internal class PropertiesViewModel: BaseViewModel
+    internal class PropertiesViewModel: BaseEditorViewModel
     {
-        protected KeyEntry Key { get; }
-        protected RedisProxy Proxy { get; }
-
         private string _name;
         private string _originalName;
         private TimeSpan? _expiration;
         private TimeSpan? _originalExpiration;
 
-        public ICommand SaveCommand { get; }
-        public ICommand CancelCommand { get; }
-        
         public string Name
         {
             get => _name;
             set
             {
+                if (_name == value) return;
                 _name = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(PropertiesChanged));
@@ -35,6 +28,7 @@ namespace Quickr.ViewModels.Data
             get => _expiration;
             set
             {
+                if (_expiration == value) return;
                 _expiration = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(PropertiesChanged));
@@ -46,6 +40,7 @@ namespace Quickr.ViewModels.Data
             get => _originalName;
             set
             {
+                if (_originalName == value) return;
                 _originalName = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(PropertiesChanged));
@@ -57,6 +52,7 @@ namespace Quickr.ViewModels.Data
             get => _originalExpiration;
             set
             {
+                if (_originalExpiration == value) return;
                 _originalExpiration = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(PropertiesChanged));
@@ -65,40 +61,13 @@ namespace Quickr.ViewModels.Data
 
         public bool PropertiesChanged => OriginalName != Name || OriginalExpiration != Expiration;
 
-        public PropertiesViewModel(RedisProxy proxy, KeyEntry key)
+        public PropertiesViewModel(string name, TimeSpan? expiration)
         {
-            Proxy = proxy;
-            Key = key;
+            OriginalName = name;
+            OriginalExpiration = expiration;
 
-            OriginalName = Key.FullName;
-            OriginalExpiration = Proxy.GetTimeToLive(Key);
-
-            Name = OriginalName;
-            Expiration = OriginalExpiration;
-
-            SaveCommand = new Command(Save);
-            CancelCommand = new Command(Cancel);
-        }
-
-        private void Save()
-        {
-            if (Expiration != OriginalExpiration)
-            {
-                Proxy.SetTimeToLive(Key, Expiration);
-                OriginalExpiration = Expiration;
-            }
-            if (Name != OriginalName)
-            {
-                Proxy.RenameKey(Key, Name);
-                OriginalName = Name;
-                Key.FullName = Name;
-            }
-        }
-        
-        private void Cancel()
-        {
-            Name = OriginalName;
-            Expiration = OriginalExpiration;
+            Name = name;
+            Expiration = expiration;
         }
     }
 }
