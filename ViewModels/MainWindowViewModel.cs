@@ -104,8 +104,7 @@ namespace Quickr.ViewModels
         {
             if (item is FolderEntry folder)
             {
-                var keys =_proxy.GetKeys(folder.DbIndex, folder.SearchPattern);
-                folder.UpdateChildren(keys);
+                folder.Refresh();
             }
         }
 
@@ -118,10 +117,7 @@ namespace Quickr.ViewModels
                     break;
 
                 case DatabaseEntry db:
-                    var size = _proxy.GetSize(db);
-                    var vm = new DatabaseViewModel();
-                    vm.KeyCount = size;
-                    Current = vm;
+                    Current = new DatabaseViewModel(_proxy, db);
                     break;
 
                 default:
@@ -138,7 +134,7 @@ namespace Quickr.ViewModels
                 Databases = _proxy.GetDatabases();
                 foreach (var database in Databases)
                 {
-                    database.UpdateChildren(_proxy.GetKeys(database.DbIndex));
+                    database.Refresh();
                 }
                 OnPropertyChanged(nameof(Databases));
             }

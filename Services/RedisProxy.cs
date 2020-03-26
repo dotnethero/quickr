@@ -23,7 +23,7 @@ namespace Quickr.Services
 
             return Enumerable
                 .Range(0, count)
-                .Select(x => new DatabaseEntry(x))
+                .Select(x => new DatabaseEntry(this, x))
                 .ToArray();
         }
 

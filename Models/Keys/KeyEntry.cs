@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Runtime.CompilerServices;
+using Quickr.Services;
 using Quickr.Utils;
 
 namespace Quickr.Models.Keys
@@ -19,7 +20,7 @@ namespace Quickr.Models.Keys
             }
         }
 
-        public KeyEntry(int dbIndex, string name, string fullname, FolderEntry parent): base(dbIndex, name, parent)
+        public KeyEntry(RedisProxy proxy, int dbIndex, string name, string fullname, FolderEntry parent): base(proxy, dbIndex, name, parent)
         {
             _fullName = fullname;
         }

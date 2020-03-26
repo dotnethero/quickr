@@ -1,11 +1,14 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Quickr.Annotations;
+using Quickr.Services;
 
 namespace Quickr.Models.Keys
 {
     internal abstract class TreeEntry: INotifyPropertyChanged
     {
+        protected RedisProxy Proxy { get; }
+
         private string _name;
 
         public string Name
@@ -22,11 +25,12 @@ namespace Quickr.Models.Keys
         public int DbIndex { get; }
         public FolderEntry Parent { get; }
 
-        protected TreeEntry(int dbIndex, string name, FolderEntry parent)
+        protected TreeEntry(RedisProxy proxy, int dbIndex, string name, FolderEntry parent)
         {
+            Proxy = proxy;
             DbIndex = dbIndex;
-            Name = name;
             Parent = parent;
+            _name = name;
         }
 
         public override string ToString()
