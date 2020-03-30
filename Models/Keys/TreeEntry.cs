@@ -11,6 +11,7 @@ namespace Quickr.Models.Keys
 
         private string _name;
         private bool _isSelected;
+        private bool _isExpanded;
 
         public string Name
         {
@@ -30,10 +31,26 @@ namespace Quickr.Models.Keys
             {
                 if (value == _isSelected) return;
                 _isSelected = value;
+                var parent = Parent;
+                while (parent != null)
+                {
+                    parent.IsExpanded = true;
+                    parent = parent.Parent;
+                }
                 OnPropertyChanged();
             }
         }
 
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set
+            {
+                if (value == _isExpanded) return;
+                _isExpanded = value;
+                OnPropertyChanged();
+            }
+        }
 
         public int DbIndex { get; }
         public FolderEntry Parent { get; }
