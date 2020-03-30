@@ -50,7 +50,12 @@ namespace Quickr.ViewModels.Data
                     .Where(x => x.OriginalValue != null)
                     .Select(x => (RedisValue) x.Name)
                     .ToArray();
-                Proxy.HashDelete(Key, fields);
+
+                if (fields.Length > 0)
+                {
+                    Proxy.HashDelete(Key, fields);
+                }
+
                 foreach (var entry in entries)
                 {
                     Entries.Remove(entry);

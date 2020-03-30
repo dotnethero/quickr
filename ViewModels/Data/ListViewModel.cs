@@ -49,7 +49,11 @@ namespace Quickr.ViewModels.Data
                     .Select(Entries.IndexOf)
                     .ToArray();
 
-                Proxy.ListDelete(Key, indexes);
+                if (indexes.Length > 0)
+                {
+                    Proxy.ListDelete(Key, indexes);
+                }
+
                 foreach (var entry in entries)
                 {
                     Entries.Remove(entry);

@@ -50,7 +50,11 @@ namespace Quickr.ViewModels.Data
                     .Select(x => (RedisValue) x.OriginalValue)
                     .ToArray();
 
-                Proxy.SortedSetRemove(Key, fields);
+                if (fields.Length > 0)
+                {
+                    Proxy.SortedSetRemove(Key, fields);
+                }
+
                 foreach (var entry in entries)
                 {
                     Entries.Remove(entry);
