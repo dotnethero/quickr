@@ -71,14 +71,21 @@ namespace Quickr.ViewModels
             switch (item)
             {
                 case DatabaseEntry database:
-                    _proxy.Flush(database);
-                    database.RemoveChildren();
-                    return;
+                    if (FlushDatabaseMessage(database) == MessageBoxResult.Yes)
+                    {
+                        _proxy.Flush(database);
+                        database.RemoveChildren();
+                    }
+                    break;
 
                 case FolderEntry folder:
-                    var folderParent = folder.Parent;
-                    _proxy.Delete(folder);
-                    folderParent.RemoveChild(folder);
+                    if (DeleteFolderMessage(folder) == MessageBoxResult.Yes)
+                    {
+                        var folderParent = folder.Parent;
+                        _proxy.Delete(folder);
+                        folderParent.RemoveChild(folder);
+                    }
+
                     break;
 
                 case KeyEntry key:
@@ -88,7 +95,7 @@ namespace Quickr.ViewModels
                     break;
             }
         }
-        
+
         private void MarkAsExpired(object item)
         {
             void MarkFolder(FolderEntry folder)
@@ -102,14 +109,20 @@ namespace Quickr.ViewModels
             switch (item)
             {
                 case DatabaseEntry database:
-                    MarkFolder(database);
-                    database.RemoveChildren();
-                    return;
+                    if (MarkDatabaseAsExpired(database) == MessageBoxResult.Yes)
+                    {
+                        MarkFolder(database);
+                        database.RemoveChildren();
+                    }
+                    break;
 
                 case FolderEntry folder:
-                    var folderParent = folder.Parent;
-                    MarkFolder(folder);
-                    folderParent.RemoveChild(folder);
+                    if (MarkFolderAsExpired(folder) == MessageBoxResult.Yes)
+                    {
+                        var folderParent = folder.Parent;
+                        MarkFolder(folder);
+                        folderParent.RemoveChild(folder);
+                    }
                     break;
 
                 case KeyEntry key:
@@ -118,6 +131,46 @@ namespace Quickr.ViewModels
                     keyParent.RemoveChild(key);
                     break;
             }
+        }
+        
+        private MessageBoxResult FlushDatabaseMessage(DatabaseEntry database)
+        {
+            return MessageBox.Show(
+                Window, 
+                $"This would remove all existing keys in [{database.Name}] database.\nDo you want to proceed?",
+                $"Flush database", 
+                MessageBoxButton.YesNo, 
+                MessageBoxImage.Warning);
+        }
+        
+        private MessageBoxResult MarkDatabaseAsExpired(DatabaseEntry database)
+        {
+            return MessageBox.Show(
+                Window,
+                $"This would remove all existing keys in [{database.Name}] database.\nDo you want to proceed?",
+                $"Mark database as expired",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+        }
+
+        private MessageBoxResult DeleteFolderMessage(FolderEntry folder)
+        {
+            return MessageBox.Show(
+                Window,
+                $"This would remove all keys matching pattern \"{folder.FullName + Constants.RegionSeparator}*\"\nDo you want to proceed?",
+                $"Delete folder",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+        }
+        
+        private MessageBoxResult MarkFolderAsExpired(FolderEntry folder)
+        {
+            return MessageBox.Show(
+                Window,
+                $"This would remove all keys matching pattern \"{folder.FullName + Constants.RegionSeparator}*\"\nDo you want to proceed?",
+                $"Mark folder as expired",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
         }
 
         private void Refresh(object item)
