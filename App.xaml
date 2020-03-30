@@ -8,6 +8,7 @@
         <converters:BooleanToTextWrappingConverter x:Key="BooleanToTextWrappingConverter" />
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:CollectionTypeConverter x:Key="CollectionTypeConverter" />
+        <converters:NullableTimeSpanToStringConverter x:Key="NullableTimeSpanToStringConverter" />
         <Style x:Key="Elements" TargetType="DataGrid">
             <Setter Property="Margin" Value="5" />
             <Setter Property="MinHeight" Value="200" />

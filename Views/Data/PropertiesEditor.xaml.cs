@@ -1,4 +1,6 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
 
 namespace Quickr.Views.Data
 {
@@ -10,6 +12,15 @@ namespace Quickr.Views.Data
         public PropertiesEditor()
         {
             InitializeComponent();
+        }
+
+        private void OnKeyUp(object sender, KeyEventArgs e)
+        {
+            if (sender is TextBox text && e.Key == Key.Enter)
+            {
+                var bindingExpression = BindingOperations.GetBindingExpression(text, TextBox.TextProperty);
+                bindingExpression?.UpdateSource();
+            }
         }
     }
 }
