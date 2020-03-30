@@ -42,6 +42,8 @@ namespace Quickr.Models.Keys
 
         public bool IsRoot => Parent == null;
 
+        public bool IsFilterApplied => Filter != "" && Filter != "*";
+
         public List<TreeEntry> Children
         {
             get

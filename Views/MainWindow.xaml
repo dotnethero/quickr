@@ -45,7 +45,8 @@
                                 VerticalAlignment="Center">
                                 <ContentControl Template="{StaticResource Database}" Width="20" Focusable="False" />
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
-                                <StackPanel.ContextMenu >
+                                <ContentControl Template="{StaticResource Filter}" Width="20" Focusable="False" Visibility="{Binding IsFilterApplied, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                <StackPanel.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem 
                                             Header="Refresh" 
@@ -70,7 +71,7 @@
                                 VerticalAlignment="Center">
                                 <ContentControl Template="{StaticResource Folder}" Width="20" Focusable="False" />
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
-                                <StackPanel.ContextMenu >
+                                <StackPanel.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem 
                                             Header="Refresh" 
