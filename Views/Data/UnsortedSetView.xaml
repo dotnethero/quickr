@@ -16,6 +16,7 @@
             Margin="5" />
         <Grid DockPanel.Dock="Top">
             <DataGrid
+                Name="Grid"
                 DockPanel.Dock="Top"
                 VirtualizingStackPanel.IsVirtualizing="True"
                 Style="{StaticResource Elements}"
@@ -23,24 +24,12 @@
                 SelectedItem="{Binding Current}"
                 CanUserSortColumns="True">
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn
+                    <DataGridTextColumn 
                         Header="Value"
-                        Width="*"
-                        MinWidth="90">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate DataType="data:UnsortedSetEntryViewModel">
-                                <TextBlock Text="{Binding Path=CurrentValue}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                        <DataGridTemplateColumn.CellEditingTemplate>
-                            <DataTemplate DataType="data:UnsortedSetEntryViewModel">
-                                <TextBox 
-                                    BorderThickness="0"
-                                    IsEnabled="{Binding Path=IsNew}"
-                                    Text="{Binding Path=CurrentValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellEditingTemplate>
-                    </DataGridTemplateColumn>
+                        Binding="{Binding Path=CurrentValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                        EditingElementStyle="{StaticResource OnlyNewIsEnabled}"
+                        Width="*" 
+                        MinWidth="90" />
                 </DataGrid.Columns>
                 <DataGrid.ContextMenu>
                     <ContextMenu>
@@ -56,7 +45,7 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Margin="5,5,13,13">
-                <Button Margin="2" Width="80" Height="28" Command="{Binding AddCommand}">Add</Button>
+                <Button Margin="2" Width="80" Height="28" Command="{Binding AddCommand}" CommandParameter="{Binding Path=., ElementName=Grid}">Add</Button>
             </StackPanel>
         </Grid>
         <views:ValueEditor 

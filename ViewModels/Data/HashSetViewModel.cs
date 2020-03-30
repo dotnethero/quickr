@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using Quickr.Models.Keys;
 using Quickr.Services;
 using Quickr.Utils;
@@ -21,14 +23,22 @@ namespace Quickr.ViewModels.Data
                 .GetHashes(Key)
                 .Select(HashEntryViewModel.FromEntry));
 
-            AddCommand = new Command(Add);
+            AddCommand = new ParameterCommand(Add);
             DeleteCommand = new ParameterCommand(Delete);
         }
 
-        private void Add()
+        private void Add(object parameter)
         {
             var item = HashEntryViewModel.Empty();
             Entries.Add(item);
+            Current = item;
+            if (parameter is DataGrid grid)
+            {
+                grid.UpdateLayout();
+                grid.Focus();
+                grid.CurrentCell = grid.SelectedCells[0];
+                grid.BeginEdit();
+            }
         }
 
         private void Delete(object parameter)

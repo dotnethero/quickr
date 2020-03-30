@@ -16,6 +16,7 @@
             Margin="5" />
         <Grid DockPanel.Dock="Top">
             <DataGrid 
+                Name="Grid"
                 VirtualizingStackPanel.IsVirtualizing="True"
                 Style="{StaticResource Elements}"
                 ItemsSource="{Binding Entries, Mode=OneWay}"
@@ -43,7 +44,7 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Margin="5,5,13,13">
-                <Button Margin="2" Width="80" Height="28" Command="{Binding AddCommand}">Add</Button>
+                <Button Margin="2" Width="80" Height="28" Command="{Binding AddCommand}" CommandParameter="{Binding Path=., ElementName=Grid}">Add</Button>
             </StackPanel>
         </Grid>
         <views:ValueEditor 
