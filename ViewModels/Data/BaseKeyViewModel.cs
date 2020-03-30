@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Input;
 using Quickr.Models.Keys;
 using Quickr.Services;
 using Quickr.ViewModels.Editors;
@@ -10,10 +9,10 @@ namespace Quickr.ViewModels.Data
     {
         private ValueViewModel _value;
 
-        protected KeyEntry Key { get; }
         protected RedisProxy Proxy { get; }
 
-        public PropertiesViewModel Properties { get; protected set; }
+        public KeyEntry Key { get; }
+        public PropertiesViewModel Properties { get; }
 
         public ValueViewModel Value
         {

@@ -18,7 +18,7 @@ namespace Quickr.Utils
             _scope = scope;
         }
 
-        public object CreateViewModel(KeyEntry key)
+        public BaseKeyViewModel CreateViewModel(KeyEntry key)
         {
             var type = _proxy.GetType(key);
             return type switch
