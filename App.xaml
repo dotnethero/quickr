@@ -10,6 +10,13 @@
         <converters:CollectionTypeConverter x:Key="CollectionTypeConverter" />
         <converters:NullableTimeSpanToStringConverter x:Key="NullableTimeSpanToStringConverter" />
         <converters:EnumMatchToBooleanConverter x:Key="EnumMatchToBooleanConverter" />
+        <Style x:Key="HightlightNewElement" TargetType="DataGridRow">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsNew}" Value="True">
+                    <Setter Property="Background" Value="#8EBDE767" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="Elements" TargetType="DataGrid">
             <Setter Property="Margin" Value="5" />
             <Setter Property="MinHeight" Value="200" />
@@ -20,6 +27,7 @@
             <Setter Property="HorizontalGridLinesBrush" Value="LightGray" />
             <Setter Property="VerticalGridLinesBrush" Value="LightGray" />
             <Setter Property="BorderBrush" Value="#FFABADB3" />
+            <Setter Property="RowStyle" Value="{StaticResource HightlightNewElement}" />
         </Style>
         <ControlTemplate x:Key="Database">
             <Viewbox Width="16" Height="16">
