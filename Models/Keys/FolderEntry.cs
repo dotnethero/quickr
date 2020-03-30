@@ -122,13 +122,14 @@ namespace Quickr.Models.Keys
             OnPropertyChanged(nameof(Children));
         }
 
-        public void AddChild(string fullname)
+        public KeyEntry AddChild(string fullname)
         {
-            Add(fullname);
+            var entry = Add(fullname);
             OnPropertyChanged(nameof(Children));
+            return entry;
         }
 
-        private void Add(string fullname)
+        private KeyEntry Add(string fullname)
         {
             var requiredStart = IsRoot ? "" : FullName + Constants.RegionSeparator;
             if (!fullname.StartsWith(requiredStart)) throw new InvalidOperationException();
@@ -139,13 +140,14 @@ namespace Quickr.Models.Keys
                 var name = string.IsNullOrWhiteSpace(parts[0]) ? "(none)" : parts[0];
                 var key = new KeyEntry(Proxy, DbIndex, name, fullname, this);
                 _keys.Add(key);
+                return key;
             }
             else
             {
                 var name = parts[0];
                 var fullFolderName = requiredStart + name;
                 var folder = CreateFolder(name, fullFolderName);
-                folder.Add(fullname);
+                return folder.Add(fullname);
             }
         }
 

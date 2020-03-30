@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using Quickr.Models;
 using Quickr.Models.Keys;
 using Quickr.Services;
 using Quickr.Utils;
+using Quickr.Views;
+using Quickr.Views.Data;
 
 namespace Quickr.ViewModels
 {
@@ -16,12 +19,14 @@ namespace Quickr.ViewModels
         private object _current;
 
         public ICommand ConnectCommand { get; }
+        public ICommand CreateKeyCommand { get; }
         public ICommand SelectCommand { get; }
         public ICommand RefreshCommand { get; }
         public ICommand CloneCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand MarkAsExpiredCommand { get; set; }
 
+        public MainWindow Window { get; set; }
         public DatabaseEntry[] Databases { get; private set; }
 
         public object Current
@@ -41,6 +46,7 @@ namespace Quickr.ViewModels
 
             // commands
             ConnectCommand = new ParameterCommand(Connect);
+            CreateKeyCommand = new ParameterCommand(CreateKey);
             SelectCommand = new ParameterCommand(Select);
             RefreshCommand = new ParameterCommand(Refresh);
             CloneCommand = new ParameterCommand(Clone);
@@ -136,6 +142,41 @@ namespace Quickr.ViewModels
                 default:
                     Current = null;
                     break;
+            }
+        }
+        
+        private void CreateKey(object obj)
+        {
+            if (!(obj is FolderEntry folder)) return;
+            var window = new CreateKeyWindow();
+            var model = new CreateKeyModel();
+            window.DataContext = model;
+            window.Owner = Window;
+            if (window.ShowDialog() == true)
+            {
+                var requiredStart = folder.IsRoot ? "" : folder.FullName + Constants.RegionSeparator;
+                var fullname = requiredStart + model.Name;
+                var entry = folder.AddChild(fullname);
+                switch (model.Type)
+                {
+                    case KeyType.String:
+                        _proxy.SetString(entry, string.Empty);
+                        break;
+                    case KeyType.List:
+                        _proxy.ListRightPush(entry, string.Empty);
+                        break;
+                    case KeyType.Set:
+                        _proxy.UnsortedSetAdd(entry, string.Empty);
+                        break;
+                    case KeyType.SortedSet:
+                        _proxy.SortedSetAdd(entry, string.Empty, 0);
+                        break;
+                    case KeyType.HashSet:
+                        _proxy.HashSet(entry, string.Empty, string.Empty);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
         }
 

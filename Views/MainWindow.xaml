@@ -49,6 +49,10 @@
                                 <StackPanel.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem 
+                                            Header="Create key..." 
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.CreateKeyCommand}"
+                                            CommandParameter="{Binding}" />
+                                        <MenuItem 
                                             Header="Refresh" 
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.RefreshCommand}"
                                             CommandParameter="{Binding}" />
@@ -73,6 +77,10 @@
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
                                 <StackPanel.ContextMenu>
                                     <ContextMenu>
+                                        <MenuItem 
+                                            Header="Create key..." 
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.CreateKeyCommand}"
+                                            CommandParameter="{Binding}" />
                                         <MenuItem 
                                             Header="Refresh" 
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.RefreshCommand}"

@@ -18,6 +18,8 @@ namespace Quickr.Views
             ViewModel = viewModel;
             DataContext = viewModel;
 
+            ViewModel.Window = this;
+
             // for test purposes
             var model = new EndPointModel("localhost", 6379);
             ViewModel.ConnectCommand.Execute(model);
