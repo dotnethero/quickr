@@ -18,6 +18,7 @@ namespace Quickr.ViewModels
         public ICommand ConnectCommand { get; }
         public ICommand SelectCommand { get; }
         public ICommand RefreshCommand { get; }
+        public ICommand CloneCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand MarkAsExpiredCommand { get; set; }
 
@@ -42,8 +43,20 @@ namespace Quickr.ViewModels
             ConnectCommand = new ParameterCommand(Connect);
             SelectCommand = new ParameterCommand(Select);
             RefreshCommand = new ParameterCommand(Refresh);
+            CloneCommand = new ParameterCommand(Clone);
             DeleteCommand = new ParameterCommand(Delete);
             MarkAsExpiredCommand = new ParameterCommand(MarkAsExpired);
+        }
+
+        private void Clone(object item)
+        {
+            switch (item)
+            {
+                case KeyEntry key:
+                    var fullname = _proxy.CloneKey(key);
+                    key.Parent.AddChild(fullname);
+                    break;
+            }
         }
 
         private void Delete(object item)

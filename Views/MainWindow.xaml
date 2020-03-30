@@ -99,6 +99,10 @@
                                 <StackPanel.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem 
+                                            Header="Clone" 
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.CloneCommand}"
+                                            CommandParameter="{Binding}" />
+                                        <MenuItem 
                                             Header="Mark as expired" 
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.MarkAsExpiredCommand}"
                                             CommandParameter="{Binding}" />

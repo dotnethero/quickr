@@ -50,6 +50,22 @@ namespace Quickr.Services
             var db = GetDatabase(key.DbIndex);
             return db.KeyRename(key.FullName, name);
         }
+        
+        public string CloneKey(KeyEntry key)
+        {
+            var db = GetDatabase(key.DbIndex);
+            var baseName = key.FullName + "_copy";
+            var name = baseName;
+            var index = 1;
+            while (db.KeyExists(name))
+            {
+                name = baseName + (index++);
+            }
+            var data = db.KeyDump(key.FullName);
+            var ttl = db.KeyTimeToLive(key.FullName);
+            db.KeyRestore(name, data, ttl);
+            return name;
+        }
 
         public HashEntry[] GetHashes(KeyEntry key)
         {
