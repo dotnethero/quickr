@@ -60,7 +60,8 @@ namespace Quickr.ViewModels
             {
                 case KeyEntry key:
                     var fullname = _proxy.CloneKey(key);
-                    key.Parent.AddChild(fullname);
+                    var entry = key.Parent.AddChild(fullname);
+                    entry.IsSelected = true;
                     break;
             }
         }
@@ -157,6 +158,7 @@ namespace Quickr.ViewModels
                 var requiredStart = folder.IsRoot ? "" : folder.FullName + Constants.RegionSeparator;
                 var fullname = requiredStart + model.Name;
                 var entry = folder.AddChild(fullname);
+                entry.IsSelected = true;
                 switch (model.Type)
                 {
                     case KeyType.String:

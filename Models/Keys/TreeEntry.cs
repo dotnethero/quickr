@@ -10,6 +10,7 @@ namespace Quickr.Models.Keys
         protected RedisProxy Proxy { get; }
 
         private string _name;
+        private bool _isSelected;
 
         public string Name
         {
@@ -21,6 +22,18 @@ namespace Quickr.Models.Keys
                 OnPropertyChanged();
             }
         }
+
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                if (value == _isSelected) return;
+                _isSelected = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         public int DbIndex { get; }
         public FolderEntry Parent { get; }
