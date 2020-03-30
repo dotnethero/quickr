@@ -28,7 +28,7 @@
                 <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Right">Key count:</TextBlock>
                 <TextBox Grid.Column="1" Grid.Row="0" Height="24" Margin="2" VerticalAlignment="Center" VerticalContentAlignment="Center" Text="{Binding KeyCount, Mode=OneWay}" />
                 <TextBlock Grid.Column="0" Grid.Row="1" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Right">Filter:</TextBlock>
-                <TextBox Grid.Column="1" Grid.Row="1" Height="24" Margin="2" VerticalAlignment="Center" VerticalContentAlignment="Center" Text="{Binding Filter, Mode=TwoWay}" />
+                <TextBox Grid.Column="1" Grid.Row="1" Height="24" Margin="2" VerticalAlignment="Center" VerticalContentAlignment="Center" Text="{Binding Filter, Mode=TwoWay}" KeyUp="OnKeyUp" />
             </Grid>
         </GroupBox>
     </DockPanel>
