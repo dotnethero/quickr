@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
+using System.Linq;
 using System.Windows;
-using Quickr.Models;
+using Quickr.Properties;
 using Quickr.ViewModels;
 
 namespace Quickr.Views
@@ -31,6 +32,8 @@ namespace Quickr.Views
         private void OnConnect(object sender, RoutedEventArgs e)
         {
             // check connection
+            Settings.Current.Endpoints = _viewModel.Endpoints.Where(x => !x.IsNew).ToList();
+            Settings.Current.Save();
             DialogResult = true;
         }
 

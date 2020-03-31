@@ -1,0 +1,18 @@
+{
+  "Endpoints": [
+    {
+      "Name": "localhost",
+      "Server": "localhost",
+      "Port": 6379,
+      "Password": "",
+      "UseSsl": false
+    },
+    {
+      "Name": "azure-db",
+      "Server": "redis-19774.c56.east-us.azure.cloud.redislabs.com",
+      "Port": 19774,
+      "Password": "vVPZlXbD868wlEy3bFhSPNdX51ITW7jt",
+      "UseSsl": false
+    }
+  ]
+}

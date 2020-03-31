@@ -25,7 +25,7 @@ namespace Quickr.ViewModels
         public ConnectViewModel(IEnumerable<EndPointModel> endpoints)
         {
             Endpoints = new ObservableCollection<EndPointModel>(endpoints);
-            Endpoints.Add(new EndPointModel());
+            Endpoints.Add(new EndPointModel { IsNew = true });
             Current = Endpoints.First();
         }
     }
