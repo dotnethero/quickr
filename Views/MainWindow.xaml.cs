@@ -1,9 +1,9 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Quickr.Models;
-using Quickr.Services;
 using Quickr.ViewModels;
 
 namespace Quickr.Views
@@ -31,13 +31,29 @@ namespace Quickr.Views
 
         private void OnConnect(object sender, RoutedEventArgs e)
         {
-            var model = new EndPointModel
+            var endpoints = new List<EndPointModel>
             {
+                new EndPointModel
+                {
+                    Name = "localhost",
+                    Server = "localhost",
+                    Port = 6379,
+                    IsNew = false
+                },
+                new EndPointModel
+                {
+                    Name = "azure-db",
+                    Server = "redis-19774.c56.east-us.azure.cloud.redislabs.com",
+                    Port = 19774,
+                    Password = "vVPZlXbD868wlEy3bFhSPNdX51ITW7jt",
+                    IsNew = false
+                }
             };
+            var model = new ConnectViewModel(endpoints);
             var conn = new ConnectWindow(model, this);
             if (conn.ShowDialog() == true)
             {
-                ViewModel.ConnectCommand.Execute(model);
+                ViewModel.ConnectCommand.Execute(model.Current);
             }
         }
 

@@ -193,7 +193,7 @@ namespace Quickr.Services
             _connection?.Dispose();
             _connection = null;
 
-            var endPoint = new DnsEndPoint(model.Server, model.Port);
+            var endPoint = new DnsEndPoint(model.Server, model.Port ?? 6379);
             var options = new ConfigurationOptions
             {
                 AllowAdmin = true,

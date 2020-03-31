@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using Quickr.Models;
+using Quickr.ViewModels;
 
 namespace Quickr.Views
 {
@@ -8,14 +10,22 @@ namespace Quickr.Views
     /// </summary>
     public partial class ConnectWindow : Window
     {
-        public EndPointModel ViewModel { get; set; }
+        private readonly ConnectViewModel _viewModel;
 
-        public ConnectWindow(EndPointModel model, Window owner)
+        internal ConnectWindow(ConnectViewModel viewModel, Window owner)
         {
             InitializeComponent();
-            DataContext = ViewModel = model;
-            PasswordTextBox.Password = ViewModel.Password;
+            DataContext = _viewModel = viewModel;
             Owner = owner;
+            _viewModel.PropertyChanged += OnPropertyChanged;
+        }
+
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ConnectViewModel.Current))
+            {
+                PasswordTextBox.Password = _viewModel.Current.Password;
+            }
         }
 
         private void OnConnect(object sender, RoutedEventArgs e)
@@ -26,7 +36,7 @@ namespace Quickr.Views
 
         private void OnPasswordChanged(object sender, RoutedEventArgs e)
         {
-            ViewModel.Password = PasswordTextBox.Password;
+            _viewModel.Current.Password = PasswordTextBox.Password;
         }
     }
 }

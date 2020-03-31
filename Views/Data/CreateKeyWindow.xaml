@@ -10,7 +10,9 @@
         Height="280" Width="400"
         FontSize="14" 
         WindowStartupLocation="CenterOwner" 
-        ResizeMode="NoResize" d:DataContext="{d:DesignInstance models:CreateKeyModel}">
+        ResizeMode="CanResize" 
+        ShowInTaskbar="False"
+        d:DataContext="{d:DesignInstance models:CreateKeyModel}">
     <Grid Margin="10,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

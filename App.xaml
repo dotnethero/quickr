@@ -9,6 +9,7 @@
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:CollectionTypeConverter x:Key="CollectionTypeConverter" />
         <converters:NullableTimeSpanToStringConverter x:Key="NullableTimeSpanToStringConverter" />
+        <converters:NullableIntToStringConverter x:Key="NullableIntToStringConverter" />
         <converters:EnumMatchToBooleanConverter x:Key="EnumMatchToBooleanConverter" />
         <Style x:Key="HightlightNewElement" TargetType="DataGridRow">
             <Style.Triggers>
