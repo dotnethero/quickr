@@ -15,6 +15,16 @@
             TextWrapping="{Binding Path=IsChecked, ElementName=WordWrap, Converter={StaticResource BooleanToTextWrappingConverter}}"
             FontFamily="Consolas"
             FontSize="12">
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CurrentValue}" Value="{x:Null}">
+                            <Setter Property="Background" Value="#F0F0F0" />
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
         </TextBox>
         <CheckBox
             Name="WordWrap"

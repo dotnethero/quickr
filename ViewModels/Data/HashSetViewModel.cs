@@ -28,7 +28,6 @@ namespace Quickr.ViewModels.Data
         private async void SetupAsync()
         {
             var entries = await Proxy.GetHashesAsync(Key);
-            await Task.Delay(2000);
             var models = entries.Select(HashEntryViewModel.FromEntry);
             Entries = new ObservableCollection<HashEntryViewModel>(models);
         }
