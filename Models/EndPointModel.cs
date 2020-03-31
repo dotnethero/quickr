@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace Quickr.Models
+﻿namespace Quickr.Models
 {
     public class EndPointModel
     {
@@ -9,8 +7,5 @@ namespace Quickr.Models
         public int? Port { get; set; }
         public string Password { get; set; }
         public bool UseSsl { get; set; }
-
-        [JsonIgnore]
-        public bool IsNew { get; set; } = false;
     }
 }
