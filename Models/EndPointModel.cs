@@ -1,14 +1,10 @@
 ﻿namespace Quickr.Models
 {
-    internal class EndPointModel
+    public class EndPointModel
     {
         public string Server { get; set; }
         public int Port { get; set; }
-
-        public EndPointModel(string server, int port)
-        {
-            Server = server;
-            Port = port;
-        }
+        public string Password { get; set; }
+        public bool UseSsl { get; set; }
     }
 }

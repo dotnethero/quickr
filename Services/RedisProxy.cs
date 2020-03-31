@@ -15,14 +15,10 @@ namespace Quickr.Services
 
         public DatabaseEntry[] GetDatabases()
         {
-            var count = GetServer()
-                .ConfigGet("databases")
-                .FirstOrDefault()
-                .Value
-                .ToInt32();
-
+            var server = GetServer();
+            var count = server.DatabaseCount != 0 ? server.DatabaseCount : 1;
             return Enumerable
-                .Range(0, count)
+                .Range(0, count )
                 .Select(x => new DatabaseEntry(this, x))
                 .ToArray();
         }
@@ -201,6 +197,9 @@ namespace Quickr.Services
             var options = new ConfigurationOptions
             {
                 AllowAdmin = true,
+                ClientName = "Quickr",
+                Password = model.Password,
+                Ssl = model.UseSsl,
                 EndPoints =
                 {
                     endPoint
