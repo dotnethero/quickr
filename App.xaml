@@ -33,6 +33,11 @@
             <Setter Property="VerticalGridLinesBrush" Value="LightGray" />
             <Setter Property="BorderBrush" Value="#FFABADB3" />
             <Setter Property="RowStyle" Value="{StaticResource HightlightNewElement}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Entries}" Value="{x:Null}">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
         <ControlTemplate x:Key="Database">
             <Viewbox Width="16" Height="16">

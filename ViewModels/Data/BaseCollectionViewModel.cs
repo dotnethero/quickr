@@ -11,8 +11,18 @@ namespace Quickr.ViewModels.Data
     internal abstract class BaseCollectionViewModel<TEntry> : BaseKeyViewModel where TEntry: BaseEntryViewModel
     {
         private TEntry _current;
-        
-        public ObservableCollection<TEntry> Entries { get; set; }
+        private ObservableCollection<TEntry> _entries;
+
+        public ObservableCollection<TEntry> Entries
+        {
+            get => _entries;
+            set
+            {
+                if (Equals(value, _entries)) return;
+                _entries = value;
+                OnPropertyChanged();
+            }
+        }
 
         public TEntry Current
         {

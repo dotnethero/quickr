@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -19,12 +20,17 @@ namespace Quickr.ViewModels.Data
 
         public HashSetViewModel(RedisProxy proxy, KeyEntry key, TimeSpan? ttl): base(proxy, key, ttl)
         {
-            Entries = new ObservableCollection<HashEntryViewModel>(Proxy
-                .GetHashes(Key)
-                .Select(HashEntryViewModel.FromEntry));
-
+            SetupAsync();
             AddCommand = new ParameterCommand(Add);
             DeleteCommand = new ParameterCommand(Delete);
+        }
+        
+        private async void SetupAsync()
+        {
+            var entries = await Proxy.GetHashesAsync(Key);
+            await Task.Delay(2000);
+            var models = entries.Select(HashEntryViewModel.FromEntry);
+            Entries = new ObservableCollection<HashEntryViewModel>(models);
         }
 
         private void Add(object parameter)

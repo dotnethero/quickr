@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Quickr.Models.Keys;
 using Quickr.Services;
 using Quickr.ViewModels.Editors;
@@ -9,7 +10,13 @@ namespace Quickr.ViewModels.Data
     {
         public StringViewModel(RedisProxy proxy, KeyEntry key, TimeSpan? ttl): base(proxy, key, ttl)
         {
-            Value = new ValueViewModel(Proxy.GetString(Key));
+            SetupAsync();
+        }
+
+        private async void SetupAsync()
+        {
+            var str = await Proxy.GetStringAsync(Key);
+            Value = new ValueViewModel(str);
             Value.ValueSaved += OnValueSaved;
         }
 

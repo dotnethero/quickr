@@ -18,14 +18,19 @@ namespace Quickr.ViewModels.Data
 
         public SortedSetViewModel(RedisProxy proxy, KeyEntry key, TimeSpan? ttl): base(proxy, key, ttl)
         {
-            Entries = new ObservableCollection<SortedSetEntryViewModel>(Proxy
-                .GetSortedSet(Key)
-                .Select(SortedSetEntryViewModel.FromEntry));
+            SetupAsync();
             
             AddCommand = new ParameterCommand(Add);
             DeleteCommand = new ParameterCommand(Delete);
         }
-        
+
+        private async void SetupAsync()
+        {
+            var entries = await Proxy.GetSortedSetAsync(Key);
+            var models = entries.Select(SortedSetEntryViewModel.FromEntry);
+            Entries = new ObservableCollection<SortedSetEntryViewModel>(models);
+        }
+
         private void Add(object parameter)
         {
             var item = SortedSetEntryViewModel.Empty();

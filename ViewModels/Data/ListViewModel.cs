@@ -17,14 +17,18 @@ namespace Quickr.ViewModels.Data
 
         public ListViewModel(RedisProxy proxy, KeyEntry key, TimeSpan? ttl): base(proxy, key, ttl)
         {
-            Entries = new ObservableCollection<ListEntryViewModel>(Proxy
-                .GetList(Key)
-                .Select(ListEntryViewModel.FromValue));
-            
+            SetupAsync();
             AddCommand = new ParameterCommand(Add);
             DeleteCommand = new ParameterCommand(Delete);
         }
         
+        private async void SetupAsync()
+        {
+            var entries = await Proxy.GetListAsync(Key);
+            var models = entries.Select(ListEntryViewModel.FromValue);
+            Entries = new ObservableCollection<ListEntryViewModel>(models);
+        }
+
         private void Add(object parameter)
         {
             var item = ListEntryViewModel.Empty();

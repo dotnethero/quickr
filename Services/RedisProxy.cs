@@ -67,10 +67,10 @@ namespace Quickr.Services
             return name;
         }
 
-        public HashEntry[] GetHashes(KeyEntry key)
+        public async Task<HashEntry[]> GetHashesAsync(KeyEntry key)
         {
             var db = GetDatabase(key.DbIndex);
-            return db.HashGetAll(key.FullName);
+            return await db.HashGetAllAsync(key.FullName);
         }
         
         public bool HashSet(KeyEntry key, RedisValue hashField, RedisValue value)
@@ -85,10 +85,10 @@ namespace Quickr.Services
             return db.HashDelete(key.FullName, hashFields);
         }
         
-        public RedisValue[] GetList(KeyEntry key)
+        public async Task<RedisValue[]> GetListAsync(KeyEntry key)
         {
             var db = GetDatabase(key.DbIndex);
-            return db.ListRange(key.FullName);
+            return await db.ListRangeAsync(key.FullName);
         }
         
         public void ListSet(KeyEntry key, int index, RedisValue value)
@@ -114,10 +114,10 @@ namespace Quickr.Services
             db.ListRemove(key.FullName, name, 0);
         }
 
-        public RedisValue[] GetUnsortedSet(KeyEntry key)
+        public async Task<RedisValue[]> GetUnsortedSetAsync(KeyEntry key)
         {
             var db = GetDatabase(key.DbIndex);
-            return db.SetMembers(key.FullName);
+            return await db.SetMembersAsync(key.FullName).ConfigureAwait(false);
         }
         
         public void UnsortedSetAdd(KeyEntry key, RedisValue value)
@@ -132,10 +132,10 @@ namespace Quickr.Services
             db.SetRemove(key.FullName, values);
         }
 
-        public SortedSetEntry[] GetSortedSet(KeyEntry key)
+        public async Task<SortedSetEntry[]> GetSortedSetAsync(KeyEntry key)
         {
             var db = GetDatabase(key.DbIndex);
-            return db.SortedSetRangeByRankWithScores(key.FullName);
+            return await db.SortedSetRangeByRankWithScoresAsync(key.FullName).ConfigureAwait(false);
         }
         
         public void SortedSetAdd(KeyEntry key, RedisValue value, double score)
@@ -150,10 +150,10 @@ namespace Quickr.Services
             db.SortedSetRemove(key.FullName, values);
         }
 
-        public RedisValue GetString(KeyEntry key)
+        public async Task<RedisValue> GetStringAsync(KeyEntry key)
         {
             var db = GetDatabase(key.DbIndex);
-            return db.StringGet(key.FullName);
+            return await db.StringGetAsync(key.FullName).ConfigureAwait(false);
         }
 
         public bool SetString(KeyEntry key, string value)
