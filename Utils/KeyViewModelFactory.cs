@@ -20,21 +20,21 @@ namespace Quickr.Utils
 
         public BaseKeyViewModel CreateViewModel(KeyEntry key)
         {
-            var type = _proxy.GetType(key);
+            var (type, ttl) = _proxy.GetTypeTimeToLiveAsync(key).ConfigureAwait(false).GetAwaiter().GetResult();
             return type switch
             {
-                RedisType.String => Resolve<StringViewModel>(key),
-                RedisType.Set => Resolve<UnsortedSetViewModel>(key),
-                RedisType.Hash => Resolve<HashSetViewModel>(key),
-                RedisType.List => Resolve<ListViewModel>(key),
-                RedisType.SortedSet => Resolve<SortedSetViewModel>(key),
+                RedisType.String => Resolve<StringViewModel>(key, ttl),
+                RedisType.Set => Resolve<UnsortedSetViewModel>(key, ttl),
+                RedisType.Hash => Resolve<HashSetViewModel>(key, ttl),
+                RedisType.List => Resolve<ListViewModel>(key, ttl),
+                RedisType.SortedSet => Resolve<SortedSetViewModel>(key, ttl),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
 
-        private T Resolve<T>(KeyEntry key)
+        private T Resolve<T>(KeyEntry key, TimeSpan? ttl)
         {
-            return _scope.Resolve<T>(TypedParameter.From(key));
+            return _scope.Resolve<T>(TypedParameter.From(key), TypedParameter.From(ttl));
         }
     }
 }

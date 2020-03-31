@@ -17,7 +17,7 @@ namespace Quickr.ViewModels.Data
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
 
-        public HashSetViewModel(RedisProxy proxy, KeyEntry key): base(proxy, key)
+        public HashSetViewModel(RedisProxy proxy, KeyEntry key, TimeSpan? ttl): base(proxy, key, ttl)
         {
             Entries = new ObservableCollection<HashEntryViewModel>(Proxy
                 .GetHashes(Key)

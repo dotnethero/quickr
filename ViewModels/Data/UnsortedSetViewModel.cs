@@ -16,7 +16,7 @@ namespace Quickr.ViewModels.Data
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
 
-        public UnsortedSetViewModel(RedisProxy proxy, KeyEntry key): base(proxy, key)
+        public UnsortedSetViewModel(RedisProxy proxy, KeyEntry key, TimeSpan? ttl): base(proxy, key, ttl)
         {
             Entries = new ObservableCollection<UnsortedSetEntryViewModel>(Proxy
                 .GetUnsortedSet(Key)

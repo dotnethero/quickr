@@ -24,19 +24,18 @@ namespace Quickr.ViewModels.Data
             }
         }
 
-        protected BaseKeyViewModel(RedisProxy proxy, KeyEntry key)
+        protected BaseKeyViewModel(RedisProxy proxy, KeyEntry key, TimeSpan? ttl)
         {
             Proxy = proxy;
             Key = key;
-            Properties = CreatePropertiesViewModel();
+            Properties = CreatePropertiesViewModel(ttl);
             Value = null;
         }
 
-        private PropertiesViewModel CreatePropertiesViewModel()
+        private PropertiesViewModel CreatePropertiesViewModel(TimeSpan? ttl)
         {
             var name = Key.FullName;
-            var expiration = Proxy.GetTimeToLive(Key);
-            var props = new PropertiesViewModel(name, expiration);
+            var props = new PropertiesViewModel(name, ttl);
             props.ValueSaved += OnPropertiesSaved;
             props.ValueDiscarded += OnPropertiesDiscarded;
             return props;

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Quickr.Models;
 using Quickr.Models.Keys;
-using Quickr.Utils;
 using StackExchange.Redis;
 
 namespace Quickr.Services
@@ -23,10 +23,14 @@ namespace Quickr.Services
                 .ToArray();
         }
 
-        public RedisType GetType(KeyEntry key)
+        public async Task<(RedisType, TimeSpan?)> GetTypeTimeToLiveAsync(KeyEntry key)
         {
             var db = GetDatabase(key.DbIndex);
-            return db.KeyType(key.FullName);
+            var batch = db.CreateBatch();
+            var type = batch.KeyTypeAsync(key.FullName).ConfigureAwait(false);
+            var ttl = batch.KeyTimeToLiveAsync(key.FullName).ConfigureAwait(false);
+            batch.Execute();
+            return (await type, await ttl);
         }
 
         public TimeSpan? GetTimeToLive(KeyEntry key)

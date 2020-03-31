@@ -15,7 +15,7 @@ namespace Quickr.ViewModels.Data
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
 
-        public ListViewModel(RedisProxy proxy, KeyEntry key): base(proxy, key)
+        public ListViewModel(RedisProxy proxy, KeyEntry key, TimeSpan? ttl): base(proxy, key, ttl)
         {
             Entries = new ObservableCollection<ListEntryViewModel>(Proxy
                 .GetList(Key)

@@ -7,7 +7,7 @@ namespace Quickr.ViewModels.Data
 {
     internal class StringViewModel: BaseKeyViewModel
     {
-        public StringViewModel(RedisProxy proxy, KeyEntry key): base(proxy, key)
+        public StringViewModel(RedisProxy proxy, KeyEntry key, TimeSpan? ttl): base(proxy, key, ttl)
         {
             Value = new ValueViewModel(Proxy.GetString(Key));
             Value.ValueSaved += OnValueSaved;
