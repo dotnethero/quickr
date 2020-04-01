@@ -57,7 +57,7 @@ namespace Quickr.Models.Keys
             }
         }
 
-        public FolderEntry(RedisProxy proxy, int dbIndex, string name, string fullname, FolderEntry parent): base(proxy, dbIndex, name, parent)
+        public FolderEntry(RedisConnection connection, int dbIndex, string name, string fullname, FolderEntry parent): base(connection, dbIndex, name, parent)
         {
             _fullName = fullname;
         }
@@ -88,7 +88,7 @@ namespace Quickr.Models.Keys
 
         public void Refresh()
         {
-            var keys = Proxy.GetKeys(DbIndex, SearchPattern);
+            var keys = Connection.GetKeys(DbIndex, SearchPattern);
             UpdateChildren(keys);
         }
 
@@ -138,7 +138,7 @@ namespace Quickr.Models.Keys
             if (parts.Count == 1)
             {
                 var name = string.IsNullOrWhiteSpace(parts[0]) ? "(none)" : parts[0];
-                var key = new KeyEntry(Proxy, DbIndex, name, fullname, this);
+                var key = new KeyEntry(Connection, DbIndex, name, fullname, this);
                 _keys.Add(key);
                 return key;
             }
@@ -155,7 +155,7 @@ namespace Quickr.Models.Keys
         {
             var existing = _subfolders.Find(x => x.FullName == fullname);
             if (existing != null) return existing;
-            var folder = new FolderEntry(Proxy, DbIndex, name, fullname, this);
+            var folder = new FolderEntry(Connection, DbIndex, name, fullname, this);
             _subfolders.Add(folder);
             return folder;
         }

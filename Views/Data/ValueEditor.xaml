@@ -19,7 +19,6 @@
                 <Style TargetType="TextBox">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding CurrentValue}" Value="{x:Null}">
-                            <Setter Property="Background" Value="#F0F0F0" />
                             <Setter Property="IsEnabled" Value="False" />
                         </DataTrigger>
                     </Style.Triggers>

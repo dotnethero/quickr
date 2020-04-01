@@ -20,7 +20,7 @@ namespace Quickr.Models.Keys
             }
         }
 
-        public KeyEntry(RedisProxy proxy, int dbIndex, string name, string fullname, FolderEntry parent): base(proxy, dbIndex, name, parent)
+        public KeyEntry(RedisConnection connection, int dbIndex, string name, string fullname, FolderEntry parent): base(connection, dbIndex, name, parent)
         {
             _fullName = fullname;
         }

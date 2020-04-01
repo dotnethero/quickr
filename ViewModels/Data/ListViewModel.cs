@@ -15,7 +15,7 @@ namespace Quickr.ViewModels.Data
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
 
-        public ListViewModel(RedisProxy proxy, KeyEntry key, TimeSpan? ttl): base(proxy, key, ttl)
+        public ListViewModel(RedisConnection connection, KeyEntry key, TimeSpan? ttl): base(connection, key, ttl)
         {
             SetupAsync();
             AddCommand = new ParameterCommand(Add);
@@ -24,7 +24,7 @@ namespace Quickr.ViewModels.Data
         
         private async void SetupAsync()
         {
-            var entries = await Proxy.GetListAsync(Key);
+            var entries = await Connection.GetListAsync(Key);
             var models = entries.Select(ListEntryViewModel.FromValue);
             Entries = new ObservableCollection<ListEntryViewModel>(models);
         }
@@ -55,7 +55,7 @@ namespace Quickr.ViewModels.Data
 
                 if (indexes.Length > 0)
                 {
-                    Proxy.ListDelete(Key, indexes);
+                    Connection.ListDelete(Key, indexes);
                 }
 
                 foreach (var entry in entries)
@@ -69,13 +69,13 @@ namespace Quickr.ViewModels.Data
         {
             if (Current.IsNew)
             {
-                Proxy.ListRightPush(Key, Value.CurrentValue);
+                Connection.ListRightPush(Key, Value.CurrentValue);
                 Current.OriginalValue = Current.CurrentValue;
             }
             else
             {
                 var index = Entries.IndexOf(Current);
-                Proxy.ListSet(Key, index, Value.CurrentValue);
+                Connection.ListSet(Key, index, Value.CurrentValue);
                 Current.OriginalValue = Current.CurrentValue;
             }
         }

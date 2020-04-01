@@ -24,6 +24,7 @@ namespace Quickr.Views
             // for test purposes
             var model = new EndPointModel
             {
+                Name = "test",
                 Server = "localhost",
                 Port = 6379
             };

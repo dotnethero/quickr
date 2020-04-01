@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -13,21 +14,22 @@ namespace Quickr.ViewModels
 {
     internal class MainWindowViewModel: BaseViewModel
     {
-        private readonly RedisProxy _proxy;
-        private readonly KeyViewModelFactory _kvmFactory;
+        private readonly RedisMultiplexer _multiplexer;
+        private readonly KeyViewModelFactory _keyFactory;
 
         private object _current;
 
         public ICommand ConnectCommand { get; }
+        public ICommand DisconnectCommand { get; }
         public ICommand CreateKeyCommand { get; }
         public ICommand SelectCommand { get; }
         public ICommand RefreshCommand { get; }
         public ICommand CloneCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand MarkAsExpiredCommand { get; set; }
-
+        
         public MainWindow Window { get; set; }
-        public DatabaseEntry[] Databases { get; private set; }
+        public ObservableCollection<ServerEntry> Servers { get; } = new ObservableCollection<ServerEntry>();
 
         public object Current
         {
@@ -39,13 +41,14 @@ namespace Quickr.ViewModels
             }
         }
 
-        public MainWindowViewModel(RedisProxy proxy, KeyViewModelFactory kvmFactory)
+        public MainWindowViewModel(RedisMultiplexer multiplexer, KeyViewModelFactory keyFactory)
         {
-            _proxy = proxy;
-            _kvmFactory = kvmFactory;
+            _multiplexer = multiplexer;
+            _keyFactory = keyFactory;
 
             // commands
             ConnectCommand = new ParameterCommand(Connect);
+            DisconnectCommand = new ParameterCommand(Disconnect);
             CreateKeyCommand = new ParameterCommand(CreateKey);
             SelectCommand = new ParameterCommand(Select);
             RefreshCommand = new ParameterCommand(Refresh);
@@ -53,13 +56,35 @@ namespace Quickr.ViewModels
             DeleteCommand = new ParameterCommand(Delete);
             MarkAsExpiredCommand = new ParameterCommand(MarkAsExpired);
         }
+        
+        private void Connect(object model)
+        {
+            if (model is EndPointModel endpoint)
+            {
+                var server = _multiplexer.Connect(endpoint);
+                foreach (var database in server.Databases)
+                {
+                    database.Refresh();
+                }
+                Servers.Add(server);
+            }
+        }
+
+        private void Disconnect(object obj)
+        {
+            if (obj is ServerEntry server)
+            {
+                server.Connection.Dispose();
+                Servers.Remove(server);
+            }
+        }
 
         private void Clone(object item)
         {
             switch (item)
             {
                 case KeyEntry key:
-                    var fullname = _proxy.CloneKey(key);
+                    var fullname = key.Connection.CloneKey(key);
                     var entry = key.Parent.AddChild(fullname);
                     entry.IsSelected = true;
                     break;
@@ -73,7 +98,7 @@ namespace Quickr.ViewModels
                 case DatabaseEntry database:
                     if (FlushDatabaseMessage(database) == MessageBoxResult.Yes)
                     {
-                        _proxy.Flush(database);
+                        database.Connection.Flush(database);
                         database.RemoveChildren();
                     }
                     break;
@@ -82,7 +107,7 @@ namespace Quickr.ViewModels
                     if (DeleteFolderMessage(folder) == MessageBoxResult.Yes)
                     {
                         var folderParent = folder.Parent;
-                        _proxy.Delete(folder);
+                        folderParent.Connection.Delete(folder);
                         folderParent.RemoveChild(folder);
                     }
 
@@ -90,7 +115,7 @@ namespace Quickr.ViewModels
 
                 case KeyEntry key:
                     var keyParent = key.Parent;
-                    _proxy.Delete(key);
+                    keyParent.Connection.Delete(key);
                     keyParent.RemoveChild(key);
                     break;
             }
@@ -103,7 +128,7 @@ namespace Quickr.ViewModels
                 folder // may affect performance
                     .GetKeys()
                     .ToList()
-                    .ForEach(x => _proxy.SetTimeToLive(x, TimeSpan.Zero));
+                    .ForEach(key => key.Connection.SetTimeToLive(key, TimeSpan.Zero));
             }
 
             switch (item)
@@ -127,7 +152,7 @@ namespace Quickr.ViewModels
 
                 case KeyEntry key:
                     var keyParent = key.Parent;
-                    _proxy.SetTimeToLive(key, TimeSpan.Zero);
+                    key.Connection.SetTimeToLive(key, TimeSpan.Zero);
                     keyParent.RemoveChild(key);
                     break;
             }
@@ -186,11 +211,11 @@ namespace Quickr.ViewModels
             switch (item)
             {
                 case KeyEntry key:
-                    Current = _kvmFactory.CreateViewModel(key);
+                    Current = _keyFactory.Create(key);
                     break;
 
                 case DatabaseEntry db:
-                    Current = new DatabaseViewModel(_proxy, db);
+                    Current = new DatabaseViewModel(db.Connection, db);
                     break;
 
                 default:
@@ -208,6 +233,7 @@ namespace Quickr.ViewModels
             window.Owner = Window;
             if (window.ShowDialog() == true)
             {
+                var connection = folder.Connection;
                 var requiredStart = folder.IsRoot ? "" : folder.FullName + Constants.RegionSeparator;
                 var fullname = requiredStart + model.Name;
                 var entry = folder.AddChild(fullname);
@@ -215,37 +241,23 @@ namespace Quickr.ViewModels
                 switch (model.Type)
                 {
                     case KeyType.String:
-                        _proxy.SetString(entry, string.Empty);
+                        connection.SetString(entry, string.Empty);
                         break;
                     case KeyType.List:
-                        _proxy.ListRightPush(entry, string.Empty);
+                        connection.ListRightPush(entry, string.Empty);
                         break;
                     case KeyType.Set:
-                        _proxy.UnsortedSetAdd(entry, string.Empty);
+                        connection.UnsortedSetAdd(entry, string.Empty);
                         break;
                     case KeyType.SortedSet:
-                        _proxy.SortedSetAdd(entry, string.Empty, 0);
+                        connection.SortedSetAdd(entry, string.Empty, 0);
                         break;
                     case KeyType.HashSet:
-                        _proxy.HashSet(entry, string.Empty, string.Empty);
+                        connection.HashSet(entry, string.Empty, string.Empty);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-            }
-        }
-
-        private void Connect(object model)
-        {
-            if (model is EndPointModel endPoint)
-            {
-                _proxy.ChangeConnection(endPoint);
-                Databases = _proxy.GetDatabases();
-                foreach (var database in Databases)
-                {
-                    database.Refresh();
-                }
-                OnPropertyChanged(nameof(Databases));
             }
         }
     }

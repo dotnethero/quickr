@@ -1,6 +1,4 @@
-﻿using Autofac;
-using Quickr.Models.Keys;
-using Quickr.Services;
+﻿using Quickr.Models.Keys;
 using Quickr.ViewModels.Data;
 using StackExchange.Redis;
 using System;
@@ -9,32 +7,24 @@ namespace Quickr.Utils
 {
     internal class KeyViewModelFactory
     {
-        private readonly RedisProxy _proxy;
-        private readonly ILifetimeScope _scope;
-
-        public KeyViewModelFactory(RedisProxy proxy, ILifetimeScope scope)
+        public BaseKeyViewModel Create(KeyEntry key)
         {
-            _proxy = proxy;
-            _scope = scope;
-        }
+            var connection = key.Connection;
+            var (type, ttl) = connection
+                .GetTypeTimeToLiveAsync(key)
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
 
-        public BaseKeyViewModel CreateViewModel(KeyEntry key)
-        {
-            var (type, ttl) = _proxy.GetTypeTimeToLiveAsync(key).ConfigureAwait(false).GetAwaiter().GetResult();
             return type switch
             {
-                RedisType.String => Resolve<StringViewModel>(key, ttl),
-                RedisType.Set => Resolve<UnsortedSetViewModel>(key, ttl),
-                RedisType.Hash => Resolve<HashSetViewModel>(key, ttl),
-                RedisType.List => Resolve<ListViewModel>(key, ttl),
-                RedisType.SortedSet => Resolve<SortedSetViewModel>(key, ttl),
+                RedisType.String => new StringViewModel(connection, key, ttl),
+                RedisType.Set => new UnsortedSetViewModel(connection, key, ttl),
+                RedisType.Hash => new HashSetViewModel(connection, key, ttl),
+                RedisType.List => new ListViewModel(connection, key, ttl),
+                RedisType.SortedSet => new SortedSetViewModel(connection, key, ttl),
                 _ => throw new ArgumentOutOfRangeException()
             };
-        }
-
-        private T Resolve<T>(KeyEntry key, TimeSpan? ttl)
-        {
-            return _scope.Resolve<T>(TypedParameter.From(key), TypedParameter.From(ttl));
         }
     }
 }

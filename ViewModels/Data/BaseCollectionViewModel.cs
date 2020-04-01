@@ -35,7 +35,7 @@ namespace Quickr.ViewModels.Data
             }
         }
 
-        protected BaseCollectionViewModel(RedisProxy proxy, KeyEntry key, TimeSpan? ttl) : base(proxy, key, ttl)
+        protected BaseCollectionViewModel(RedisConnection connection, KeyEntry key, TimeSpan? ttl) : base(connection, key, ttl)
         {
         }
 

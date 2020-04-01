@@ -6,7 +6,7 @@ namespace Quickr.ViewModels
     internal class DatabaseViewModel : BaseViewModel
     {
         protected DatabaseEntry Entry { get; }
-        protected RedisProxy Proxy { get; }
+        protected RedisConnection Connection { get; }
 
         public long KeyCount { get; }
 
@@ -21,11 +21,11 @@ namespace Quickr.ViewModels
             }
         }
 
-        public DatabaseViewModel(RedisProxy proxy, DatabaseEntry entry)
+        public DatabaseViewModel(RedisConnection connection, DatabaseEntry entry)
         {
-            Proxy = proxy;
             Entry = entry;
-            KeyCount = proxy.GetSize(entry);
+            Connection = connection;
+            KeyCount = connection.GetSize(entry);
         }
     }
 }

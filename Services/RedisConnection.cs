@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using Quickr.Models;
 using Quickr.Models.Keys;
 using StackExchange.Redis;
 
 namespace Quickr.Services
 {
-    internal class RedisProxy
+    internal class RedisConnection: IDisposable
     {
-        private IConnectionMultiplexer _connection;
-        private EndPoint _endPoint;
+        private readonly ConnectionMultiplexer _connection;
+
+        public RedisConnection(ConnectionMultiplexer connection)
+        {
+            _connection = connection;
+        }
 
         public DatabaseEntry[] GetDatabases()
         {
@@ -33,12 +35,6 @@ namespace Quickr.Services
             return (await type, await ttl);
         }
 
-        public TimeSpan? GetTimeToLive(KeyEntry key)
-        {
-            var db = GetDatabase(key.DbIndex);
-            return db.KeyTimeToLive(key.FullName);
-        }
-        
         public bool SetTimeToLive(KeyEntry key, TimeSpan? timeSpan)
         {
             var db = GetDatabase(key.DbIndex);
@@ -192,41 +188,19 @@ namespace Quickr.Services
                 .ToArray();
         }
 
-        public void ChangeConnection(EndPointModel model)
-        {
-            _connection?.Dispose();
-            _connection = null;
-
-            var endPoint = new DnsEndPoint(model.Server, model.Port ?? 6379);
-            var options = new ConfigurationOptions
-            {
-                AllowAdmin = true,
-                ClientName = "Quickr",
-                Password = model.Password,
-                Ssl = model.UseSsl,
-                EndPoints =
-                {
-                    endPoint
-                }
-            };
-
-            _endPoint = endPoint;
-            _connection = ConnectionMultiplexer.Connect(options);
-        }
-
         private IDatabase GetDatabase(int dbIndex)
         {
-            return GetConnection().GetDatabase(dbIndex);
+            return _connection.GetDatabase(dbIndex);
         }
 
         private IServer GetServer()
         {
-            return GetConnection().GetServer(_connection.GetEndPoints().First());
+            return _connection.GetServer(_connection.GetEndPoints().First());
         }
 
-        private IConnectionMultiplexer GetConnection()
+        public void Dispose()
         {
-            return _connection ?? throw new InvalidOperationException();
+            _connection.Dispose();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Quickr.Models.Keys
 {
     internal abstract class TreeEntry: INotifyPropertyChanged
     {
-        protected RedisProxy Proxy { get; }
+        public RedisConnection Connection { get; }
 
         private string _name;
         private bool _isSelected;
@@ -55,9 +55,9 @@ namespace Quickr.Models.Keys
         public int DbIndex { get; }
         public FolderEntry Parent { get; }
 
-        protected TreeEntry(RedisProxy proxy, int dbIndex, string name, FolderEntry parent)
+        protected TreeEntry(RedisConnection connection, int dbIndex, string name, FolderEntry parent)
         {
-            Proxy = proxy;
+            Connection = connection;
             DbIndex = dbIndex;
             Parent = parent;
             _name = name;

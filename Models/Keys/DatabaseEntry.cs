@@ -4,7 +4,7 @@ namespace Quickr.Models.Keys
 {
     internal class DatabaseEntry: FolderEntry
     {
-        public DatabaseEntry(RedisProxy proxy, int dbIndex): base(proxy, dbIndex, $"db{dbIndex}", $"db{dbIndex}", null)
+        public DatabaseEntry(RedisConnection connection, int dbIndex): base(connection, dbIndex, $"db{dbIndex}", $"db{dbIndex}", null)
         {
         }
     }

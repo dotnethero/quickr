@@ -33,7 +33,7 @@
                           HorizontalAlignment="Stretch" 
                           ScrollViewer.VerticalScrollBarVisibility="Auto"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                          ItemsSource="{Binding Databases, Mode=OneWay}"
+                          ItemsSource="{Binding Servers, Mode=OneWay}"
                           VirtualizingStackPanel.IsVirtualizing="True"
                           SelectedItemChanged="OnSelectedItemChanged"
                           PreviewMouseRightButtonDown="BeforeRightClick">
@@ -44,6 +44,23 @@
                         </Style>
                     </TreeView.ItemContainerStyle>
                     <TreeView.Resources>
+                        <HierarchicalDataTemplate DataType="{x:Type keys:ServerEntry}" ItemsSource="{Binding Databases, Mode=OneWay}">
+                            <StackPanel
+                                Tag="{Binding ElementName=Root, Path=DataContext}"
+                                Orientation="Horizontal" 
+                                VerticalAlignment="Center">
+                                <ContentControl Template="{StaticResource Server}" Width="20" Focusable="False" Foreground="LightSlateGray" />
+                                <TextBlock Name="ServerName"  Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
+                                <StackPanel.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem 
+                                            Header="Disconnect" 
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.DisconnectCommand}"
+                                            CommandParameter="{Binding}" />
+                                    </ContextMenu>
+                                </StackPanel.ContextMenu>
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type keys:DatabaseEntry}" ItemsSource="{Binding Children, Mode=OneWay}">
                             <StackPanel 
                                 Tag="{Binding ElementName=Root, Path=DataContext}"

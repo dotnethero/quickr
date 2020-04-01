@@ -16,7 +16,7 @@ namespace Quickr.ViewModels.Data
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
 
-        public SortedSetViewModel(RedisProxy proxy, KeyEntry key, TimeSpan? ttl): base(proxy, key, ttl)
+        public SortedSetViewModel(RedisConnection connection, KeyEntry key, TimeSpan? ttl): base(connection, key, ttl)
         {
             SetupAsync();
             
@@ -26,7 +26,7 @@ namespace Quickr.ViewModels.Data
 
         private async void SetupAsync()
         {
-            var entries = await Proxy.GetSortedSetAsync(Key);
+            var entries = await Connection.GetSortedSetAsync(Key);
             var models = entries.Select(SortedSetEntryViewModel.FromEntry);
             Entries = new ObservableCollection<SortedSetEntryViewModel>(models);
         }
@@ -57,7 +57,7 @@ namespace Quickr.ViewModels.Data
 
                 if (fields.Length > 0)
                 {
-                    Proxy.SortedSetRemove(Key, fields);
+                    Connection.SortedSetRemove(Key, fields);
                 }
 
                 foreach (var entry in entries)
@@ -72,7 +72,7 @@ namespace Quickr.ViewModels.Data
             if (Current.IsNew)
             {
                 if (Entries.Any(x => x.OriginalValue == Current.CurrentValue && x != Current)) return;
-                Proxy.SortedSetAdd(Key, Value.CurrentValue, Current.Score);
+                Connection.SortedSetAdd(Key, Value.CurrentValue, Current.Score);
                 Current.OriginalValue = Current.CurrentValue;
             }
             else
