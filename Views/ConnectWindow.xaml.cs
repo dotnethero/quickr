@@ -1,8 +1,5 @@
 ﻿using System.ComponentModel;
-using System.Linq;
 using System.Windows;
-using Quickr.Models;
-using Quickr.Properties;
 using Quickr.ViewModels;
 
 namespace Quickr.Views
@@ -14,12 +11,10 @@ namespace Quickr.Views
     {
         private readonly ConnectViewModel _viewModel;
 
-        internal ConnectWindow(ConnectViewModel viewModel, Window owner)
+        internal ConnectWindow(ConnectViewModel viewModel)
         {
             InitializeComponent();
-            Owner = owner;
             DataContext = _viewModel = viewModel;
-            CheckExisting();
             _viewModel.PropertyChanged += OnPropertyChanged;
         }
 
@@ -33,49 +28,27 @@ namespace Quickr.Views
 
         private void OnConnect(object sender, RoutedEventArgs e)
         {
-            if (TestConnection())
+            if (_viewModel.TestConnection())
             {
-                SaveChanges();
+                _viewModel.SaveChanges();
                 DialogResult = true;
             }
         }
         
         private void OnSaveChanges(object sender, RoutedEventArgs e)
         {
-            SaveChanges();
+            _viewModel.SaveChanges();
             DialogResult = false;
-        }
-
-        private void SaveChanges()
-        {
-            Settings.Current.Endpoints = _viewModel.Endpoints.ToList();
-            Settings.Current.Save();
-        }
-        
-        private void CheckExisting()
-        {
-            if (_viewModel.Endpoints.Count == 0)
-            {
-                _viewModel.Endpoints.Add(new EndPointModel());
-            }
-
-            if (_viewModel.Current == null)
-            {
-                _viewModel.Current = _viewModel.Endpoints.First();
-            }
         }
         
         private void OnAdd(object sender, RoutedEventArgs e)
         {
-            var model = new EndPointModel();
-            _viewModel.Endpoints.Add(model);
-            _viewModel.Current = model;
+            _viewModel.Add();
         }
 
         private void OnDelete(object sender, RoutedEventArgs e)
         {
-            _viewModel.Endpoints.Remove(_viewModel.Current);
-            CheckExisting();
+            _viewModel.RemoveCurrent();
         }
 
         private void OnPasswordChanged(object sender, RoutedEventArgs e)
@@ -85,24 +58,7 @@ namespace Quickr.Views
 
         private void OnTestConnection(object sender, RoutedEventArgs e)
         {
-            TestConnection();
-        }
-
-        private bool TestConnection()
-        {
-            var current = _viewModel.Current;
-            if (string.IsNullOrEmpty(current.Server))
-            {
-                MessageBox.Show(
-                    this,
-                    "Connection property \"Server\" can not be empty!", 
-                    "Test connection", 
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-
-                return false;
-            }
-            return true;
+            _viewModel.TestConnection();
         }
     }
 }

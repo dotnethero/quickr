@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Quickr.Models;
-using Quickr.Properties;
 using Quickr.ViewModels;
 
 namespace Quickr.Views
@@ -33,8 +31,8 @@ namespace Quickr.Views
 
         private void OnConnect(object sender, RoutedEventArgs e)
         {
-            var model = new ConnectViewModel(Settings.Current.Endpoints);
-            var conn = new ConnectWindow(model, this);
+            var model = new ConnectViewModel { Window = this };
+            var conn = new ConnectWindow(model) { Owner = this };
             if (conn.ShowDialog() == true)
             {
                 ViewModel.ConnectCommand.Execute(model.Current);
