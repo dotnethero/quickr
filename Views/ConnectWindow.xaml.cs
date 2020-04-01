@@ -9,56 +9,81 @@ namespace Quickr.Views
     /// </summary>
     public partial class ConnectWindow : Window
     {
-        private readonly ConnectViewModel _viewModel;
+        private ConnectViewModel ViewModel { get; }
 
         internal ConnectWindow(ConnectViewModel viewModel)
         {
             InitializeComponent();
-            DataContext = _viewModel = viewModel;
-            _viewModel.PropertyChanged += OnPropertyChanged;
-        }
-
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(ConnectViewModel.Current) && _viewModel.Current != null)
-            {
-                PasswordTextBox.Password = _viewModel.Current.Password;
-            }
+            DataContext = ViewModel = viewModel;
+            ViewModel.PropertyChanged += OnPropertyChanged;
         }
 
         private void OnConnect(object sender, RoutedEventArgs e)
         {
-            if (_viewModel.TestConnection())
+            var result = ViewModel.EnsureConnectionIsValid();
+            if (result.IsSuccess)
             {
-                _viewModel.SaveChanges();
+                ViewModel.SaveChanges();
                 DialogResult = true;
+            }
+            else
+            {
+                ShowError(result.Message);
             }
         }
         
+        private void OnTestConnection(object sender, RoutedEventArgs e)
+        {
+            var result = ViewModel.EnsureConnectionIsValid();
+            if (result.IsSuccess)
+            {
+                ShowSuccess(result.Message);
+            }
+            else
+            {
+                ShowError(result.Message);
+            }
+        }
+
         private void OnSaveChanges(object sender, RoutedEventArgs e)
         {
-            _viewModel.SaveChanges();
+            ViewModel.SaveChanges();
             DialogResult = false;
         }
         
-        private void OnAdd(object sender, RoutedEventArgs e)
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            _viewModel.Add();
+            if (e.PropertyName == nameof(ConnectViewModel.Current) && ViewModel.Current != null)
+            {
+                PasswordTextBox.Password = ViewModel.Current.Password;
+            }
         }
-
-        private void OnDelete(object sender, RoutedEventArgs e)
-        {
-            _viewModel.RemoveCurrent();
-        }
-
+        
         private void OnPasswordChanged(object sender, RoutedEventArgs e)
         {
-            _viewModel.Current.Password = PasswordTextBox.Password;
+            ViewModel.Current.Password = PasswordTextBox.Password;
         }
 
-        private void OnTestConnection(object sender, RoutedEventArgs e)
+        private void ShowSuccess(string message)
         {
-            _viewModel.TestConnection();
+            const string title = "Success";
+            MessageBox.Show(
+                this,
+                message,
+                title, 
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+        }
+
+        private void ShowError(string message)
+        {
+            const string title = "Connection error";
+            MessageBox.Show(
+                this,
+                message,
+                title, 
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
         }
     }
 }

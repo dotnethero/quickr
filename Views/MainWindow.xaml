@@ -4,8 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Quickr.ViewModels"
-        xmlns:model="clr-namespace:Quickr.Models"
-        xmlns:quickr="clr-namespace:Quickr"
         xmlns:views="clr-namespace:Quickr.Views"
         xmlns:keys="clr-namespace:Quickr.Models.Keys"
         xmlns:data="clr-namespace:Quickr.ViewModels.Data"
@@ -17,7 +15,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Database">
-                <MenuItem Header="Connect..." Click="OnConnect"></MenuItem>
+                <MenuItem Header="Connect..." Command="{Binding ConnectCommand}" />
             </MenuItem>
         </Menu>
         <Border BorderBrush="AliceBlue" BorderThickness="1">

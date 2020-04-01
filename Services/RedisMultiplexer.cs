@@ -12,7 +12,7 @@ namespace Quickr.Services
 
         public ServerEntry Connect(EndPointModel endpoint)
         {
-            var endPoint = new DnsEndPoint(endpoint.Server, endpoint.Port ?? 6379);
+            var endPoint = new DnsEndPoint(endpoint.Host, endpoint.Port ?? 6379);
             var options = new ConfigurationOptions
             {
                 AllowAdmin = true,
@@ -31,9 +31,9 @@ namespace Quickr.Services
             {
                 Name = endpoint.Name,
                 Connection = connection,
-                Databases = connection.GetDatabases().ToList()
+                Databases = connection.GetDatabases().ToList(),
+                IsExpanded = true
             };
         }
-
     }
 }

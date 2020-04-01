@@ -59,7 +59,7 @@
             VerticalAlignment="Bottom"
             Margin="5,2,0,2"
             Content="Add new"
-            Click="OnAdd" />
+            Command="{Binding AddCommand}" />
         <StackPanel
             Grid.Row="0"
             Grid.Column="1"
@@ -107,8 +107,8 @@
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0">Name:</TextBlock>
                     <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBlock Grid.Column="0" Grid.Row="1">Server:</TextBlock>
-                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Server, Mode=TwoWay}" />
+                    <TextBlock Grid.Column="0" Grid.Row="1">Host:</TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Host, Mode=TwoWay}" />
                     <TextBlock Grid.Column="0" Grid.Row="2">Port:</TextBlock>
                     <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Port, Mode=TwoWay, Converter={StaticResource NullableIntToStringConverter}}" />
                     <TextBlock Grid.Column="0" Grid.Row="3">Password:</TextBlock>
@@ -120,7 +120,7 @@
                 Orientation="Horizontal" 
                 HorizontalAlignment="Stretch" 
                 Margin="0,0">
-                <Button Background="AliceBlue" Click="OnDelete">Delete</Button>
+                <Button Background="AliceBlue" Command="{Binding DeleteCommand}">Delete</Button>
                 <Button Background="AliceBlue" Click="OnTestConnection">Test connection</Button>
             </StackPanel>
         </StackPanel>

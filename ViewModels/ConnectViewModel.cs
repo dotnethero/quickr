@@ -1,16 +1,34 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
+using System.Windows.Input;
 using Quickr.Models;
 using Quickr.Properties;
+using Quickr.Services;
+using Quickr.Utils;
 
 namespace Quickr.ViewModels
 {
+    internal class ConnectionResult
+    {
+        public bool IsSuccess { get; }
+        public string Message { get; }
+
+        public ConnectionResult(bool isSuccess, string message)
+        {
+            IsSuccess = isSuccess;
+            Message = message;
+        }
+    }
+
     internal class ConnectViewModel: BaseViewModel
     {
+        private readonly RedisMultiplexer _multiplexer;
         private EndPointModel _current;
+        
+        public ICommand AddCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
 
-        public Window Window { get; set; }
         public ObservableCollection<EndPointModel> Endpoints { get; }
 
         public EndPointModel Current
@@ -24,12 +42,18 @@ namespace Quickr.ViewModels
             }
         }
 
-        public ConnectViewModel()
+        public ConnectViewModel(RedisMultiplexer multiplexer)
         {
+            _multiplexer = multiplexer;
+
             Endpoints = new ObservableCollection<EndPointModel>(Settings.Current.Endpoints);
             EnsureAtLeastOneItemPresent();
+
+            // commands
+            AddCommand = new Command(Add);
+            DeleteCommand = new Command(DeleteCurrent);
         }
-        
+
         public void Add()
         {
             var model = new EndPointModel();
@@ -37,7 +61,7 @@ namespace Quickr.ViewModels
             Current = model;
         }
 
-        public void RemoveCurrent()
+        public void DeleteCurrent()
         {
             Endpoints.Remove(Current);
             EnsureAtLeastOneItemPresent();
@@ -49,20 +73,21 @@ namespace Quickr.ViewModels
             Settings.Current.Save();
         }
 
-        public bool TestConnection()
+        public ConnectionResult EnsureConnectionIsValid()
         {
-            if (string.IsNullOrEmpty(Current.Server))
+            if (string.IsNullOrEmpty(Current.Host))
             {
-                MessageBox.Show(
-                    Window,
-                    "Connection property \"Server\" can not be empty!", 
-                    "Test connection", 
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-
-                return false;
+                return new ConnectionResult(false, "Host can not be empty!");
             }
-            return true;
+            try
+            {
+                using var server = _multiplexer.Connect(Current).Connection;
+                return new ConnectionResult(true, "Connection succeeded!");
+            }
+            catch (Exception ex)
+            {
+                return new ConnectionResult(false, ex.Message);
+            }
         }
 
         private void EnsureAtLeastOneItemPresent()
@@ -76,5 +101,6 @@ namespace Quickr.ViewModels
                 Current = Endpoints.First();
             }
         }
+        
     }
 }

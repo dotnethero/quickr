@@ -14,29 +14,9 @@ namespace Quickr.Views
         internal MainWindow(MainWindowViewModel viewModel)
         {
             InitializeComponent();
-            ViewModel = viewModel;
-            DataContext = viewModel;
-
+            DataContext = ViewModel = viewModel;
             ViewModel.Window = this;
-
-            // for test purposes
-            var model = new EndPointModel
-            {
-                Name = "test",
-                Server = "localhost",
-                Port = 6379
-            };
-            ViewModel.ConnectCommand.Execute(model);
-        }
-
-        private void OnConnect(object sender, RoutedEventArgs e)
-        {
-            var model = new ConnectViewModel { Window = this };
-            var conn = new ConnectWindow(model) { Owner = this };
-            if (conn.ShowDialog() == true)
-            {
-                ViewModel.ConnectCommand.Execute(model.Current);
-            }
+            ViewModel.ConnectToTest();
         }
 
         private void OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

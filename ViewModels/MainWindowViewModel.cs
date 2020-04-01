@@ -47,7 +47,7 @@ namespace Quickr.ViewModels
             _keyFactory = keyFactory;
 
             // commands
-            ConnectCommand = new ParameterCommand(Connect);
+            ConnectCommand = new Command(Connect);
             DisconnectCommand = new ParameterCommand(Disconnect);
             CreateKeyCommand = new ParameterCommand(CreateKey);
             SelectCommand = new ParameterCommand(Select);
@@ -57,17 +57,37 @@ namespace Quickr.ViewModels
             MarkAsExpiredCommand = new ParameterCommand(MarkAsExpired);
         }
         
-        private void Connect(object model)
+        private void Connect()
         {
-            if (model is EndPointModel endpoint)
+            var model = new ConnectViewModel(_multiplexer);
+            var window = new ConnectWindow(model);
+            window.Owner = Window;
+            if (window.ShowDialog() == true)
             {
-                var server = _multiplexer.Connect(endpoint);
-                foreach (var database in server.Databases)
-                {
-                    database.Refresh();
-                }
-                Servers.Add(server);
+                ConnectToEndpoint(model.Current);
             }
+        }
+
+        public void ConnectToTest()
+        {
+            var model = new EndPointModel
+            {
+                Name = "test",
+                Host = "localhost",
+                Port = 6379
+            };
+            ConnectToEndpoint(model);
+        }
+
+        private void ConnectToEndpoint(EndPointModel endpoint)
+        {
+            var server = _multiplexer.Connect(endpoint);
+            foreach (var database in server.Databases)
+            {
+                database.Refresh();
+            }
+
+            Servers.Add(server);
         }
 
         private void Disconnect(object obj)
