@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Quickr.Models.Keys;
@@ -13,6 +14,12 @@ namespace Quickr.Services
         public RedisConnection(ConnectionMultiplexer connection)
         {
             _connection = connection;
+        }
+        
+        public IGrouping<string, KeyValuePair<string, string>>[] Info()
+        {
+            var server = GetServer();
+            return server.Info();
         }
 
         public DatabaseEntry[] GetDatabases()

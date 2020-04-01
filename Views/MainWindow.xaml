@@ -166,6 +166,9 @@
                         <DataTemplate DataType="{x:Type vm:DatabaseViewModel}">
                             <views:DatabaseView DataContext="{Binding}" />
                         </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:ServerViewModel}">
+                            <views:ServerInfoView DataContext="{Binding}" />
+                        </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
             </Grid>
