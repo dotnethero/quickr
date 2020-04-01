@@ -191,7 +191,7 @@ namespace Quickr.Services
         public RedisKey[] GetKeys(int dbIndex, RedisValue pattern = default)
         {
             return GetServer()
-                .Keys(dbIndex, pattern, 50000)
+                .Keys(dbIndex, pattern, 2500)
                 .ToArray();
         }
 

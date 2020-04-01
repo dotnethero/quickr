@@ -2,16 +2,30 @@
   "Endpoints": [
     {
       "Name": "localhost",
-      "Server": "localhost",
+      "Host": "localhost",
       "Port": 6379,
       "Password": "",
       "UseSsl": false
     },
     {
-      "Name": "azure-db",
-      "Server": "redis-19774.c56.east-us.azure.cloud.redislabs.com",
+      "Name": "redis-enterprise",
+      "Host": "redis-19774.c56.east-us.azure.cloud.redislabs.com",
       "Port": 19774,
       "Password": "vVPZlXbD868wlEy3bFhSPNdX51ITW7jt",
+      "UseSsl": false
+    },
+    {
+      "Name": "azure-instance",
+      "Host": "quickr.redis.cache.windows.net",
+      "Port": 6380,
+      "Password": "erDZzNq8ZhG2v2xlumU9dr7UdMoQw7poKBIWy1+aYPs=",
+      "UseSsl": true
+    },
+    {
+      "Name": "amazonaws",
+      "Host": "elasticache-db-0001-001.eqno4n.0001.use2.cache.amazonaws.com",
+      "Port": 6379,
+      "Password": "",
       "UseSsl": false
     }
   ]
