@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Quickr.Models;
+using Quickr.Models.Keys;
 using Quickr.Properties;
 using Quickr.Services;
 using Quickr.Utils;
@@ -14,9 +17,9 @@ namespace Quickr.ViewModels
         public bool IsSuccess { get; }
         public string Message { get; }
 
-        public ConnectionResult(bool isSuccess, string message)
+        public ConnectionResult(bool success, string message)
         {
-            IsSuccess = isSuccess;
+            IsSuccess = success;
             Message = message;
         }
     }
@@ -25,10 +28,12 @@ namespace Quickr.ViewModels
     {
         private readonly RedisMultiplexer _multiplexer;
         private EndPointModel _current;
-        
+        private bool _isReady;
+
         public ICommand AddCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
 
+        public ServerEntry Server { get; private set; }
         public ObservableCollection<EndPointModel> Endpoints { get; }
 
         public EndPointModel Current
@@ -42,12 +47,24 @@ namespace Quickr.ViewModels
             }
         }
 
+        public bool IsReady
+        {
+            get => _isReady;
+            set
+            {
+                if (value == _isReady) return;
+                _isReady = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ConnectViewModel(RedisMultiplexer multiplexer)
         {
             _multiplexer = multiplexer;
 
             Endpoints = new ObservableCollection<EndPointModel>(Settings.Current.Endpoints);
             EnsureAtLeastOneItemPresent();
+            IsReady = true;
 
             // commands
             AddCommand = new Command(Add);
@@ -73,20 +90,35 @@ namespace Quickr.ViewModels
             Settings.Current.Save();
         }
 
-        public ConnectionResult EnsureConnectionIsValid()
+        public async Task<ConnectionResult> EnsureConnectionIsValid(bool test, CancellationToken token)
         {
             if (string.IsNullOrEmpty(Current.Host))
             {
                 return new ConnectionResult(false, "Host can not be empty!");
             }
+
             try
             {
-                using var server = _multiplexer.Connect(Current).Connection;
+                IsReady = false;
+                var task = _multiplexer.ConnectAsync(Current);
+                var index = Task.WaitAny(Task.Delay(5000, token), task);
+                if (index == 0)
+                {
+                    throw new TimeoutException("Connection timeout!");
+                }
+                if (!test)
+                {
+                    Server = await task.ConfigureAwait(false);
+                }
                 return new ConnectionResult(true, "Connection succeeded!");
             }
             catch (Exception ex)
             {
                 return new ConnectionResult(false, ex.Message);
+            }
+            finally
+            {
+                IsReady = true;
             }
         }
 

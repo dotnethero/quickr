@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Quickr.Models;
 using Quickr.Models.Keys;
 using StackExchange.Redis;
@@ -10,7 +11,7 @@ namespace Quickr.Services
     {
         private const string ClientName = "Quickr";
 
-        public ServerEntry Connect(EndPointModel endpoint)
+        public async Task<ServerEntry> ConnectAsync(EndPointModel endpoint)
         {
             var endPoint = new DnsEndPoint(endpoint.Host, endpoint.Port ?? 6379);
             var options = new ConfigurationOptions
@@ -25,7 +26,7 @@ namespace Quickr.Services
                 }
             };
 
-            var multiplexer = ConnectionMultiplexer.Connect(options);
+            var multiplexer = await ConnectionMultiplexer.ConnectAsync(options).ConfigureAwait(false);
             var connection = new RedisConnection(multiplexer);
             return new ServerEntry
             {

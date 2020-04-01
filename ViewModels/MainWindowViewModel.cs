@@ -60,11 +60,15 @@ namespace Quickr.ViewModels
         private void Connect()
         {
             var model = new ConnectViewModel(_multiplexer);
-            var window = new ConnectWindow(model);
-            window.Owner = Window;
-            if (window.ShowDialog() == true)
+            var window = new ConnectWindow(model) { Owner = Window };
+            if (window.ShowDialog() == true && model.Server != null)
             {
-                ConnectToEndpoint(model.Current);
+                var server = model.Server;
+                foreach (var database in server.Databases)
+                {
+                    database.Refresh();
+                }
+                Servers.Add(server);
             }
         }
 
@@ -81,12 +85,11 @@ namespace Quickr.ViewModels
 
         private void ConnectToEndpoint(EndPointModel endpoint)
         {
-            var server = _multiplexer.Connect(endpoint);
+            var server = _multiplexer.ConnectAsync(endpoint).ConfigureAwait(false).GetAwaiter().GetResult();
             foreach (var database in server.Databases)
             {
                 database.Refresh();
             }
-
             Servers.Add(server);
         }
 

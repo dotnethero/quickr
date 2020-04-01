@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using Quickr.ViewModels;
 
@@ -9,6 +11,7 @@ namespace Quickr.Views
     /// </summary>
     public partial class ConnectWindow : Window
     {
+        private CancellationTokenSource CancellationTokenSource { get; }
         private ConnectViewModel ViewModel { get; }
 
         internal ConnectWindow(ConnectViewModel viewModel)
@@ -16,11 +19,17 @@ namespace Quickr.Views
             InitializeComponent();
             DataContext = ViewModel = viewModel;
             ViewModel.PropertyChanged += OnPropertyChanged;
+            CancellationTokenSource = new CancellationTokenSource();
         }
 
-        private void OnConnect(object sender, RoutedEventArgs e)
+        private async void OnConnect(object sender, RoutedEventArgs e)
         {
-            var result = ViewModel.EnsureConnectionIsValid();
+            var token = CancellationTokenSource.Token;
+            var result = await Task.Run(() => ViewModel.EnsureConnectionIsValid(false, token), token);
+            if (token.IsCancellationRequested)
+            {
+                return;
+            }
             if (result.IsSuccess)
             {
                 ViewModel.SaveChanges();
@@ -31,10 +40,15 @@ namespace Quickr.Views
                 ShowError(result.Message);
             }
         }
-        
-        private void OnTestConnection(object sender, RoutedEventArgs e)
+
+        private async void OnTestConnection(object sender, RoutedEventArgs e)
         {
-            var result = ViewModel.EnsureConnectionIsValid();
+            var token = CancellationTokenSource.Token;
+            var result = await Task.Run(() => ViewModel.EnsureConnectionIsValid(true, token), token);
+            if (token.IsCancellationRequested)
+            {
+                return;
+            }
             if (result.IsSuccess)
             {
                 ShowSuccess(result.Message);
@@ -44,9 +58,16 @@ namespace Quickr.Views
                 ShowError(result.Message);
             }
         }
+        
+        private void OnClose(object sender, RoutedEventArgs e)
+        {
+            CancellationTokenSource.Cancel();
+            DialogResult = false;
+        }
 
         private void OnSaveChanges(object sender, RoutedEventArgs e)
         {
+            CancellationTokenSource.Cancel();
             ViewModel.SaveChanges();
             DialogResult = false;
         }

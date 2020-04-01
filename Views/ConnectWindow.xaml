@@ -120,8 +120,8 @@
                 Orientation="Horizontal" 
                 HorizontalAlignment="Stretch" 
                 Margin="0,0">
-                <Button Background="AliceBlue" Command="{Binding DeleteCommand}">Delete</Button>
-                <Button Background="AliceBlue" Click="OnTestConnection">Test connection</Button>
+                <Button Background="AliceBlue" IsEnabled="{Binding IsReady}" Command="{Binding DeleteCommand}">Delete</Button>
+                <Button Background="AliceBlue" IsEnabled="{Binding IsReady}" Click="OnTestConnection">Test connection</Button>
             </StackPanel>
         </StackPanel>
         <DockPanel
@@ -130,8 +130,8 @@
             HorizontalAlignment="Stretch" 
             VerticalAlignment="Bottom"
             Margin="5,0,5,0">
-            <Button DockPanel.Dock="Right" IsDefault="True" Click="OnConnect">Connect</Button>
-            <Button DockPanel.Dock="Right" IsCancel="True">Close</Button>
+            <Button DockPanel.Dock="Right" IsDefault="True" Click="OnConnect" IsEnabled="{Binding IsReady}">Connect</Button>
+            <Button DockPanel.Dock="Right" IsCancel="True" Click="OnClose">Close</Button>
             <Button DockPanel.Dock="Right" HorizontalAlignment="Left" Click="OnSaveChanges">Save changes</Button>
         </DockPanel>
     </Grid>
