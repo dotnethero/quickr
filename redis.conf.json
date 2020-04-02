@@ -1,0 +1,184 @@
+﻿[{
+    "section": "Network",
+    "configs": [
+        { "key": "bind", "description": "" },
+        { "key": "port", "description": "" },
+        { "key": "protected-mode", "description": "" },
+        { "key": "tcp-backlog", "description": "" },
+        { "key": "unixsocket", "description": "" },
+        { "key": "unixsocketperm", "description": "" },
+        { "key": "timeout", "description": "" },
+        { "key": "tcp-keepalive", "description": "" }
+    ]
+},{
+    "section": "General",
+    "configs": [
+        { "key": "daemonize", "description": "" },
+        { "key": "supervised", "description": "" },
+        { "key": "pidfile", "description": "" },
+        { "key": "loglevel", "description": "" },
+        { "key": "logfile", "description": "" },
+        { "key": "syslog-enabled", "description": "" },
+        { "key": "syslog-ident", "description": "" },
+        { "key": "syslog-ident", "description": "" },
+        { "key": "syslog-facility", "description": "" },
+        { "key": "databases", "description": "" },
+        { "key": "always-show-logo", "description": "" }
+    ]
+},{
+    "section": "Snapshotting",
+    "configs": [
+        { "key": "save", "description": "" },
+        { "key": "stop-writes-on-bgsave-error", "description": "" },
+        { "key": "rdbcompression", "description": "" },
+        { "key": "rdbchecksum", "description": "" },
+        { "key": "dbfilename", "description": "" },
+        { "key": "dir", "description": "" }
+    ]
+},{
+    "section": "Replication",
+    "configs": [
+        { "key": "slaveof", "description": "" },
+        { "key": "replicaof", "description": "" },
+        { "key": "masterauth", "description": "" },
+        { "key": "slave-serve-stale-data", "description": "" },
+        { "key": "replica-serve-stale-data", "description": "" },
+        { "key": "slave-read-only", "description": "" },
+        { "key": "replica-read-only", "description": "" },
+        { "key": "repl-diskless-sync", "description": "" },
+        { "key": "repl-diskless-sync-delay", "description": "" },
+        { "key": "repl-ping-slave-period", "description": "" },
+        { "key": "repl-ping-replica-period", "description": "" },
+        { "key": "repl-timeout", "description": "" },
+        { "key": "repl-disable-tcp-nodelay", "description": "" },
+        { "key": "repl-backlog-size", "description": "" },
+        { "key": "repl-backlog-ttl", "description": "" },
+        { "key": "slave-priority", "description": "" },
+        { "key": "replica-priority", "description": "" },
+        { "key": "min-slaves-to-write", "description": "" },
+        { "key": "min-replicas-to-write", "description": "" },
+        { "key": "min-replicas-max-lag", "description": "" },
+        { "key": "min-slaves-max-lag", "description": "" },
+        { "key": "slave-announce-ip", "description": "" },
+        { "key": "replica-announce-ip", "description": "" },
+        { "key": "slave-announce-port", "description": "" },
+        { "key": "replica-announce-port", "description": "" }
+    ]
+},{
+    "section": "Security",
+    "configs": [
+        { "key": "requirepass", "description": "" },
+        { "key": "rename-command", "description": "" }
+    ]
+},{
+    "section": "Clients",
+    "configs": [
+        { "key": "maxclients", "description": "" }
+    ]
+},{
+    "section": "Memory management",
+    "configs": [
+        { "key": "maxmemory", "description": "" },
+        { "key": "maxmemory-policy", "description": "" },
+        { "key": "maxmemory-samples", "description": "" },
+        { "key": "slave-ignore-maxmemory", "description": "" },
+        { "key": "replica-ignore-maxmemory", "description": "" }
+    ]
+},{
+    "section": "Lazy freeing",
+    "configs": [
+        { "key": "lazyfree-lazy-eviction", "description": "" },
+        { "key": "lazyfree-lazy-expire", "description": "" },
+        { "key": "lazyfree-lazy-server-del", "description": "" },
+        { "key": "slave-lazy-flush", "description": "" },
+        { "key": "replica-lazy-flush", "description": "" }
+    ]
+},{
+    "section": "Append only mode",
+    "configs": [
+        { "key": "appendonly", "description": "" },
+        { "key": "appendfilename", "description": "" },
+        { "key": "appendfsync", "description": "" },
+        { "key": "no-appendfsync-on-rewrite", "description": "" },
+        { "key": "auto-aof-rewrite-percentage", "description": "" },
+        { "key": "auto-aof-rewrite-min-size", "description": "" },
+        { "key": "aof-load-truncated", "description": "" },
+        { "key": "aof-use-rdb-preamble", "description": "" }
+    ]
+},{
+    "section": "Lua scripting",
+    "configs": [
+        { "key": "lua-time-limit", "description": "" }
+    ]
+},{
+    "section": "Redis cluster",
+    "configs": [
+        { "key": "cluster-enabled", "description": "" },
+        { "key": "cluster-config-file", "description": "" },
+        { "key": "cluster-node-timeout", "description": "" },
+        { "key": "cluster-slave-validity-factor", "description": "" },
+        { "key": "cluster-replica-validity-factor", "description": "" },
+        { "key": "cluster-migration-barrier", "description": "" },
+        { "key": "cluster-require-full-coverage", "description": "" },
+        { "key": "cluster-slave-no-failover", "description": "" },
+        { "key": "cluster-replica-no-failover", "description": "" }
+    ]
+},{
+    "section": "Cluster docker/NAT support",
+    "configs": [
+        { "key": "cluster-announce-ip", "description": "" },
+        { "key": "cluster-announce-port", "description": "" },
+        { "key": "cluster-announce-bus-port", "description": "" }
+    ]
+},{
+    "section": "Show log",
+    "configs": [
+        { "key": "slowlog-log-slower-than", "description": "" },
+        { "key": "slowlog-max-len", "description": "" }
+    ]
+},{
+    "section": "Latency monitor",
+    "configs": [
+        { "key": "latency-monitor-threshold", "description": "" }
+    ]
+},{
+    "section": "Event notification",
+    "configs": [
+        { "key": "notify-keyspace-events", "description": "" }
+    ]
+},{
+    "section": "Advanced config",
+    "configs": [
+        { "key": "hash-max-ziplist-entries", "description": "" },
+        { "key": "hash-max-ziplist-value", "description": "" },
+        { "key": "list-max-ziplist-size", "description": "" },
+        { "key": "list-compress-depth", "description": "" },
+        { "key": "set-max-intset-entries", "description": "" },
+        { "key": "zset-max-ziplist-entries", "description": "" },
+        { "key": "zset-max-ziplist-value", "description": "" },
+        { "key": "hll-sparse-max-bytes", "description": "" },
+        { "key": "stream-node-max-bytes", "description": "" },
+        { "key": "stream-node-max-entries", "description": "" },
+        { "key": "activerehashing", "description": "" },
+        { "key": "client-output-buffer-limit", "description": "" },
+        { "key": "client-query-buffer-limit", "description": "" },
+        { "key": "proto-max-bulk-len", "description": "" },
+        { "key": "hz", "description": "" },
+        { "key": "dynamic-hz", "description": "" },
+        { "key": "aof-rewrite-incremental-fsync", "description": "" },
+        { "key": "rdb-save-incremental-fsync", "description": "" },
+        { "key": "lfu-log-factor", "description": "" },
+        { "key": "lfu-decay-time", "description": "" }
+    ]
+},{
+    "section": "Active defragmentation",
+    "configs": [
+        { "key": "activedefrag", "description": "" },
+        { "key": "active-defrag-ignore-bytes", "description": "" },
+        { "key": "active-defrag-threshold-lower", "description": "" },
+        { "key": "active-defrag-threshold-upper", "description": "" },
+        { "key": "active-defrag-cycle-min", "description": "" },
+        { "key": "active-defrag-cycle-max", "description": "" },
+        { "key": "active-defrag-max-scan-fields", "description": "" }
+    ]
+}]

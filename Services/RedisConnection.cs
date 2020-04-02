@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Quickr.Models.Configuration;
 using Quickr.Models.Keys;
 using StackExchange.Redis;
 
@@ -20,6 +23,39 @@ namespace Quickr.Services
         {
             var server = GetServer();
             return server.Info();
+        }
+        
+        public IGrouping<string, KeyValuePair<string, string>>[] Config()
+        {
+            var server = GetServer();
+            var configs = server.ConfigGet().ToDictionary();
+            var redisConfSpec = File.ReadAllText("redis.conf.json");
+            var sections = JsonConvert.DeserializeObject<ConfigSection[]>(redisConfSpec);
+            var query =
+                from section in sections
+                from config in section.Configs
+                where configs.ContainsKey(config.Key)
+                select new
+                {
+                    Section = section.Section,
+                    Pair = KeyValuePair.Create(config.Key, configs[config.Key])
+                };
+
+            var specs = sections
+                .SelectMany(x => x.Configs)
+                .Select(x => x.Key)
+                .ToHashSet();
+
+            var other =
+                from config in configs
+                where !specs.Contains(config.Key)
+                select new
+                {
+                    Section = "Other",
+                    Pair = KeyValuePair.Create(config.Key, config.Value)
+                };
+
+            return query.Concat(other).GroupBy(x => x.Section, x => x.Pair).ToArray();
         }
 
         public DatabaseEntry[] GetDatabases()
