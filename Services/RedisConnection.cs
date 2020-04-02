@@ -21,13 +21,13 @@ namespace Quickr.Services
         
         public IGrouping<string, KeyValuePair<string, string>>[] Info()
         {
-            var server = GetServer();
+            var server = GetOriginServer();
             return server.Info();
         }
         
         public IGrouping<string, KeyValuePair<string, string>>[] Config()
         {
-            var server = GetServer();
+            var server = GetOriginServer();
             var configs = server.ConfigGet().ToDictionary();
             var redisConfSpec = File.ReadAllText("redis.conf.json");
             var sections = JsonConvert.DeserializeObject<ConfigSection[]>(redisConfSpec);
@@ -60,10 +60,10 @@ namespace Quickr.Services
 
         public DatabaseEntry[] GetDatabases()
         {
-            var server = GetServer();
-            var count = server.DatabaseCount != 0 ? server.DatabaseCount : 1;
+            var server = GetOriginServer();
+            var count = server.ServerType == ServerType.Cluster || server.DatabaseCount == 0 ? 1 : server.DatabaseCount;
             return Enumerable
-                .Range(0, count )
+                .Range(0, count)
                 .Select(x => new DatabaseEntry(this, x))
                 .ToArray();
         }
@@ -216,18 +216,21 @@ namespace Quickr.Services
 
         public long GetSize(DatabaseEntry database)
         {
-            return GetServer().DatabaseSize(database.DbIndex);
+            return GetMasterServers()
+                .Select(server => server.DatabaseSize(database.DbIndex))
+                .Sum();
         }
 
         public void Flush(DatabaseEntry database)
         {
-            GetServer().FlushDatabase(database.DbIndex);
+            GetMasterServers()
+                .ForEach(server => server.FlushDatabase(database.DbIndex));
         }
 
         public RedisKey[] GetKeys(int dbIndex, RedisValue pattern = default)
         {
-            return GetServer()
-                .Keys(dbIndex, pattern, 2500)
+            return GetMasterServers()
+                .SelectMany(server => server.Keys(dbIndex, pattern, 2500))
                 .ToArray();
         }
 
@@ -236,9 +239,24 @@ namespace Quickr.Services
             return _connection.GetDatabase(dbIndex);
         }
 
-        private IServer GetServer()
+        private IServer GetOriginServer()
         {
             return _connection.GetServer(_connection.GetEndPoints().First());
+        }
+        
+        private List<IServer> GetMasterServers()
+        {
+            var server = GetOriginServer();
+            if (server.ServerType == ServerType.Standalone)
+            {
+                return new List<IServer> { server };
+            }
+            return server
+                .ClusterConfiguration
+                .Nodes
+                .Where(x => !x.IsSlave)
+                .Select(x => _connection.GetServer(x.EndPoint))
+                .ToList();
         }
 
         public void Dispose()
