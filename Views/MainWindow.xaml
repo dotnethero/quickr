@@ -8,6 +8,7 @@
         xmlns:keys="clr-namespace:Quickr.Models.Keys"
         xmlns:data="clr-namespace:Quickr.ViewModels.Data"
         xmlns:keyViews="clr-namespace:Quickr.Views.Data"
+        xmlns:server="clr-namespace:Quickr.Views.Server"
         mc:Ignorable="d"
         x:Name="Root"
         d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=False}"
@@ -167,7 +168,7 @@
                             <views:DatabaseView DataContext="{Binding}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type vm:ServerViewModel}">
-                            <views:ServerInfoView DataContext="{Binding}" />
+                            <server:ServerInfoView DataContext="{Binding}" />
                         </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>

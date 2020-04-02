@@ -2,14 +2,14 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Quickr.Views
+namespace Quickr.Views.Server
 {
     /// <summary>
     /// Interaction logic for DatabaseView.xaml
     /// </summary>
-    public partial class ServerInfoView : UserControl
+    public partial class KeyValueGroupView : UserControl
     {
-        public ServerInfoView()
+        public KeyValueGroupView()
         {
             InitializeComponent();
         }

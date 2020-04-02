@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Views\ServerInfoView.xaml">
+    <Page Update="Views\Server\KeyValueGroupView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Data\SortedSetView.xaml">
