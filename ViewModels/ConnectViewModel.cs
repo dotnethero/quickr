@@ -106,9 +106,15 @@ namespace Quickr.ViewModels
                 {
                     throw new TimeoutException("Connection timeout!");
                 }
-                if (!test)
+
+                var result = await task.ConfigureAwait(false);
+                if (test)
                 {
-                    Server = await task.ConfigureAwait(false);
+                    result.Connection.Dispose();
+                }
+                else
+                {
+                    Server = result;
                 }
                 return new ConnectionResult(true, "Connection succeeded!");
             }
