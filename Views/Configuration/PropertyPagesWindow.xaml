@@ -50,6 +50,28 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Margin="10,-5,0,0">
+            <StackPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment" Value="Right" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="Margin" Value="0,0,5,0" />
+                </Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="Margin" Value="1,2" />
+                    <Setter Property="Padding" Value="2" />
+                </Style>
+                <Style TargetType="TextBlock" x:Key="*">
+                    <Setter Property="HorizontalAlignment" Value="Right" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="Foreground" Value="OrangeRed" />
+                    <Setter Property="Text" Value="*" />
+                    <Setter Property="Margin" Value="3,0" />
+                </Style>
+                <Style TargetType="CheckBox">
+                    <Setter Property="Margin" Value="0,3" />
+                    <Setter Property="VerticalContentAlignment" Value="Bottom" />
+                </Style>
+            </StackPanel.Resources>
             <GroupBox
                 DataContext="{Binding NetworkPage}"
                 VerticalAlignment="Top"
@@ -58,7 +80,7 @@
                 BorderBrush="#FFABADB3">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" MinWidth="100" />
+                        <ColumnDefinition Width="Auto" MinWidth="130" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -66,29 +88,10 @@
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Grid.Resources>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Right" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                            <Setter Property="Margin" Value="0,0,5,0" />
-                        </Style>
-                        <Style TargetType="TextBox">
-                            <Setter Property="Margin" Value="1,2" />
-                            <Setter Property="Padding" Value="2" />
-                        </Style>
-                        <Style TargetType="TextBlock" x:Key="*">
-                            <Setter Property="HorizontalAlignment" Value="Right" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                            <Setter Property="Foreground" Value="OrangeRed" />
-                            <Setter Property="Text" Value="*" />
-                            <Setter Property="Margin" Value="3,0" />
-                        </Style>
-                        <Style TargetType="CheckBox">
-                            <Setter Property="Margin" Value="0,1" />
-                            <Setter Property="VerticalContentAlignment" Value="Bottom" />
-                        </Style>
-                    </Grid.Resources>
                     <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
                         <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=Bind.IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <TextBlock Text="Bind:" />
@@ -103,6 +106,49 @@
                         <CheckBox Content="protected mode" IsChecked="{Binding Path=ProtectedMode.IsYes}" IsEnabled="{Binding Path=ProtectedMode.Config.IsLoaded}" />
                         <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=ProtectedMode.IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     </StackPanel>
+                    <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=TcpBacklog.IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <TextBlock Text="TCP backlog:" />
+                    </StackPanel>
+                    <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Path=TcpBacklog.Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=TcpBacklog.Config.IsLoaded}" />
+                    <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=TcpKeepalive.IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <TextBlock Text="TCP keepalive:" />
+                    </StackPanel>
+                    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=TcpKeepalive.Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=TcpKeepalive.Config.IsLoaded}" />
+                    <StackPanel Grid.Row="5" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=Timeout.IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <TextBlock Text="Timeout:" />
+                    </StackPanel>
+                    <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Path=Timeout.Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=Timeout.Config.IsLoaded}" />
+                </Grid>
+            </GroupBox>
+            <GroupBox
+                DataContext="{Binding NetworkPage}"
+                VerticalAlignment="Top"
+                Padding="8"
+                Header="Unix socket"
+                BorderBrush="#FFABADB3">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="130" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=Unixsocket.IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <TextBlock Text="Path:" />
+                    </StackPanel>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=Unixsocket.Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=Unixsocket.Config.IsLoaded}" />
+                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=Unixsocketperm.IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <TextBlock Text="Permissions:" />
+                    </StackPanel>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Unixsocketperm.Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=Unixsocketperm.Config.IsLoaded}" />
                 </Grid>
             </GroupBox>
         </StackPanel>
