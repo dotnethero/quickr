@@ -8,18 +8,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance viewModels:ServerViewModel}">
     <Grid>
-         <TabControl BorderThickness="0">
-             <TabControl.Resources>
-                 <Style TargetType="TabItem">
-                     <Setter Property="Padding" Value="35,5" />
-                 </Style>
-             </TabControl.Resources>
-             <TabItem Header="Info" Margin="0,0,0,-1">
-                 <local:KeyValueGroupView DataContext="{Binding Info}"/>
-             </TabItem>
-             <TabItem Header="Config" Margin="-1,0,0,-1">
-                 <local:KeyValueGroupView DataContext="{Binding Config}" />
-             </TabItem>
-         </TabControl>   
+        <local:KeyValueGroupView DataContext="{Binding Info}"/>
     </Grid>
 </UserControl>

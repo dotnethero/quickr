@@ -25,7 +25,8 @@ namespace Quickr.Services
             return server.Info();
         }
         
-        public IGrouping<string, KeyValuePair<string, string>>[] Config()
+        // section -> key -> key * value * spec
+        public Dictionary<string, Dictionary<string, ConfigKeyValue>> ConfigGet()
         {
             var server = GetOriginServer();
             var configs = server.ConfigGet().ToDictionary();
@@ -33,12 +34,19 @@ namespace Quickr.Services
             var sections = JsonConvert.DeserializeObject<ConfigSection[]>(redisConfSpec);
             var query =
                 from section in sections
-                from config in section.Configs
-                where configs.ContainsKey(config.Key)
+                from spec in section.Configs
+                let loaded = configs.ContainsKey(spec.Key)
                 select new
                 {
                     Section = section.Section,
-                    Pair = KeyValuePair.Create(config.Key, configs[config.Key])
+                    KeyValue = new ConfigKeyValue
+                    {
+                        Key = spec.Key,
+                        DefaultValue = spec.DefaultValue,
+                        Description = spec.Description,
+                        Value = loaded ? configs[spec.Key] : null,
+                        IsLoaded = loaded
+                    }
                 };
 
             var specs = sections
@@ -52,10 +60,24 @@ namespace Quickr.Services
                 select new
                 {
                     Section = "Other",
-                    Pair = KeyValuePair.Create(config.Key, config.Value)
+                    KeyValue = new ConfigKeyValue
+                    {
+                        Key = config.Key,
+                        Value = config.Value,
+                        IsLoaded = true
+                    },
                 };
 
-            return query.Concat(other).GroupBy(x => x.Section, x => x.Pair).ToArray();
+            return query
+                .Concat(other)
+                .GroupBy(x => x.Section, x => x.KeyValue)
+                .ToDictionary(x => x.Key, x => x.ToDictionary(v => v.Key, v => v));
+        }
+        
+        public void ConfigSet(string key, string value)
+        {
+            var db = GetOriginServer();
+            db.ConfigSet(key, value);
         }
 
         public DatabaseEntry[] GetDatabases()

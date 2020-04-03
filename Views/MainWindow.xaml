@@ -53,6 +53,10 @@
                                 <StackPanel.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem 
+                                            Header="Properties..." 
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.PropertiesCommand}"
+                                            CommandParameter="{Binding}" />
+                                        <MenuItem 
                                             Header="Disconnect" 
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.DisconnectCommand}"
                                             CommandParameter="{Binding}" />

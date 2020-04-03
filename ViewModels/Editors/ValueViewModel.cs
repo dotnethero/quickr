@@ -44,5 +44,7 @@ namespace Quickr.ViewModels.Editors
             _originalValue = originalValue;
             _currentValue = currentValue;
         }
+
+        public override string ToString() => CurrentValue.ToString();
     }
 }

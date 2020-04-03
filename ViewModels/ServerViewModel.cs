@@ -11,14 +11,12 @@ namespace Quickr.ViewModels
         protected RedisConnection Connection { get; }
 
         public IGrouping<string, KeyValuePair<string, string>>[] Info { get; }
-        public IGrouping<string, KeyValuePair<string, string>>[] Config { get; }
         
         public ServerViewModel(RedisConnection connection, ServerEntry entry)
         {
             Entry = entry;
             Connection = connection;
             Info = connection.Info();
-            Config = connection.Config();
         }
     }
 }

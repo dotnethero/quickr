@@ -7,6 +7,7 @@ using Quickr.Models;
 using Quickr.Models.Keys;
 using Quickr.Services;
 using Quickr.Utils;
+using Quickr.ViewModels.Configuration;
 using Quickr.ViewModels.Connection;
 using Quickr.Views;
 using Quickr.Views.Data;
@@ -22,6 +23,7 @@ namespace Quickr.ViewModels
 
         public ICommand ConnectCommand { get; }
         public ICommand DisconnectCommand { get; }
+        public ICommand PropertiesCommand { get; }
         public ICommand CreateKeyCommand { get; }
         public ICommand SelectCommand { get; }
         public ICommand RefreshCommand { get; }
@@ -50,6 +52,7 @@ namespace Quickr.ViewModels
             // commands
             ConnectCommand = new Command(Connect);
             DisconnectCommand = new ParameterCommand(Disconnect);
+            PropertiesCommand = new ParameterCommand(ShowProperties);
             CreateKeyCommand = new ParameterCommand(CreateKey);
             SelectCommand = new ParameterCommand(Select);
             RefreshCommand = new ParameterCommand(Refresh);
@@ -57,7 +60,7 @@ namespace Quickr.ViewModels
             DeleteCommand = new ParameterCommand(Delete);
             MarkAsExpiredCommand = new ParameterCommand(MarkAsExpired);
         }
-        
+
         private void Connect()
         {
             var model = new ConnectViewModel(_multiplexer);
@@ -100,6 +103,19 @@ namespace Quickr.ViewModels
             {
                 server.Connection.Dispose();
                 Servers.Remove(server);
+            }
+        }
+        
+        private void ShowProperties(object obj)
+        {
+            if (obj is ServerEntry server)
+            {
+                var model = new PropertyPagesViewModel(server.Connection);
+                var window = new PropertyPagesWindow(model) { Owner = Window };
+                if (window.ShowDialog() == true)
+                {
+                    // TODO:
+                }
             }
         }
 

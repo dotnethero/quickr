@@ -1,14 +1,14 @@
 ﻿[{
     "section": "Network",
     "configs": [
-        { "key": "bind", "description": "" },
-        { "key": "port", "description": "" },
-        { "key": "protected-mode", "description": "" },
-        { "key": "tcp-backlog", "description": "" },
-        { "key": "unixsocket", "description": "" },
+        { "key": "bind", "description": "By default, if no \"bind\" configuration directive is specified, Redis listens for connections from all the network interfaces available on the server. It is possible to listen to just one or multiple selected interfaces using the \"bind\" configuration directive, followed by one or more IP addresses." },
+        { "key": "port", "defaultValue": "6379", "description": "Accept connections on the specified port, default is 6379 (IANA #815344). If port 0 is specified Redis will not listen on a TCP socket." },
+        { "key": "protected-mode", "defaultValue": "yes", "description": "By default protected mode is enabled. You should disable it only if you are sure you want clients from other hosts to connect to Redis even if no authentication is configured, nor a specific set of interfaces are explicitly listed using the \"bind\" directive." },
+        { "key": "tcp-backlog", "description": "In high requests-per-second environments you need an high backlog in order to avoid slow clients connections issues. Note that the Linux kernel will silently truncate it to the value of /proc/sys/net/core/somaxconn so make sure to raise both the value of somaxconn and tcp_max_syn_backlog in order to get the desired effect." },
+        { "key": "unixsocket", "description": "Specify the path for the Unix socket that will be used to listen for incoming connections. There is no default, so Redis will not listen on a unix socket when not specified." },
         { "key": "unixsocketperm", "description": "" },
-        { "key": "timeout", "description": "" },
-        { "key": "tcp-keepalive", "description": "" }
+        { "key": "timeout", "defaultValue": "0", "description": "Close the connection after a client is idle for N seconds (0 to disable)" },
+        { "key": "tcp-keepalive", "defaultValue": "300", "description": "If non-zero, use SO_KEEPALIVE to send TCP ACKs to clients in absence" }
     ]
 },{
     "section": "General",
@@ -19,7 +19,6 @@
         { "key": "loglevel", "description": "" },
         { "key": "logfile", "description": "" },
         { "key": "syslog-enabled", "description": "" },
-        { "key": "syslog-ident", "description": "" },
         { "key": "syslog-ident", "description": "" },
         { "key": "syslog-facility", "description": "" },
         { "key": "databases", "description": "" },
@@ -113,15 +112,15 @@
 },{
     "section": "Redis cluster",
     "configs": [
-        { "key": "cluster-enabled", "description": "" },
-        { "key": "cluster-config-file", "description": "" },
-        { "key": "cluster-node-timeout", "description": "" },
-        { "key": "cluster-slave-validity-factor", "description": "" },
-        { "key": "cluster-replica-validity-factor", "description": "" },
-        { "key": "cluster-migration-barrier", "description": "" },
-        { "key": "cluster-require-full-coverage", "description": "" },
-        { "key": "cluster-slave-no-failover", "description": "" },
-        { "key": "cluster-replica-no-failover", "description": "" }
+        { "key": "cluster-enabled", "values": ["yes", "no"], "description": "If yes, enables Redis Cluster support in a specific Redis instance. Otherwise the instance starts as a stand alone instance as usual."},
+        { "key": "cluster-config-file", "editable": false, "description": "Note that despite the name of this option, this is not a user editable configuration file, but the file where a Redis Cluster node automatically persists the cluster configuration (the state, basically) every time there is a change, in order to be able to re-read it at startup. The file lists things like the other nodes in the cluster, their state, persistent variables, and so forth. Often this file is rewritten and flushed on disk as a result of some message reception." },
+        { "key": "cluster-node-timeout", "description": "The maximum amount of time in milliseconds a Redis Cluster node can be unavailable, without it being considered as failing. If a master node is not reachable for more than the specified amount of time, it will be failed over by its slaves. This parameter controls other important things in Redis Cluster. Notably, every node that can't reach the majority of master nodes for the specified amount of time, will stop accepting queries." },
+        { "key": "cluster-slave-validity-factor", "description": "If set to zero, a slave will always try to failover a master, regardless of the amount of time the link between the master and the slave remained disconnected. If the value is positive, a maximum disconnection time is calculated as the node timeout value multiplied by the factor provided with this option, and if the node is a slave, it will not try to start a failover if the master link was disconnected for more than the specified amount of time. For example if the node timeout is set to 5 seconds, and the validity factor is set to 10, a slave disconnected from the master for more than 50 seconds will not try to failover its master. Note that any value different than zero may result in Redis Cluster to be unavailable after a master failure if there is no slave able to failover it. In that case the cluster will return back available only when the original master rejoins the cluster." },
+        { "key": "cluster-replica-validity-factor", "description": "If set to zero, a replica will always try to failover a master, regardless of the amount of time the link between the master and the replica remained disconnected. If the value is positive, a maximum disconnection time is calculated as the node timeout value multiplied by the factor provided with this option, and if the node is a replica, it will not try to start a failover if the master link was disconnected for more than the specified amount of time. For example if the node timeout is set to 5 seconds, and the validity factor is set to 10, a replica disconnected from the master for more than 50 seconds will not try to failover its master. Note that any value different than zero may result in Redis Cluster to be unavailable after a master failure if there is no replica able to failover it. In that case the cluster will return back available only when the original master rejoins the cluster." },
+        { "key": "cluster-migration-barrier", "description": "Minimum number of slaves a master will remain connected with, for another slave to migrate to a master which is no longer covered by any slave. See the appropriate section about replica migration in this tutorial for more information." },
+        { "key": "cluster-require-full-coverage", "values": ["yes", "no"], "description": "If this is set to yes, as it is by default, the cluster stops accepting writes if some percentage of the key space is not covered by any node. If the option is set to no, the cluster will still serve queries even if only requests about a subset of keys can be processed." },
+        { "key": "cluster-slave-no-failover", "values": ["yes", "no"], "description": "This option, when set to yes, prevents slaves from trying to failover its master during master failures. However the master can still perform a manual failover, if forced to do so." },
+        { "key": "cluster-replica-no-failover", "values": ["yes", "no"], "description": "This option, when set to yes, prevents replicas from trying to failover its master during master failures. However the master can still perform a manual failover, if forced to do so." }
     ]
 },{
     "section": "Cluster docker/NAT support",
