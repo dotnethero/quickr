@@ -1,21 +1,35 @@
 ﻿using Quickr.Models.Configuration;
-using Quickr.ViewModels.Editors;
 
 namespace Quickr.ViewModels.Configuration
 {
     internal class StringPropertyModel : BaseViewModel, IPropertyModel
     {
-        public ValueViewModel<string> Value { get; }
+        private readonly string _original;
+        private string _value;
 
-        public bool IsPropertyChanged => Value.IsValueChanged;
-
-        public StringPropertyModel(ConfigKeyValue spec)
+        public string Value
         {
-            var str = string.IsNullOrEmpty(spec.Value) ? spec.DefaultValue : spec.Value;
-            Value = new ValueViewModel<string>(str, str);
+            get => _value;
+            set
+            {
+                if (value == _value) return;
+                _value = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsPropertyChanged));
+            }
         }
 
-        public string Serialize() => Value.CurrentValue;
+        public ConfigKeyValue Config { get; }
+
+        public bool IsPropertyChanged => Value != _original;
+
+        public StringPropertyModel(ConfigKeyValue config)
+        {
+            Config = config;
+            Value = _original = string.IsNullOrEmpty(config.Value) ? config.DefaultValue : config.Value;
+        }
+
+        public string Serialize() => Value;
 
         public override string ToString() => Serialize();
     }

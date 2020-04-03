@@ -56,13 +56,54 @@
                 Padding="8"
                 Header="Network"
                 BorderBrush="#FFABADB3">
-                <StackPanel>
-                    <TextBlock Text="Bind" />
-                    <TextBox Text="{Binding Path=Bind.Value.CurrentValue}" />
-                    <TextBlock Text="Port" />
-                    <TextBox Text="{Binding Path=Port.Value.CurrentValue}" />
-                    <CheckBox IsChecked="{Binding Path=ProtectedMode.IsYes.CurrentValue}" />
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="100" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="0,0,5,0" />
+                        </Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Margin" Value="1,2" />
+                            <Setter Property="Padding" Value="2" />
+                        </Style>
+                        <Style TargetType="TextBlock" x:Key="*">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="Foreground" Value="OrangeRed" />
+                            <Setter Property="Text" Value="*" />
+                            <Setter Property="Margin" Value="3,0" />
+                        </Style>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="Margin" Value="0,1" />
+                            <Setter Property="VerticalContentAlignment" Value="Bottom" />
+                        </Style>
+                    </Grid.Resources>
+                    <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=Bind.IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <TextBlock Text="Bind:" />
+                    </StackPanel>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=Bind.Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=Bind.Config.IsLoaded}" />
+                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=Port.IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <TextBlock Text="Port:" />
+                    </StackPanel>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Port.Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=Port.Config.IsLoaded}" />
+                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                        <CheckBox Content="protected mode" IsChecked="{Binding Path=ProtectedMode.IsYes}" IsEnabled="{Binding Path=ProtectedMode.Config.IsLoaded}" />
+                        <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=ProtectedMode.IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    </StackPanel>
+                </Grid>
             </GroupBox>
         </StackPanel>
         <StackPanel
