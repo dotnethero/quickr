@@ -3,22 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Quickr.Views.Configuration"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary Source="PropertyPagesDictionary.xaml" />
     </UserControl.Resources>
-    <ScrollViewer 
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Margin="10,-5,2,5">
+    <ScrollViewer Style="{StaticResource SidePageScroll}">
         <StackPanel Margin="0,0,10,0">
-            <GroupBox
-                VerticalAlignment="Top"
-                Padding="8"
-                Header="Network"
-                BorderBrush="#FFABADB3">
+            <GroupBox Header="Network">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" MinWidth="130" />
@@ -45,11 +36,7 @@
                     <TextBox Grid.Row="5" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding Timeout}" />
                 </Grid>
             </GroupBox>
-            <GroupBox
-                VerticalAlignment="Top"
-                Padding="8"
-                Header="Unix socket"
-                BorderBrush="#FFABADB3">
+            <GroupBox Header="Unix socket">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" MinWidth="130" />
