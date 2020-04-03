@@ -16,7 +16,7 @@ namespace Quickr.ViewModels.Data
         private async void SetupAsync()
         {
             var str = await Connection.GetStringAsync(Key);
-            Value = new ValueViewModel(str);
+            Value = new StringValueViewModel(str);
             Value.ValueSaved += OnValueSaved;
         }
 

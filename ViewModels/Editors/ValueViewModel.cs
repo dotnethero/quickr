@@ -1,45 +1,45 @@
-﻿using StackExchange.Redis;
+﻿using System;
 
 namespace Quickr.ViewModels.Editors
 {
-    internal class ValueViewModel : BaseEditorViewModel
+    internal class ValueViewModel<T> : BaseEditorViewModel where T: IEquatable<T>
     {
-        private string _currentValue;
-        private string _originalValue;
+        private T _currentValue;
+        private T _originalValue;
         
-        public string OriginalValue
+        public T OriginalValue
         {
             get => _originalValue;
             set
             {
-                if (_originalValue == value) return;
+                if (_originalValue.Equals(value)) return;
                 _originalValue = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsValueChanged));
             }
         }
 
-        public string CurrentValue
+        public T CurrentValue
         {
             get => _currentValue;
             set
             {
-                if (_currentValue == value) return;
+                if (_currentValue.Equals(value)) return;
                 _currentValue = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsValueChanged));
             }
         }
 
-        public bool IsValueChanged => CurrentValue != OriginalValue;
+        public bool IsValueChanged => !CurrentValue.Equals(OriginalValue);
 
-        public ValueViewModel(RedisValue originalValue)
+        public ValueViewModel(T originalValue)
         {
             OriginalValue = originalValue;
             CurrentValue = originalValue;
         }
         
-        public ValueViewModel(RedisValue originalValue, RedisValue currentValue)
+        public ValueViewModel(T originalValue, T currentValue)
         {
             _originalValue = originalValue;
             _currentValue = currentValue;
