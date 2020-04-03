@@ -4,12 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Quickr.ViewModels"
+        xmlns:connection="clr-namespace:Quickr.ViewModels.Connection"
         mc:Ignorable="d"
         Title="Connect..." MinHeight="360" Height="360" MinWidth="680" Width="680" FontSize="14" 
         WindowStartupLocation="CenterOwner" 
         ResizeMode="CanResize" 
         ShowInTaskbar="False"
-        d:DataContext="{d:DesignInstance viewModels:ConnectViewModel}">
+        d:DataContext="{d:DesignInstance connection:ConnectViewModel}">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Padding" Value="15,5" />
@@ -35,7 +36,10 @@
             ScrollViewer.HorizontalScrollBarVisibility="Hidden">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Name="text"  Text="{Binding Name}" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Name="text"  Text="{Binding Name}" />
+                        <TextBlock Text="*" Margin="3,0" Foreground="OrangeRed" Visibility="{Binding IsValueChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    </StackPanel>
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding Name}" Value="">
                             <Setter TargetName="text" Property="TextBlock.Text" Value="(unnamed)" />
@@ -130,8 +134,8 @@
             HorizontalAlignment="Stretch" 
             VerticalAlignment="Bottom"
             Margin="5,0,5,0">
+            <Button DockPanel.Dock="Right" IsCancel="True" Click="OnClose">Cancel</Button>
             <Button DockPanel.Dock="Right" IsDefault="True" Click="OnConnect" IsEnabled="{Binding IsReady}">Connect</Button>
-            <Button DockPanel.Dock="Right" IsCancel="True" Click="OnClose">Close</Button>
             <Button DockPanel.Dock="Right" HorizontalAlignment="Left" Click="OnSaveChanges">Save changes</Button>
         </DockPanel>
     </Grid>

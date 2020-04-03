@@ -7,6 +7,7 @@ using Quickr.Models;
 using Quickr.Models.Keys;
 using Quickr.Services;
 using Quickr.Utils;
+using Quickr.ViewModels.Connection;
 using Quickr.Views;
 using Quickr.Views.Data;
 
@@ -74,7 +75,7 @@ namespace Quickr.ViewModels
 
         public void ConnectToTest()
         {
-            var model = new EndPointModel
+            var model = new EndpointModel
             {
                 Name = "test",
                 Host = "localhost",
@@ -83,7 +84,7 @@ namespace Quickr.ViewModels
             ConnectToEndpoint(model);
         }
 
-        private void ConnectToEndpoint(EndPointModel endpoint)
+        private void ConnectToEndpoint(EndpointModel endpoint)
         {
             var server = _multiplexer.ConnectAsync(endpoint).ConfigureAwait(false).GetAwaiter().GetResult();
             foreach (var database in server.Databases)

@@ -11,7 +11,7 @@ namespace Quickr.Properties
 
         public const string FileName = "App.settings";
 
-        public List<EndPointModel> Endpoints { get; set; } = new List<EndPointModel>();
+        public List<EndpointModel> Endpoints { get; set; } = new List<EndpointModel>();
 
         public void Save() => File.WriteAllText(FileName, JsonConvert.SerializeObject(this, Formatting.Indented));
 

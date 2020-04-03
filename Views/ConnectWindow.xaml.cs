@@ -1,8 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Quickr.ViewModels;
+using Quickr.ViewModels.Connection;
 
 namespace Quickr.Views
 {
@@ -67,9 +68,7 @@ namespace Quickr.Views
 
         private void OnSaveChanges(object sender, RoutedEventArgs e)
         {
-            CancellationTokenSource.Cancel();
             ViewModel.SaveChanges();
-            DialogResult = false;
         }
         
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)

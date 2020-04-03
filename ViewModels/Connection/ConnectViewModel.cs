@@ -4,39 +4,26 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Quickr.Models;
 using Quickr.Models.Keys;
 using Quickr.Properties;
 using Quickr.Services;
 using Quickr.Utils;
 
-namespace Quickr.ViewModels
+namespace Quickr.ViewModels.Connection
 {
-    internal class ConnectionResult
-    {
-        public bool IsSuccess { get; }
-        public string Message { get; }
-
-        public ConnectionResult(bool success, string message)
-        {
-            IsSuccess = success;
-            Message = message;
-        }
-    }
-
     internal class ConnectViewModel: BaseViewModel
     {
         private readonly RedisMultiplexer _multiplexer;
-        private EndPointModel _current;
+        private EndpointViewModel _current;
         private bool _isReady;
 
         public ICommand AddCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
 
         public ServerEntry Server { get; private set; }
-        public ObservableCollection<EndPointModel> Endpoints { get; }
+        public ObservableCollection<EndpointViewModel> Endpoints { get; }
 
-        public EndPointModel Current
+        public EndpointViewModel Current
         {
             get => _current;
             set
@@ -62,7 +49,8 @@ namespace Quickr.ViewModels
         {
             _multiplexer = multiplexer;
 
-            Endpoints = new ObservableCollection<EndPointModel>(Settings.Current.Endpoints);
+            Endpoints = new ObservableCollection<EndpointViewModel>(
+                Settings.Current.Endpoints.Select(endpoint => new EndpointViewModel(endpoint)));
             EnsureAtLeastOneItemPresent();
             IsReady = true;
 
@@ -73,7 +61,7 @@ namespace Quickr.ViewModels
 
         public void Add()
         {
-            var model = new EndPointModel();
+            var model = new EndpointViewModel();
             Endpoints.Add(model);
             Current = model;
         }
@@ -86,7 +74,7 @@ namespace Quickr.ViewModels
         
         public void SaveChanges()
         {
-            Settings.Current.Endpoints = Endpoints.ToList();
+            Settings.Current.Endpoints = Endpoints.Select(endpoint => endpoint.ApplyChanges()).ToList();
             Settings.Current.Save();
         }
 
@@ -100,7 +88,7 @@ namespace Quickr.ViewModels
             try
             {
                 IsReady = false;
-                var task = _multiplexer.ConnectAsync(Current);
+                var task = _multiplexer.ConnectAsync(Current.GetTempModel());
                 var index = Task.WaitAny(Task.Delay(5000, token), task);
                 if (index == 0)
                 {
@@ -132,7 +120,7 @@ namespace Quickr.ViewModels
         {
             if (Endpoints.Count == 0)
             {
-                Endpoints.Add(new EndPointModel());
+                Endpoints.Add(new EndpointViewModel());
             }
             if (Current == null)
             {

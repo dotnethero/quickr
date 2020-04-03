@@ -11,7 +11,7 @@ namespace Quickr.Services
     {
         private const string ClientName = "Quickr";
 
-        public async Task<ServerEntry> ConnectAsync(EndPointModel endpoint)
+        public async Task<ServerEntry> ConnectAsync(EndpointModel endpoint)
         {
             var endPoint = new DnsEndPoint(endpoint.Host, endpoint.Port ?? 6379);
             var options = new ConfigurationOptions

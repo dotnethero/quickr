@@ -1,6 +1,6 @@
 ﻿namespace Quickr.Models
 {
-    public class EndPointModel
+    public class EndpointModel
     {
         public string Name { get; set; }
         public string Host { get; set; }
