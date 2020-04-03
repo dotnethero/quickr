@@ -1,6 +1,5 @@
 ﻿using System;
 using Quickr.Models.Configuration;
-using Quickr.ViewModels.Editors;
 
 namespace Quickr.ViewModels.Configuration
 {

@@ -6,7 +6,7 @@
         xmlns:cfg="clr-namespace:Quickr.ViewModels.Configuration"
         xmlns:views="clr-namespace:Quickr.Views.Configuration"
         mc:Ignorable="d"
-        Title="Server properties" MinHeight="490" Height="550" MinWidth="680" Width="790" FontSize="14" 
+        Title="Server properties" MinHeight="490" Height="640" MinWidth="680" Width="860" FontSize="14" 
         WindowStartupLocation="CenterOwner" 
         ResizeMode="CanResize" 
         ShowInTaskbar="False"
@@ -33,17 +33,66 @@
             Foreground="Gray"
             Text="Search options" />
         <ListView
+            Name="Pages"
             Grid.Row="1"
             Grid.Column="0"
             FontSize="13"
-            ItemsSource="{Binding Sections}"
             ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+            <ListViewItem>Network</ListViewItem>
+            <ListViewItem>General</ListViewItem>
+            <ListViewItem>Snapshotting</ListViewItem>
+            <ListViewItem>Replication</ListViewItem>
+            <ListViewItem>Security</ListViewItem>
+            <ListViewItem>Clients</ListViewItem>
+            <ListViewItem>Memory management</ListViewItem>
+            <ListViewItem>Lazy freeing</ListViewItem>
+            <ListViewItem>Append only mode</ListViewItem>
+            <ListViewItem>Lua scripting</ListViewItem>
+            <ListViewItem>Redis cluster</ListViewItem>
+            <ListViewItem>Cluster docker/NAT support</ListViewItem>
+            <ListViewItem>Show log</ListViewItem>
+            <ListViewItem>Latency monitor</ListViewItem>
+            <ListViewItem>Event notification</ListViewItem>
+            <ListViewItem>Advanced config</ListViewItem>
+            <ListViewItem>Active defragmentation</ListViewItem>
+            <ListViewItem>Other</ListViewItem>
         </ListView>
-        <views:NetworkPropertyPage
+        <TabControl
             Grid.Row="0"
             Grid.RowSpan="2"
             Grid.Column="1"
-            DataContext="{Binding Path=NetworkPage}" />
+            Padding="0"
+            Margin="0"
+            BorderThickness="0"
+            SelectedIndex="{Binding ElementName=Pages, Path=SelectedIndex}">
+            <TabControl.ItemContainerStyle>
+                <Style TargetType="{x:Type TabItem}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+            </TabControl.ItemContainerStyle>
+            <TabItem>
+                <views:NetworkPropertyPage DataContext="{Binding Path=NetworkPage}" />
+            </TabItem>
+            <TabItem>
+                <views:GeneralPropertyPage DataContext="{Binding Path=GeneralPage}" />
+            </TabItem>
+            <TabItem />
+            <TabItem />
+            <TabItem />
+            <TabItem />
+            <TabItem />
+            <TabItem />
+            <TabItem />
+            <TabItem />
+            <TabItem />
+            <TabItem />
+            <TabItem />
+            <TabItem />
+            <TabItem />
+            <TabItem />
+            <TabItem />
+            <TabItem />
+        </TabControl>
         <Border
             Grid.Row="2" 
             Grid.Column="0"

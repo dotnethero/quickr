@@ -13,16 +13,16 @@
 },{
     "section": "General",
     "configs": [
-        { "key": "daemonize", "description": "" },
-        { "key": "supervised", "description": "" },
-        { "key": "pidfile", "description": "" },
-        { "key": "loglevel", "description": "" },
-        { "key": "logfile", "description": "" },
-        { "key": "syslog-enabled", "description": "" },
-        { "key": "syslog-ident", "description": "" },
-        { "key": "syslog-facility", "description": "" },
-        { "key": "databases", "description": "" },
-        { "key": "always-show-logo", "description": "" }
+        { "key": "daemonize", "defaultValue": "no", "description": "By default Redis does not run as a daemon. Note that Redis will write a pid file in /var/run/redis.pid when daemonized." },
+        { "key": "supervised", "possibleValues": ["no", "upstart", "systemd", "auto"], "description": "If you run Redis from upstart or systemd, Redis can interact with your supervision tree." },
+        { "key": "pidfile", "description": "If a pid file is specified, Redis writes it where specified at startup and removes it at exit." },
+        { "key": "loglevel", "possibleValues": ["debug", "verbose", "notice", "warning"], "description": "Specify the server verbosity level." },
+        { "key": "logfile", "description": "Specify the log file name. Also the empty string can be used to force Redis to log on the standard output. Note that if you use standard output for logging but daemonize, logs will be sent to /dev/null" },
+        { "key": "syslog-enabled", "defaultValue": "no", "description": "To enable logging to the system logger, just set 'syslog-enabled' to yes, and optionally update the other syslog parameters to suit your needs." },
+        { "key": "syslog-ident", "description": "Specify the syslog identity." },
+        { "key": "syslog-facility", "possibleValues": ["USER", "LOCAL0", "LOCAL1", "LOCAL2", "LOCAL3", "LOCAL4", "LOCAL5", "LOCAL6", "LOCAL7"], "description": "Specify the syslog facility." },
+        { "key": "databases", "description": "Set the number of databases. The default database is DB 0, you can select a different one on a per-connection basis using SELECT <dbid> where dbid is a number between 0 and 'databases'-1" },
+        { "key": "always-show-logo", "defaultValue": "yes", "description": "By default Redis shows an ASCII art logo only when started to log to the standard output and if the standard output is a TTY. Basically this means that normally a logo is displayed only in interactive sessions." }
     ]
 },{
     "section": "Snapshotting",

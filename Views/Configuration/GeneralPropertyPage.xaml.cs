@@ -2,9 +2,9 @@
 
 namespace Quickr.Views.Configuration
 {
-    public partial class NetworkPropertyPage : UserControl
+    public partial class GeneralPropertyPage : UserControl
     {
-        public NetworkPropertyPage()
+        public GeneralPropertyPage()
         {
             InitializeComponent();
         }

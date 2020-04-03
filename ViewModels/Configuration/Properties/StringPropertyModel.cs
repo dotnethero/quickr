@@ -19,9 +19,9 @@ namespace Quickr.ViewModels.Configuration
             }
         }
 
-        public ConfigKeyValue Config { get; }
-
         public bool IsPropertyChanged => Value != _original;
+
+        public ConfigKeyValue Config { get; }
 
         public StringPropertyModel(ConfigKeyValue config)
         {

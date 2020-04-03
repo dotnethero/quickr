@@ -5,6 +5,7 @@
         public string Key { get; set; }
         public string Description { get; set; }
         public string DefaultValue { get; set; }
+        public string[] PossibleValues { get; set; }
 
         public override string ToString() => Key;
     }

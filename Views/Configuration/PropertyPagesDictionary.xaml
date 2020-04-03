@@ -28,6 +28,14 @@
     <Style TargetType="TextBox">
         <Setter Property="Margin" Value="1,2" />
         <Setter Property="Padding" Value="2" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="Gainsboro" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="ComboBox">
+        <Setter Property="Margin" Value="1,0" />
     </Style>
     <Style TargetType="TextBlock" x:Key="*">
         <Setter Property="HorizontalAlignment" Value="Right" />
@@ -49,6 +57,12 @@
     <ControlTemplate x:Key="Text" TargetType="TextBox">
         <StackPanel Margin="0,0,0,5" d:DataContext="{d:DesignInstance cfg:StringPropertyModel}">
             <TextBox Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=Config.IsLoaded}" />
+            <TextBlock Margin="0" Padding="2" FontSize="13" Foreground="#505050" TextWrapping="Wrap" HorizontalAlignment="Left" Text="{Binding Path=Config.Description}" />
+        </StackPanel>
+    </ControlTemplate>
+    <ControlTemplate x:Key="Combo" TargetType="ComboBox">
+        <StackPanel Margin="0,3,0,5" d:DataContext="{d:DesignInstance cfg:StringPropertyModel}">
+            <ComboBox ItemsSource="{Binding Path=Config.PossibleValues}" SelectedItem="{Binding Path=Value}" IsEnabled="{Binding Path=Config.IsLoaded}" />
             <TextBlock Margin="0" Padding="2" FontSize="13" Foreground="#505050" TextWrapping="Wrap" HorizontalAlignment="Left" Text="{Binding Path=Config.Description}" />
         </StackPanel>
     </ControlTemplate>

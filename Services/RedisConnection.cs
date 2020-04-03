@@ -43,6 +43,7 @@ namespace Quickr.Services
                     {
                         Key = spec.Key,
                         DefaultValue = spec.DefaultValue,
+                        PossibleValues = spec.PossibleValues,
                         Description = spec.Description,
                         Value = loaded ? configs[spec.Key] : null,
                         IsLoaded = loaded
