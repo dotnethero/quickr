@@ -68,7 +68,7 @@
                     <Setter Property="Margin" Value="3,0" />
                 </Style>
                 <Style TargetType="CheckBox">
-                    <Setter Property="Margin" Value="0,3" />
+                    <Setter Property="Margin" Value="0,5,0,5" />
                     <Setter Property="VerticalContentAlignment" Value="Bottom" />
                 </Style>
             </StackPanel.Resources>
@@ -92,31 +92,38 @@
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                    
+                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,3,0,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
                         <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=Bind.IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <TextBlock Text="Bind:" />
                     </StackPanel>
-                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=Bind.Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=Bind.Config.IsLoaded}" />
-                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <StackPanel Grid.Row="0" Grid.Column="1">
+                        <TextBox Text="{Binding Path=Bind.Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=Bind.Config.IsLoaded}" />
+                        <TextBlock Margin="0" Padding="3" FontSize="13" Foreground="#505050" TextWrapping="Wrap" HorizontalAlignment="Left" Text="{Binding Path=Bind.Config.Description}" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,3,0,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
                         <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=Port.IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <TextBlock Text="Port:" />
                     </StackPanel>
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Port.Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=Port.Config.IsLoaded}" />
+                    <StackPanel Grid.Row="1" Grid.Column="1">
+                        <TextBox Text="{Binding Path=Port.Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=Port.Config.IsLoaded}" />
+                        <TextBlock Margin="0" Padding="3" FontSize="13" Foreground="#505050" TextWrapping="Wrap" HorizontalAlignment="Left" Text="{Binding Path=Port.Config.Description}" />
+                    </StackPanel>
                     <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
-                        <CheckBox Content="protected mode" IsChecked="{Binding Path=ProtectedMode.IsYes}" IsEnabled="{Binding Path=ProtectedMode.Config.IsLoaded}" />
+                        <CheckBox Content="Protected mode" IsChecked="{Binding Path=ProtectedMode.IsYes}" IsEnabled="{Binding Path=ProtectedMode.Config.IsLoaded}" />
                         <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=ProtectedMode.IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     </StackPanel>
-                    <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,3,0,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
                         <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=TcpBacklog.IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <TextBlock Text="TCP backlog:" />
                     </StackPanel>
                     <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Path=TcpBacklog.Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=TcpBacklog.Config.IsLoaded}" />
-                    <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <StackPanel Grid.Row="4" Grid.Column="0" Margin="0,3,0,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
                         <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=TcpKeepalive.IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <TextBlock Text="TCP keepalive:" />
                     </StackPanel>
                     <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=TcpKeepalive.Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=TcpKeepalive.Config.IsLoaded}" />
-                    <StackPanel Grid.Row="5" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <StackPanel Grid.Row="5" Grid.Column="0" Margin="0,3,0,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
                         <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=Timeout.IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <TextBlock Text="Timeout:" />
                     </StackPanel>
