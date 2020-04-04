@@ -4,7 +4,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:cfg="clr-namespace:Quickr.ViewModels.Configuration"
-    xmlns:local="clr-namespace:Quickr.Views.Configuration"
     mc:Ignorable="d">
     <Style x:Key="SidePageScroll" TargetType="ScrollViewer">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -32,10 +31,18 @@
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="Gainsboro" />
             </Trigger>
+            <DataTrigger Binding="{Binding Path=IsSaveFailed}" Value="True">
+                <Setter Property="BorderBrush" Value="Red" />
+            </DataTrigger>
         </Style.Triggers>
     </Style>
     <Style TargetType="ComboBox">
         <Setter Property="Margin" Value="1,0" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=IsSaveFailed}" Value="True">
+                <Setter Property="BorderBrush" Value="Red" />
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
     <Style TargetType="TextBlock" x:Key="*">
         <Setter Property="HorizontalAlignment" Value="Right" />
@@ -47,6 +54,11 @@
     <Style TargetType="CheckBox">
         <Setter Property="Margin" Value="0,2,0,2" />
         <Setter Property="VerticalContentAlignment" Value="Bottom" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=IsSaveFailed}" Value="True">
+                <Setter Property="BorderBrush" Value="Red" />
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
     <ControlTemplate x:Key="Label" TargetType="Label">
         <StackPanel Margin="0,5,3,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" d:DataContext="{d:DesignInstance cfg:StringPropertyModel}">
@@ -56,19 +68,19 @@
     </ControlTemplate>
     <ControlTemplate x:Key="Text" TargetType="TextBox">
         <StackPanel Margin="0,0,0,5" d:DataContext="{d:DesignInstance cfg:StringPropertyModel}">
-            <TextBox Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=Config.IsLoaded}" />
+            <TextBox Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=Config.IsLoaded}" IsReadOnly="{Binding Path=Config.IsReadOnly}" />
             <TextBlock Margin="0" Padding="2" FontSize="13" Foreground="#505050" TextWrapping="Wrap" HorizontalAlignment="Left" Text="{Binding Path=Config.Description}" />
         </StackPanel>
     </ControlTemplate>
     <ControlTemplate x:Key="Combo" TargetType="ComboBox">
         <StackPanel Margin="0,3,0,5" d:DataContext="{d:DesignInstance cfg:StringPropertyModel}">
-            <ComboBox ItemsSource="{Binding Path=Config.PossibleValues}" SelectedItem="{Binding Path=Value}" IsEnabled="{Binding Path=Config.IsLoaded}" />
+            <ComboBox ItemsSource="{Binding Path=Config.PossibleValues}" SelectedItem="{Binding Path=Value}" IsEnabled="{Binding Path=Config.IsLoaded}" IsReadOnly="{Binding Path=Config.IsReadOnly}" />
             <TextBlock Margin="0" Padding="2" FontSize="13" Foreground="#505050" TextWrapping="Wrap" HorizontalAlignment="Left" Text="{Binding Path=Config.Description}" />
         </StackPanel>
     </ControlTemplate>
     <ControlTemplate x:Key="TextN" TargetType="TextBox">
         <StackPanel Margin="0,0,0,5" d:DataContext="{d:DesignInstance cfg:StringPropertyModel}">
-            <TextBox Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=Config.IsLoaded}" />
+            <TextBox Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=Config.IsLoaded}" IsReadOnly="{Binding Path=Config.IsReadOnly}" />
         </StackPanel>
     </ControlTemplate>
     <ControlTemplate x:Key="YesNo" TargetType="CheckBox">

@@ -60,7 +60,7 @@
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <CheckBox Grid.Row="0" Grid.Column="1" Template="{StaticResource YesNo}" DataContext="{Binding SyslogEnabled}" Content="Sysload enabled" />
+                    <CheckBox Grid.Row="0" Grid.Column="1" Template="{StaticResource YesNo}" DataContext="{Binding SyslogEnabled}" Content="Syslog enabled" />
                     <Label Grid.Row="1" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding SyslogIdent}" Content="Syslog identity:" />
                     <TextBox Grid.Row="1" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding SyslogIdent}" />
                     <Label Grid.Row="2" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding SyslogFacility}" Content="Syslog facility:" />

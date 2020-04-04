@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Quickr.Models.Configuration;
 using Quickr.Services;
+using StackExchange.Redis;
 
 namespace Quickr.ViewModels.Configuration
 {
@@ -32,11 +35,20 @@ namespace Quickr.ViewModels.Configuration
             return model;
         }
         
-        protected void Save()
+        public void Save()
         {
             foreach (var (key, value) in _mapping.Where(x => x.Value.IsPropertyChanged))
             {
-                _connection.ConfigSet(key, value.Serialize());
+                try
+                {
+                    _connection.ConfigSet(key, value.Serialize());
+                    value.ApplyCurrentValue();
+                }
+                catch (RedisServerException ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    value.IsSaveFailed = true;
+                }
             }
         }
     }

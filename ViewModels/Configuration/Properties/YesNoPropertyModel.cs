@@ -5,8 +5,9 @@ namespace Quickr.ViewModels.Configuration
 {
     internal class YesNoPropertyModel: BaseViewModel, IPropertyModel
     {
-        private readonly bool _original;
+        private bool _original;
         private bool _isYes;
+        private bool _isSaveFailed;
 
         public bool IsYes
         {
@@ -15,8 +16,21 @@ namespace Quickr.ViewModels.Configuration
             {
                 if (value == _isYes) return;
                 _isYes = value;
+                _isSaveFailed = false;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsPropertyChanged));
+                OnPropertyChanged(nameof(IsSaveFailed));
+            }
+        }
+
+        public bool IsSaveFailed
+        {
+            get => _isSaveFailed;
+            set
+            {
+                if (value == _isSaveFailed) return;
+                _isSaveFailed = value;
+                OnPropertyChanged();
             }
         }
 
@@ -35,6 +49,12 @@ namespace Quickr.ViewModels.Configuration
                 "no" => false,
                 _ => throw new InvalidOperationException($"Neither value '{config.Value}' not default value '{config.DefaultValue}' can be parsed")
             };
+        }
+        
+        public void ApplyCurrentValue()
+        {
+            _original = IsYes;
+            OnPropertyChanged(nameof(IsPropertyChanged));
         }
 
         public string Serialize() => IsYes ? "yes" : "no";

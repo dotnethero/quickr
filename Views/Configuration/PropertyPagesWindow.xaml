@@ -103,7 +103,7 @@
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Bottom"
                 Margin="0,8,0,0">
-                <Button IsDefault="True">Save changes</Button>
+                <Button IsDefault="True" Command="{Binding SaveCommand}">Save changes</Button>
                 <Button IsCancel="True">Cancel</Button>
             </StackPanel>
         </Border>

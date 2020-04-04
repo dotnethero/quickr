@@ -4,8 +4,9 @@ namespace Quickr.ViewModels.Configuration
 {
     internal class StringPropertyModel : BaseViewModel, IPropertyModel
     {
-        private readonly string _original;
+        private string _original;
         private string _value;
+        private bool _isSaveFailed;
 
         public string Value
         {
@@ -14,8 +15,21 @@ namespace Quickr.ViewModels.Configuration
             {
                 if (value == _value) return;
                 _value = value;
+                _isSaveFailed = false;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsPropertyChanged));
+                OnPropertyChanged(nameof(IsSaveFailed));
+            }
+        }
+
+        public bool IsSaveFailed
+        {
+            get => _isSaveFailed;
+            set
+            {
+                if (value == _isSaveFailed) return;
+                _isSaveFailed = value;
+                OnPropertyChanged();
             }
         }
 
@@ -27,6 +41,12 @@ namespace Quickr.ViewModels.Configuration
         {
             Config = config;
             Value = _original = string.IsNullOrEmpty(config.Value) ? config.DefaultValue : config.Value;
+        }
+
+        public void ApplyCurrentValue()
+        {
+            _original = Value;
+            OnPropertyChanged(nameof(IsPropertyChanged));
         }
 
         public string Serialize() => Value;
