@@ -19,16 +19,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\Configuration\ClientsPropertyPage.xaml.cs">
+    <Compile Update="Views\Configuration\Pages\ClientsPropertyPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Configuration\SecurityPropertyPage.xaml.cs">
+    <Compile Update="Views\Configuration\Pages\SecurityPropertyPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Configuration\ReplicationPropertyPage.xaml.cs">
+    <Compile Update="Views\Configuration\Pages\ReplicationPropertyPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Configuration\SnapshottingPropertyPage.xaml.cs">
+    <Compile Update="Views\Configuration\Pages\SnapshottingPropertyPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -43,16 +43,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Views\Configuration\ClientsPropertyPage.xaml">
+    <Page Update="Views\Configuration\Pages\ClientsPropertyPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Configuration\SecurityPropertyPage.xaml">
+    <Page Update="Views\Configuration\Pages\SecurityPropertyPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Configuration\ReplicationPropertyPage.xaml">
+    <Page Update="Views\Configuration\Pages\ReplicationPropertyPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Configuration\SnapshottingPropertyPage.xaml">
+    <Page Update="Views\Configuration\Pages\SnapshottingPropertyPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Configuration\PropertyPagesWindow.xaml">
