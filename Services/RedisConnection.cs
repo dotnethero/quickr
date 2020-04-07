@@ -47,7 +47,7 @@ namespace Quickr.Services
                         Description = spec.Description,
                         Value = loaded ? configs[spec.Key] : null,
                         IsReadOnly = spec.IsReadOnly,
-                        IsLoaded = loaded
+                        IsLoaded = true // unsure if this option is editable
                     }
                 };
 

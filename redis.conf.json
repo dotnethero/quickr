@@ -94,14 +94,14 @@
 },{
     "section": "Append only mode",
     "configs": [
-        { "key": "appendonly", "description": "" },
-        { "key": "appendfilename", "description": "" },
-        { "key": "appendfsync", "description": "" },
-        { "key": "no-appendfsync-on-rewrite", "description": "" },
-        { "key": "auto-aof-rewrite-percentage", "description": "" },
-        { "key": "auto-aof-rewrite-min-size", "description": "" },
-        { "key": "aof-load-truncated", "description": "" },
-        { "key": "aof-use-rdb-preamble", "description": "" }
+        { "key": "appendonly", "defaultValue": "no", "description": "" },
+        { "key": "appendfilename", "description": "The name of the append only file (default: \"appendonly.aof\")" },
+        { "key": "appendfsync", "possibleValues": ["always", "everysec", "no"], "defaultValue": "everysec", "description": "no: don't fsync, just let the OS flush the data when it wants. Faster.\nalways: fsync after every write to the append only log. Slow, Safest.\neverysec: fsync only one time every second. Compromise." },
+        { "key": "no-appendfsync-on-rewrite", "defaultValue": "no", "description": "" },
+        { "key": "auto-aof-rewrite-percentage", "description": "Automatic rewrite of the append only file. Redis is able to automatically rewrite the log file implicitly calling BGREWRITEAOF when the AOF log size grows by the specified percentage." },
+        { "key": "auto-aof-rewrite-min-size", "description": "Specify a minimal size for the AOF file to be rewritten, this is useful to avoid rewriting the AOF file even if the percentage increase is reached but it is still pretty small." },
+        { "key": "aof-load-truncated", "defaultValue": "yes", "description": "An AOF file may be found to be truncated at the end during the Redis startup process, when the AOF data gets loaded back into memory. This may happen when the system where Redis is running crashes, especially when an ext4 filesystem is mounted without the data=ordered option (however this can't happen when Redis itself crashes or aborts but the operating system still works correctly)." },
+        { "key": "aof-use-rdb-preamble", "defaultValue": "yes", "description": "When rewriting the AOF file, Redis is able to use an RDB preamble in the AOF file for faster rewrites and recoveries. When this option is turned on the rewritten AOF file is composed of two different stanzas: [RDB file][AOF tail]" }
     ]
 },{
     "section": "Lua scripting",

@@ -10,7 +10,57 @@
     </UserControl.Resources>
     <ScrollViewer Style="{StaticResource SidePageScroll}">
         <StackPanel Margin="0,0,10,0">
-            <GroupBox Header="Append only mode">
+            <GroupBox Header="Append Only mode">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="140" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            By default Redis asynchronously dumps the dataset on disk. This mode is good enough in many applications, but an issue with the Redis process or a power outage may result into a few minutes of writes lost (depending on the configured save points).
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            The Append Only File is an alternative persistence mode that provides much better durability. For instance using the default data fsync policy (see later in the config file) Redis can lose just one second of writes in a dramatic event like a server power outage, or a single write if something wrong with the Redis process itself happens, but the operating system is still running correctly.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            AOF and RDB persistence can be enabled at the same time without problems. If the AOF is enabled on startup Redis will load the AOF, that is the file with the better durability guarantees.
+                        </TextBlock>
+                    </StackPanel>
+                    <CheckBox Grid.Row="1" Grid.Column="1" Template="{StaticResource YesNoN}" DataContext="{Binding AppendOnly}" Content="Append Only enabled" />
+                    <Label Grid.Row="2" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding AppendFilename}" Content="File:" />
+                    <TextBox Grid.Row="2" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding AppendFilename}" />
+                    <Label Grid.Row="3" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding AppendFsync}" Content="Fsync:" />
+                    <ComboBox Grid.Row="3" Grid.Column="1" Template="{StaticResource Combo}" DataContext="{Binding AppendFsync}" />
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Append Only file">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="140" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding AutoAofRewritePercentage}" Content="Rewrite percentage:" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding AutoAofRewritePercentage}" />
+                    <Label Grid.Row="1" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding AutoAofRewriteMinSize}" Content="Rewrite min size:" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding AutoAofRewriteMinSize}" />
+                    <CheckBox Grid.Row="2" Grid.Column="1" Template="{StaticResource YesNo}" DataContext="{Binding AofLoadTruncated}" Content="Load truncated" />
+                    <CheckBox Grid.Row="3" Grid.Column="1" Template="{StaticResource YesNo}" DataContext="{Binding AofUseRdbPreamble}" Content="Use RDB preamble" />
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Advanced">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" MinWidth="130" />
@@ -18,7 +68,36 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            When the AOF fsync policy is set to always or everysec, and a background
+                            saving process (a background save or AOF log background rewriting) is
+                            performing a lot of I/O against the disk, in some Linux configurations
+                            Redis may block too long on the fsync() call. Note that there is no fix for
+                            this currently, as even performing fsync in a different thread will block
+                            our synchronous write(2) call.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            In order to mitigate this problem it's possible to use the following option
+                            that will prevent fsync() from being called in the main process while a
+                            BGSAVE or BGREWRITEAOF is in progress.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            This means that while another child is saving, the durability of Redis is
+                            the same as "appendfsync none". In practical terms, this means that it is
+                            possible to lose up to 30 seconds of log in the worst scenario (with the
+                            default Linux settings).
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            If you have latency problems turn this to "yes". Otherwise leave it as
+                            "no" that is the safest pick from the point of view of durability.
+                        </TextBlock>
+                    </StackPanel>
+                    <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Template="{StaticResource YesNoN}" DataContext="{Binding NoAppendFsyncOnRewrite}" Content="No append Fsync on rewrite" />
                 </Grid>
             </GroupBox>
         </StackPanel>

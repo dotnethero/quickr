@@ -6,26 +6,26 @@ namespace Quickr.ViewModels.Configuration
 {
     internal class AppendOnlyModePropertyPageModel: BasePropertyPageModel
     {
-        public StringPropertyModel AppendOnly { get; set; }
+        public YesNoPropertyModel AppendOnly { get; set; }
         public StringPropertyModel AppendFilename { get; set; }
         public StringPropertyModel AppendFsync { get; set; }
-        public StringPropertyModel NoAppendFsyncOnRewrite { get; set; }
+        public YesNoPropertyModel NoAppendFsyncOnRewrite { get; set; }
         public StringPropertyModel AutoAofRewritePercentage { get; set; }
         public StringPropertyModel AutoAofRewriteMinSize { get; set; }
-        public StringPropertyModel AofLoadTruncated { get; set; }
-        public StringPropertyModel AofUseRdbPreamble { get; set; }
+        public YesNoPropertyModel AofLoadTruncated { get; set; }
+        public YesNoPropertyModel AofUseRdbPreamble { get; set; }
 
         public AppendOnlyModePropertyPageModel(RedisConnection connection, Dictionary<string, ConfigKeyValue> config): 
             base(connection, config)
         {
-            AppendOnly = MapToString("appendonly");
+            AppendOnly = MapToYesNo("appendonly");
             AppendFilename = MapToString("appendfilename");
             AppendFsync = MapToString("appendfsync");
-            NoAppendFsyncOnRewrite = MapToString("no-appendfsync-on-rewrite");
+            NoAppendFsyncOnRewrite = MapToYesNo("no-appendfsync-on-rewrite");
             AutoAofRewritePercentage = MapToString("auto-aof-rewrite-percentage");
             AutoAofRewriteMinSize = MapToString("auto-aof-rewrite-min-size");
-            AofLoadTruncated = MapToString("aof-load-truncated");
-            AofUseRdbPreamble = MapToString("aof-use-rdb-preamble");
+            AofLoadTruncated = MapToYesNo("aof-load-truncated");
+            AofUseRdbPreamble = MapToYesNo("aof-use-rdb-preamble");
         }
     }
 }
