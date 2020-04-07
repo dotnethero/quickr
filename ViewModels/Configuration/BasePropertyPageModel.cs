@@ -20,6 +20,11 @@ namespace Quickr.ViewModels.Configuration
             _config = config;
             _mapping = new Dictionary<string, IPropertyModel>();
         }
+        
+        protected bool HasKey(string key)
+        {
+            return _config.ContainsKey(key);
+        }
 
         protected StringPropertyModel MapToString(string key)
         {

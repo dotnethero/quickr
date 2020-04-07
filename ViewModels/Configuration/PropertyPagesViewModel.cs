@@ -11,6 +11,7 @@ namespace Quickr.ViewModels.Configuration
         public NetworkPropertyPageModel NetworkPage { get; }
         public GeneralPropertyPageModel GeneralPage { get; }
         public SnapshottingPropertyPageModel SnapshottingPage { get; }
+        public ReplicationPropertyPageModel ReplicationPage { get; }
 
         public PropertyPagesViewModel(RedisConnection connection)
         {
@@ -18,6 +19,7 @@ namespace Quickr.ViewModels.Configuration
             NetworkPage = new NetworkPropertyPageModel(connection, config["Network"]);
             GeneralPage = new GeneralPropertyPageModel(connection, config["General"]);
             SnapshottingPage = new SnapshottingPropertyPageModel(connection, config["Snapshotting"]);
+            ReplicationPage = new ReplicationPropertyPageModel(connection, config["Replication"]);
             SaveCommand = new Command(Save);
         }
 
@@ -26,6 +28,7 @@ namespace Quickr.ViewModels.Configuration
             NetworkPage.Save();
             GeneralPage.Save();
             SnapshottingPage.Save();
+            ReplicationPage.Save();
         }
     }
 }

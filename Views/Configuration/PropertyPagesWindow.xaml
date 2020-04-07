@@ -79,7 +79,9 @@
             <TabItem>
                 <views:SnapshottingPropertyPage DataContext="{Binding Path=SnapshottingPage}" />
             </TabItem>
-            <TabItem />
+            <TabItem>
+                <views:ReplicationPropertyPage DataContext="{Binding Path=ReplicationPage}" />
+            </TabItem>
             <TabItem />
             <TabItem />
             <TabItem />

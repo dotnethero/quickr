@@ -19,6 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Configuration\ReplicationPropertyPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Configuration\SnapshottingPropertyPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -34,6 +37,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\Configuration\ReplicationPropertyPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Configuration\SnapshottingPropertyPage.xaml">
       <SubType>Designer</SubType>
     </Page>
