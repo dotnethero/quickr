@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows;
 using Quickr.Models.Configuration;
 using Quickr.Services;
 using StackExchange.Redis;
@@ -48,6 +49,10 @@ namespace Quickr.ViewModels.Configuration
                 {
                     _connection.ConfigSet(key, value.Serialize());
                     value.ApplyCurrentValue();
+                    if (key == "requirepass")
+                    {
+                        MessageBox.Show("You need to reconnect to server after requirepass has been changed!", "New password", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 }
                 catch (RedisServerException ex)
                 {

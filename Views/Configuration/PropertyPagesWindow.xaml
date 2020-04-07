@@ -82,8 +82,12 @@
             <TabItem>
                 <views:ReplicationPropertyPage DataContext="{Binding Path=ReplicationPage}" />
             </TabItem>
-            <TabItem />
-            <TabItem />
+            <TabItem>
+                <views:SecurityPropertyPage DataContext="{Binding Path=SecurityPage}" />
+            </TabItem>
+            <TabItem>
+                <views:ClientsPropertyPage DataContext="{Binding Path=ClientsPage}" />
+            </TabItem>
             <TabItem />
             <TabItem />
             <TabItem />

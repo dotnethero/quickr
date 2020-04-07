@@ -19,6 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Configuration\ClientsPropertyPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Configuration\SecurityPropertyPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Configuration\ReplicationPropertyPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -37,6 +43,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\Configuration\ClientsPropertyPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Configuration\SecurityPropertyPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Configuration\ReplicationPropertyPage.xaml">
       <SubType>Designer</SubType>
     </Page>

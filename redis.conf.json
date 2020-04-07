@@ -66,13 +66,12 @@
 },{
     "section": "Security",
     "configs": [
-        { "key": "requirepass", "description": "" },
-        { "key": "rename-command", "description": "" }
+        { "key": "requirepass", "description": "Require clients to issue AUTH <PASSWORD> before processing any other commands. This might be useful in environments in which you do not trust others with access to the host running redis-server.\n\nThis should stay commented out for backward compatibility and because most people do not need auth (e.g. they run their own servers).\n\nWarning: since Redis is pretty fast an outside user can try up to 150k passwords per second against a good box. This means that you should use a very strong password otherwise it will be very easy to break." },
     ]
 },{
     "section": "Clients",
     "configs": [
-        { "key": "maxclients", "description": "" }
+        { "key": "maxclients", "defaultValue": "10000", "description": "Set the max number of connected clients at the same time. By default this limit is set to 10000 clients, however if the Redis server is not able to configure the process file limit to allow for the specified limit the max number of allowed clients is set to the current file limit minus 32 (as Redis reserves a few file descriptors for internal uses).\n\nOnce the limit is reached Redis will close all the new connections sending an error 'max number of clients reached'." }
     ]
 },{
     "section": "Memory management",

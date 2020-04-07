@@ -12,6 +12,8 @@ namespace Quickr.ViewModels.Configuration
         public GeneralPropertyPageModel GeneralPage { get; }
         public SnapshottingPropertyPageModel SnapshottingPage { get; }
         public ReplicationPropertyPageModel ReplicationPage { get; }
+        public SecurityPropertyPageModel SecurityPage { get; }
+        public ClientsPropertyPageModel ClientsPage { get; }
 
         public PropertyPagesViewModel(RedisConnection connection)
         {
@@ -20,6 +22,8 @@ namespace Quickr.ViewModels.Configuration
             GeneralPage = new GeneralPropertyPageModel(connection, config["General"]);
             SnapshottingPage = new SnapshottingPropertyPageModel(connection, config["Snapshotting"]);
             ReplicationPage = new ReplicationPropertyPageModel(connection, config["Replication"]);
+            SecurityPage = new SecurityPropertyPageModel(connection, config["Security"]);
+            ClientsPage = new ClientsPropertyPageModel(connection, config["Clients"]);
             SaveCommand = new Command(Save);
         }
 
@@ -29,6 +33,10 @@ namespace Quickr.ViewModels.Configuration
             GeneralPage.Save();
             SnapshottingPage.Save();
             ReplicationPage.Save();
+            ClientsPage.Save();
+
+            // always last to save password and don't lose connection
+            SecurityPage.Save();
         }
     }
 }
