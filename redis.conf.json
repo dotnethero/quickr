@@ -27,12 +27,12 @@
 },{
     "section": "Snapshotting",
     "configs": [
-        { "key": "save", "description": "" },
-        { "key": "stop-writes-on-bgsave-error", "description": "" },
-        { "key": "rdbcompression", "description": "" },
-        { "key": "rdbchecksum", "description": "" },
-        { "key": "dbfilename", "description": "" },
-        { "key": "dir", "description": "" }
+        { "key": "save", "description": "Will save the DB if both the given number of seconds and the given number of write operations against the DB occurred" },
+        { "key": "stop-writes-on-bgsave-error", "defaultValue": "yes", "description": "By default Redis will stop accepting writes if RDB snapshots are enabled (at least one save point) and the latest background save failed. This will make the user aware (in a hard way) that data is not persisting on disk properly, otherwise chances are that no one will notice and some disaster will happen." },
+        { "key": "rdbcompression", "defaultValue": "yes", "description": "Compress string objects using LZF when dump .rdb databases? For default that's set to 'yes' as it's almost always a win. If you want to save some CPU in the saving child set it to 'no' but the dataset will likely be bigger if you have compressible values or keys." },
+        { "key": "rdbchecksum", "isReadOnly": true, "defaultValue": "yes", "description": "Since version 5 of RDB a CRC64 checksum is placed at the end of the file. This makes the format more resistant to corruption but there is a performance hit to pay (around 10%) when saving and loading RDB files, so you can disable it for maximum performances." },
+        { "key": "dbfilename", "description": "The filename where to dump the DB" },
+        { "key": "dir", "description": "The working directory. The DB will be written inside this directory, with the filename specified above using the 'dbfilename' configuration directive." }
     ]
 },{
     "section": "Replication",

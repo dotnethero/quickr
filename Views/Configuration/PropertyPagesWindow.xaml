@@ -76,7 +76,9 @@
             <TabItem>
                 <views:GeneralPropertyPage DataContext="{Binding Path=GeneralPage}" />
             </TabItem>
-            <TabItem />
+            <TabItem>
+                <views:SnapshottingPropertyPage DataContext="{Binding Path=SnapshottingPage}" />
+            </TabItem>
             <TabItem />
             <TabItem />
             <TabItem />

@@ -19,6 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Configuration\SnapshottingPropertyPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="App.settings">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -28,6 +34,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\Configuration\SnapshottingPropertyPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Configuration\PropertyPagesWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
