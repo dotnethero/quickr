@@ -6,7 +6,7 @@
              xmlns:cfg="clr-namespace:Quickr.ViewModels.Configuration"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance cfg:SnapshottingPropertyPageModel }">
     <UserControl.Resources>
-        <ResourceDictionary Source="PropertyPagesDictionary.xaml" />
+        <ResourceDictionary Source="../PropertyPagesDictionary.xaml" />
     </UserControl.Resources>
     <ScrollViewer Style="{StaticResource SidePageScroll}">
         <StackPanel Margin="0,0,10,0">

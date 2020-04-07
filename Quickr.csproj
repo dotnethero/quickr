@@ -19,6 +19,39 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Configuration\Pages\ActiveDefragmentationPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Configuration\Pages\AdvancedConfigPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Configuration\Pages\EventNotificationPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Configuration\Pages\LatencyMonitorPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Configuration\Pages\ShowLogPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Configuration\Pages\ClusterNatSupportPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Configuration\Pages\RedisClusterPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Configuration\Pages\LuaScriptingPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Configuration\Pages\LazyFreeingPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Configuration\Pages\AppendOnlyModePage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Configuration\Pages\MemoryManagementPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Configuration\Pages\ClientsPropertyPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -43,6 +76,39 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\Configuration\Pages\ActiveDefragmentationPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Configuration\Pages\AdvancedConfigPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Configuration\Pages\EventNotificationPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Configuration\Pages\LatencyMonitorPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Configuration\Pages\ShowLogPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Configuration\Pages\ClusterNatSupportPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Configuration\Pages\RedisClusterPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Configuration\Pages\LuaScriptingPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Configuration\Pages\LazyFreeingPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Configuration\Pages\AppendOnlyModePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Configuration\Pages\MemoryManagementPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Configuration\Pages\ClientsPropertyPage.xaml">
       <SubType>Designer</SubType>
     </Page>

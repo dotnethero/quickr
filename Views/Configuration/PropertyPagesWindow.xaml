@@ -88,17 +88,39 @@
             <TabItem>
                 <views:ClientsPropertyPage DataContext="{Binding Path=ClientsPage}" />
             </TabItem>
-            <TabItem />
-            <TabItem />
-            <TabItem />
-            <TabItem />
-            <TabItem />
-            <TabItem />
-            <TabItem />
-            <TabItem />
-            <TabItem />
-            <TabItem />
-            <TabItem />
+            <TabItem>
+                <views:MemoryManagementPage DataContext="{Binding Path=MemoryManagementPage}" />
+            </TabItem>
+            <TabItem>
+                <views:LazyFreeingPage DataContext="{Binding Path=LazyFreeingPage}" />
+            </TabItem>
+            <TabItem>
+                <views:AppendOnlyModePage DataContext="{Binding Path=AppendOnlyModePage}" />
+            </TabItem>
+            <TabItem>
+                <views:LuaScriptingPage DataContext="{Binding Path=LuaScriptingPage}" />
+            </TabItem>
+            <TabItem>
+                <views:RedisClusterPage DataContext="{Binding Path=RedisClusterPage}" />
+            </TabItem>
+            <TabItem>
+                <views:ClusterNatSupportPage DataContext="{Binding Path=ClusterNatSupportPage}" />
+            </TabItem>
+            <TabItem>
+                <views:ShowLogPage DataContext="{Binding Path=ShowLogPage}" />
+            </TabItem>
+            <TabItem>
+                <views:LatencyMonitorPage DataContext="{Binding Path=LatencyMonitorPage}" />
+            </TabItem>
+            <TabItem>
+                <views:EventNotificationPage DataContext="{Binding Path=EventNotificationPage}" />
+            </TabItem>
+            <TabItem>
+                <views:AdvancedConfigPage DataContext="{Binding Path=AdvancedConfigPage}" />
+            </TabItem>
+            <TabItem>
+                <views:ActiveDefragmentationPage DataContext="{Binding Path=ActiveDefragmentationPage}" />
+            </TabItem>
             <TabItem />
         </TabControl>
         <Border
