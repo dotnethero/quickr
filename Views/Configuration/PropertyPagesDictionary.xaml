@@ -51,6 +51,14 @@
         <Setter Property="Text" Value="*" />
         <Setter Property="Margin" Value="3,0" />
     </Style>
+    <Style x:Key="Description" TargetType="TextBlock">
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="#505050" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
     <Style TargetType="CheckBox">
         <Setter Property="Margin" Value="0,2,0,2" />
         <Setter Property="VerticalContentAlignment" Value="Bottom" />
@@ -69,13 +77,13 @@
     <ControlTemplate x:Key="Text" TargetType="TextBox">
         <StackPanel Margin="0,0,0,5" d:DataContext="{d:DesignInstance cfg:StringPropertyModel}">
             <TextBox Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=Config.IsLoaded}" IsReadOnly="{Binding Path=Config.IsReadOnly}" />
-            <TextBlock Margin="0" Padding="2" FontSize="13" Foreground="#505050" TextWrapping="Wrap" HorizontalAlignment="Left" Text="{Binding Path=Config.Description}" />
+            <TextBlock Text="{Binding Path=Config.Description}" Style="{StaticResource Description}" />
         </StackPanel>
     </ControlTemplate>
     <ControlTemplate x:Key="Combo" TargetType="ComboBox">
         <StackPanel Margin="0,3,0,5" d:DataContext="{d:DesignInstance cfg:StringPropertyModel}">
             <ComboBox ItemsSource="{Binding Path=Config.PossibleValues}" SelectedItem="{Binding Path=Value}" IsEnabled="{Binding Path=Config.IsLoaded}" IsReadOnly="{Binding Path=Config.IsReadOnly}" />
-            <TextBlock Margin="0" Padding="2" FontSize="13" Foreground="#505050" TextWrapping="Wrap" HorizontalAlignment="Left" Text="{Binding Path=Config.Description}" />
+            <TextBlock Text="{Binding Path=Config.Description}" Style="{StaticResource Description}" />
         </StackPanel>
     </ControlTemplate>
     <ControlTemplate x:Key="TextN" TargetType="TextBox">
@@ -89,7 +97,15 @@
                 <CheckBox Content="{TemplateBinding Content}" IsChecked="{Binding Path=IsYes}" IsEnabled="{Binding Path=Config.IsLoaded}" />
                 <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
-            <TextBlock Margin="0" Padding="2" FontSize="13" Foreground="#505050" TextWrapping="Wrap" HorizontalAlignment="Left" Text="{Binding Path=Config.Description}" />
+            <TextBlock Text="{Binding Path=Config.Description}" Style="{StaticResource Description}" />
+        </StackPanel>
+    </ControlTemplate>
+    <ControlTemplate x:Key="YesNoN" TargetType="CheckBox">
+        <StackPanel Margin="0,0,0,0" d:DataContext="{d:DesignInstance cfg:YesNoPropertyModel}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <CheckBox Content="{TemplateBinding Content}" IsChecked="{Binding Path=IsYes}" IsEnabled="{Binding Path=Config.IsLoaded}" VerticalContentAlignment="Center" />
+                <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </StackPanel>
         </StackPanel>
     </ControlTemplate>
 </ResourceDictionary>

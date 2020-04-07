@@ -18,7 +18,26 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            Redis has two primitives to delete keys. One is called DEL and is a blocking deletion of the object. It means that the server stops processing new commands in order to reclaim all the memory associated with an object in a synchronous way. If the key deleted is associated with a small object, the time needed in order to execute the DEL command is very small and comparable to most other O(1) or O(log_N) commands in Redis. However if the key is associated with an aggregated value containing millions of elements, the server can block for a long time (even seconds) in order to complete the operation.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            For the above reasons Redis also offers non blocking deletion primitives such as UNLINK (non blocking DEL) and the ASYNC option of FLUSHALL and FLUSHDB commands, in order to reclaim memory in background. Those commands are executed in constant time. Another thread will incrementally free the object in the background as fast as possible.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            DEL, UNLINK and ASYNC option of FLUSHALL and FLUSHDB are user-controlled. It's up to the design of the application to understand when it is a good idea to use one or the other. However the Redis server sometimes has to delete keys or flush the whole database as a side effect of other operations. Specifically Redis deletes objects independently of a user call in the following scenarios:
+                        </TextBlock>
+                    </StackPanel>
+                    <CheckBox Grid.Row="1" Grid.Column="0" Template="{StaticResource YesNoN}" DataContext="{Binding LazyfreeLazyEviction}" Content="Lazy eviction" />
+                    <CheckBox Grid.Row="2" Grid.Column="0" Template="{StaticResource YesNoN}" DataContext="{Binding LazyfreeLazyExpire}" Content="Lazy expire" />
+                    <CheckBox Grid.Row="3" Grid.Column="0" Template="{StaticResource YesNoN}" DataContext="{Binding LazyfreeLazyServerDel}" Content="Lazy server DEL" />
+                    <CheckBox Grid.Row="4" Grid.Column="0" Template="{StaticResource YesNoN}" DataContext="{Binding ReplicaLazyFlush}" Content="Replica lazy FLUSH" />
                 </Grid>
             </GroupBox>
         </StackPanel>

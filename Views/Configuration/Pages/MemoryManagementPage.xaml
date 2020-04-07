@@ -18,7 +18,17 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding Maxmemory}" Content="Max memory:" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding Maxmemory}" />
+                    <Label Grid.Row="1" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding MaxmemoryPolicy}" Content="Memory policy:" />
+                    <ComboBox Grid.Row="1" Grid.Column="1" Template="{StaticResource Combo}" DataContext="{Binding MaxmemoryPolicy}" />
+                    <Label Grid.Row="2" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding MaxmemorySamples}" Content="Memory samples:" />
+                    <TextBox Grid.Row="2" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding MaxmemorySamples}" />
+                    <CheckBox Grid.Row="3" Grid.Column="1" Template="{StaticResource YesNo}" DataContext="{Binding ReplicaIgnoreMaxmemory}" Content="Replica ignores max memory" />
                 </Grid>
             </GroupBox>
         </StackPanel>

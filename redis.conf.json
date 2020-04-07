@@ -66,7 +66,7 @@
 },{
     "section": "Security",
     "configs": [
-        { "key": "requirepass", "description": "Require clients to issue AUTH <PASSWORD> before processing any other commands. This might be useful in environments in which you do not trust others with access to the host running redis-server.\n\nThis should stay commented out for backward compatibility and because most people do not need auth (e.g. they run their own servers).\n\nWarning: since Redis is pretty fast an outside user can try up to 150k passwords per second against a good box. This means that you should use a very strong password otherwise it will be very easy to break." },
+        { "key": "requirepass", "description": "Require clients to issue AUTH <PASSWORD> before processing any other commands. This might be useful in environments in which you do not trust others with access to the host running redis-server.\n\nThis should stay commented out for backward compatibility and because most people do not need auth (e.g. they run their own servers).\n\nWarning: since Redis is pretty fast an outside user can try up to 150k passwords per second against a good box. This means that you should use a very strong password otherwise it will be very easy to break." }
     ]
 },{
     "section": "Clients",
@@ -76,20 +76,20 @@
 },{
     "section": "Memory management",
     "configs": [
-        { "key": "maxmemory", "description": "" },
-        { "key": "maxmemory-policy", "description": "" },
-        { "key": "maxmemory-samples", "description": "" },
-        { "key": "slave-ignore-maxmemory", "description": "" },
-        { "key": "replica-ignore-maxmemory", "description": "" }
+        { "key": "maxmemory", "description": "Set a memory usage limit to the specified amount of bytes. When the memory limit is reached Redis will try to remove keys according to the eviction policy selected (see maxmemory-policy).\n\nIf Redis can't remove keys according to the policy, or if the policy is set to 'noeviction', Redis will start to reply with errors to commands that would use more memory, like SET, LPUSH, and so on, and will continue to reply to read-only commands like GET." },
+        { "key": "maxmemory-policy", "possibleValues": ["volatile-lru", "allkeys-lru", "volatile-lfu", "allkeys-lfu", "volatile-random", "allkeys-random", "volatile-ttl", "noeviction"], "description": "How Redis will select what to remove when maxmemory is reached" },
+        { "key": "maxmemory-samples", "defaultValue": "5", "description": "The default of 5 produces good enough results. 10 Approximates very closely true LRU but costs more CPU. 3 is faster but not very accurate." },
+        { "key": "slave-ignore-maxmemory", "defaultValue": "yes", "description": "Starting from Redis 5, by default a replica will ignore its maxmemory setting (unless it is promoted to master after a failover or manually)" },
+        { "key": "replica-ignore-maxmemory", "defaultValue": "yes", "description": "Starting from Redis 5, by default a replica will ignore its maxmemory setting (unless it is promoted to master after a failover or manually)" }
     ]
 },{
     "section": "Lazy freeing",
     "configs": [
-        { "key": "lazyfree-lazy-eviction", "description": "" },
-        { "key": "lazyfree-lazy-expire", "description": "" },
-        { "key": "lazyfree-lazy-server-del", "description": "" },
-        { "key": "slave-lazy-flush", "description": "" },
-        { "key": "replica-lazy-flush", "description": "" }
+        { "key": "lazyfree-lazy-eviction", "defaultValue": "no", "description": "" },
+        { "key": "lazyfree-lazy-expire", "defaultValue": "no", "description": "" },
+        { "key": "lazyfree-lazy-server-del", "defaultValue": "no", "description": "" },
+        { "key": "slave-lazy-flush", "defaultValue": "no", "description": "" },
+        { "key": "replica-lazy-flush", "defaultValue": "no", "description": "" }
     ]
 },{
     "section": "Append only mode",
