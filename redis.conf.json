@@ -163,8 +163,8 @@
         { "key": "proto-max-bulk-len", "description": "" },
         { "key": "hz", "description": "" },
         { "key": "dynamic-hz", "defaultValue": "yes", "description": "" },
-        { "key": "aof-rewrite-incremental-fsync", "defaultValue": "yes", "description": "" },
-        { "key": "rdb-save-incremental-fsync", "defaultValue": "yes", "description": "" },
+        { "key": "aof-rewrite-incremental-fsync", "defaultValue": "yes", "description": "When a child rewrites the AOF file, if the following option is enabled the file will be fsync-ed every 32 MB of data generated. This is useful in order to commit the file to the disk more incrementally and avoid big latency spikes." },
+        { "key": "rdb-save-incremental-fsync", "defaultValue": "yes", "description": "When redis saves RDB file, if the following option is enabled the file will be fsync-ed every 32 MB of data generated. This is useful in order to commit the file to the disk more incrementally and avoid big latency spikes." },
         { "key": "lfu-log-factor", "description": "" },
         { "key": "lfu-decay-time", "description": "" }
     ]

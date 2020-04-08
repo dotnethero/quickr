@@ -223,6 +223,153 @@
                     <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Template="{StaticResource YesNoN}" DataContext="{Binding ActiveRehashing}" Content="Active rehashing enabled" />
                 </Grid>
             </GroupBox>
+            <GroupBox Header="Client output buffer limits">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="130" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            The client output buffer limits can be used to force disconnection of clients
+                            that are not reading data from the server fast enough for some reason (a
+                            common reason is that a Pub/Sub client can't consume messages as fast as the
+                            publisher can produce them).
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            The limit can be set differently for the three different classes of clients:
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10" FontFamily="Consolas" TextWrapping="NoWrap">
+                            normal -&gt; normal clients including MONITOR clients<LineBreak />
+                            replica -&gt; replica clients<LineBreak />
+                            pubsub -&gt; clients subscribed to at least one pubsub channel or pattern
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            The syntax of every client-output-buffer-limit directive is the following:
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10" FontFamily="Consolas" TextWrapping="NoWrap">
+                            [class] [hard limit] [soft limit] [soft seconds]
+                        </TextBlock>
+                        <TextBox Template="{StaticResource TextN}" DataContext="{Binding ClientOutputBufferLimit}" />
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            By default normal clients are not limited because they don't receive data
+                            without asking (in a push way), but just after a request, so only
+                            asynchronous clients may create a scenario where data is requested faster
+                            than it can read.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            Instead there is a default limit for pubsub and replica clients, since
+                            subscribers and replicas receive data in a push fashion.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            Both the hard or the soft limit can be disabled by setting them to zero.
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Client query buffer limit">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="130" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            Client query buffers accumulate new commands. They are limited to a fixed
+                            amount by default in order to avoid that a protocol desynchronization (for
+                            instance due to a bug in the client) will lead to unbound memory usage in
+                            the query buffer. However you can configure it here if you have very special
+                            needs, such us huge multi/exec requests or alike.
+                        </TextBlock>
+                        <TextBox Template="{StaticResource TextN}" DataContext="{Binding ClientQueryBufferLimit}" />
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Background tasks">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="130" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            Redis calls an internal function to perform many background tasks, like
+                            closing connections of clients in timeout, purging expired keys that are
+                            never requested, and so forth.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            Not all tasks are performed with the same frequency, but Redis checks for
+                            tasks to perform according to the specified Hz value.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            By default Hz is set to 10. Raising the value will use more CPU when
+                            Redis is idle, but at the same time will make Redis more responsive when
+                            there are many keys expiring at the same time, and timeouts may be
+                            handled with more precision.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            The range is between 1 and 500, however a value over 100 is usually not
+                            a good idea. Most users should use the default of 10 and raise this up to
+                            100 only in environments where very low latency is required.
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                        <Label Template="{StaticResource Label}" DataContext="{Binding Hz}" Width="40" Content="Hz:" />
+                        <TextBox Template="{StaticResource TextN}" DataContext="{Binding Hz}" Width="40" MaxLength="3" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            Normally it is useful to have an Hz value which is proportional to the
+                            number of clients connected. This is useful in order, for instance, to
+                            avoid too many clients are processed for each background task invocation
+                            in order to avoid latency spikes.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            Since the default Hz value by default is conservatively set to 10, Redis
+                            offers, and enables by default, the ability to use an adaptive Hz value
+                            which will temporary raise when there are many connected clients.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            When dynamic Hz is enabled, the actual configured Hz will be used as
+                            as a baseline, but multiples of the configured Hz value will be actually
+                            used as needed once more clients are connected. In this way an idle
+                            instance will use very little CPU time while a busy instance will be
+                            more responsive.
+                        </TextBlock>
+                    </StackPanel>
+                    <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Template="{StaticResource YesNoN}" DataContext="{Binding DynamicHz}" Content="Dynamic Hz enabled" />
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Persistence">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="130" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <CheckBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Template="{StaticResource YesNo}" DataContext="{Binding AofRewriteIncrementalFsync}" Content="AOF rewrite incremental" />
+                    <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Template="{StaticResource YesNo}" DataContext="{Binding RdbSaveIncrementalFsync}" Content="RDB save incremental" />
+                </Grid>
+            </GroupBox>
         </StackPanel>
     </ScrollViewer>
 </UserControl>
