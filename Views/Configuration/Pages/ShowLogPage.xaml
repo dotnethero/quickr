@@ -18,7 +18,30 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            The Redis Slow Log is a system to log queries that exceeded a specified
+                            execution time. The execution time does not include the I/O operations
+                            like talking with the client, sending the reply and so forth,
+                            but just the time needed to actually execute the command (this is the only
+                            stage of command execution where the thread is blocked and can not serve
+                            other requests in the meantime).
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            You can configure the slow log with two parameters: one tells Redis
+                            what is the execution time, in microseconds, to exceed in order for the
+                            command to get logged, and the other parameter is the length of the
+                            slow log. When a new command is logged the oldest one is removed from the
+                            queue of logged commands.
+                        </TextBlock>
+                    </StackPanel>
+                    <Label Grid.Row="1" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding SlowlogLogSlowerThan}" Content="Log slower than:" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding SlowlogLogSlowerThan}" />
+                    <Label Grid.Row="2" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding SlowlogMaxLen}" Content="Show log max len:" />
+                    <TextBox Grid.Row="2" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding SlowlogMaxLen}" />
                 </Grid>
             </GroupBox>
         </StackPanel>
