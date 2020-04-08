@@ -18,7 +18,10 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding LuaTimeLimit}" Content="Lua time limit:" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding LuaTimeLimit}" />
                 </Grid>
             </GroupBox>
         </StackPanel>
