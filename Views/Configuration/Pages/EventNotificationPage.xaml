@@ -18,7 +18,34 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            Redis can notify Pub/Sub clients about events happening in the key space. This feature is documented at <Hyperlink NavigateUri="https://redis.io/topics/notifications" RequestNavigate="Navigate">https://redis.io/topics/notifications</Hyperlink> 
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            It is possible to select the events that Redis will notify among a set of classes. Every class is identified by a single character:
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10" FontFamily="Consolas" TextWrapping="NoWrap">
+                            K Keyspace events, published with __keyspace@0__ prefix.<LineBreak />
+                            E Keyevent events, published with __keyevent@0__ prefix.<LineBreak />
+                            g Generic commands (non-type specific) like DEL, EXPIRE, RENAME, ...<LineBreak />
+                            $ String commands<LineBreak />
+                            l List commands<LineBreak />
+                            s Set commands<LineBreak />
+                            h Hash commands<LineBreak />
+                            z Sorted set commands<LineBreak />
+                            x Expired events (events generated every time a key expires)<LineBreak />
+                            e Evicted events (events generated when a key is evicted for maxmemory)<LineBreak />
+                            A Alias for g$lshzxe, so that the "AKE" string means all the events.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            By default all notifications are disabled because most users don't need this feature and the feature has some overhead. Note that if you don't specify at least one of K or E, no events will be delivered.
+                        </TextBlock>
+                    </StackPanel>
+                    <Label Grid.Row="1" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding NotifyKeyspaceEvents}" Content="Notify events:" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Template="{StaticResource TextN}" DataContext="{Binding NotifyKeyspaceEvents}" />
                 </Grid>
             </GroupBox>
         </StackPanel>
