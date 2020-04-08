@@ -45,7 +45,7 @@ namespace Quickr.ViewModels.Data
             {
                 if (Current != null)
                 {
-                    Value = new StringValueViewModel(Current.OriginalValue, Current.CurrentValue);
+                    Value = new ValueViewModel(Current.OriginalValue, Current.CurrentValue);
                     Value.ValueSaved += OnValueSaved;
                     Value.ValueDiscarded += OnValueDiscarded;
                     Value.PropertyChanged += OnValuePropertyChanged;
@@ -61,7 +61,7 @@ namespace Quickr.ViewModels.Data
 
         private void OnValuePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(StringValueViewModel.CurrentValue))
+            if (e.PropertyName == nameof(ValueViewModel.CurrentValue))
             {
                 Current.CurrentValue = Value.CurrentValue;
             }

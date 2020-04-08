@@ -7,14 +7,14 @@ namespace Quickr.ViewModels.Data
 {
     internal abstract class BaseKeyViewModel : BaseViewModel
     {
-        private StringValueViewModel _value;
+        private ValueViewModel _value;
 
         protected RedisConnection Connection { get; }
 
         public KeyEntry Key { get; }
         public PropertiesViewModel Properties { get; }
 
-        public StringValueViewModel Value
+        public ValueViewModel Value
         {
             get => _value;
             protected set
