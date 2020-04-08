@@ -186,6 +186,43 @@
                     <TextBox Grid.Row="2" Grid.Column="1" Template="{StaticResource TextN}" DataContext="{Binding StreamNodeMaxEntries}" />
                 </Grid>
             </GroupBox>
+            <GroupBox Header="Active rehashing">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="130" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            Active rehashing uses 1 millisecond every 100 milliseconds of CPU time in
+                            order to help rehashing the main Redis hash table (the one mapping top-level
+                            keys to values). The hash table implementation Redis uses (see dict.c)
+                            performs a lazy rehashing: the more operation you run into a hash table
+                            that is rehashing, the more rehashing "steps" are performed, so if the
+                            server is idle the rehashing is never complete and some more memory is used
+                            by the hash table.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            The default is to use this millisecond 10 times every second in order to
+                            actively rehash the main dictionaries, freeing memory when possible.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            If unsure:<LineBreak />
+                            Use "activerehashing no" if you have hard latency requirements and it is
+                            not a good thing in your environment that Redis can reply from time to time
+                            to queries with 2 milliseconds delay.<LineBreak />
+                            Use "activerehashing yes" if you don't have such hard requirements but
+                            want to free memory asap when possible.
+                        </TextBlock>
+                    </StackPanel>
+                    <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Template="{StaticResource YesNoN}" DataContext="{Binding ActiveRehashing}" Content="Active rehashing enabled" />
+                </Grid>
+            </GroupBox>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

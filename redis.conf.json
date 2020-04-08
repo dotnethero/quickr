@@ -3,7 +3,7 @@
     "configs": [
         { "key": "bind", "isReadOnly": true, "description": "By default, if no \"bind\" configuration directive is specified, Redis listens for connections from all the network interfaces available on the server. It is possible to listen to just one or multiple selected interfaces using the \"bind\" configuration directive, followed by one or more IP addresses." },
         { "key": "port", "isReadOnly": true, "defaultValue": "6379", "description": "Accept connections on the specified port, default is 6379 (IANA #815344). If port 0 is specified Redis will not listen on a TCP socket." },
-        { "key": "protected-mode", "isReadOnly": true, "defaultValue": "yes", "description": "By default protected mode is enabled. You should disable it only if you are sure you want clients from other hosts to connect to Redis even if no authentication is configured, nor a specific set of interfaces are explicitly listed using the \"bind\" directive." },
+        { "key": "protected-mode", "defaultValue": "yes", "description": "By default protected mode is enabled. You should disable it only if you are sure you want clients from other hosts to connect to Redis even if no authentication is configured, nor a specific set of interfaces are explicitly listed using the \"bind\" directive." },
         { "key": "tcp-backlog", "isReadOnly": true, "description": "In high requests-per-second environments you need an high backlog in order to avoid slow clients connections issues. Note that the Linux kernel will silently truncate it to the value of /proc/sys/net/core/somaxconn so make sure to raise both the value of somaxconn and tcp_max_syn_backlog in order to get the desired effect." },
         { "key": "unixsocket", "isReadOnly": true, "description": "Specify the path for the Unix socket that will be used to listen for incoming connections. There is no default, so Redis will not listen on a unix socket when not specified." },
         { "key": "unixsocketperm", "isReadOnly": true, "description": "" },
@@ -18,11 +18,11 @@
         { "key": "pidfile", "isReadOnly": true, "description": "If a PID file is specified, Redis writes it where specified at startup and removes it at exit." },
         { "key": "loglevel", "possibleValues": ["debug", "verbose", "notice", "warning"], "description": "Specify the server verbosity level." },
         { "key": "logfile", "description": "Specify the log file name. Also the empty string can be used to force Redis to log on the standard output. Note that if you use standard output for logging but daemonize, logs will be sent to /dev/null" },
-        { "key": "syslog-enabled", "defaultValue": "no", "description": "To enable logging to the system logger, just set 'syslog-enabled' to yes, and optionally update the other syslog parameters to suit your needs." },
-        { "key": "syslog-ident", "description": "Specify the syslog identity." },
-        { "key": "syslog-facility", "possibleValues": ["USER", "LOCAL0", "LOCAL1", "LOCAL2", "LOCAL3", "LOCAL4", "LOCAL5", "LOCAL6", "LOCAL7"], "description": "Specify the syslog facility." },
+        { "key": "syslog-enabled", "isReadOnly": true, "defaultValue": "no", "description": "To enable logging to the system logger, just set 'syslog-enabled' to yes, and optionally update the other syslog parameters to suit your needs." },
+        { "key": "syslog-ident", "isReadOnly": true, "description": "Specify the syslog identity." },
+        { "key": "syslog-facility", "isReadOnly": true, "possibleValues": ["USER", "LOCAL0", "LOCAL1", "LOCAL2", "LOCAL3", "LOCAL4", "LOCAL5", "LOCAL6", "LOCAL7"], "description": "Specify the syslog facility." },
         { "key": "databases", "isReadOnly": true, "description": "Set the number of databases. The default database is DB 0, you can select a different one on a per-connection basis using SELECT <dbid> where dbid is a number between 0 and 'databases'-1" },
-        { "key": "always-show-logo", "defaultValue": "yes", "description": "By default Redis shows an ASCII art logo only when started to log to the standard output and if the standard output is a TTY. Basically this means that normally a logo is displayed only in interactive sessions." }
+        { "key": "always-show-logo", "isReadOnly": true, "defaultValue": "yes", "description": "By default Redis shows an ASCII art logo only when started to log to the standard output and if the standard output is a TTY. Basically this means that normally a logo is displayed only in interactive sessions." }
     ]
 },{
     "section": "Snapshotting",
@@ -32,13 +32,13 @@
         { "key": "rdbcompression", "defaultValue": "yes", "description": "Compress string objects using LZF when dump .rdb databases? For default that's set to 'yes' as it's almost always a win. If you want to save some CPU in the saving child set it to 'no' but the dataset will likely be bigger if you have compressible values or keys." },
         { "key": "rdbchecksum", "isReadOnly": true, "defaultValue": "yes", "description": "Since version 5 of RDB a CRC64 checksum is placed at the end of the file. This makes the format more resistant to corruption but there is a performance hit to pay (around 10%) when saving and loading RDB files, so you can disable it for maximum performances." },
         { "key": "dbfilename", "description": "The filename where to dump the DB" },
-        { "key": "dir", "description": "The working directory. The DB will be written inside this directory, with the filename specified above using the 'dbfilename' configuration directive." }
+        { "key": "dir", "isReadOnly": true, "description": "The working directory. The DB will be written inside this directory, with the filename specified above using the 'dbfilename' configuration directive." }
     ]
 },{
     "section": "Replication",
     "configs": [
-        { "key": "slaveof", "description": "Master-Replica replication. Use replicaof to make a Redis instance a copy of another Redis server.\nreplicaof <masterip> <masterport>" },
-        { "key": "replicaof", "description": "Master-Replica replication. Use replicaof to make a Redis instance a copy of another Redis server\nreplicaof <masterip> <masterport>" },
+        { "key": "slaveof", "isReadOnly": true, "description": "Master-Replica replication. Use replicaof to make a Redis instance a copy of another Redis server.\nreplicaof <masterip> <masterport>" },
+        { "key": "replicaof", "isReadOnly": true, "description": "Master-Replica replication. Use replicaof to make a Redis instance a copy of another Redis server\nreplicaof <masterip> <masterport>" },
         { "key": "masterauth", "description": "If the master is password protected (under Security section) it is possible to tell the replica to authenticate before starting the replication synchronization process, otherwise the master will refuse the replica request." },
         { "key": "slave-serve-stale-data", "defaultValue": "yes", "description": "When a replica loses its connection with the master, or when the replication is still in progress, the replica can act in two different ways:\n\n1) if set to 'yes' (the default) the replica will still reply to client requests, possibly with out of date data, or the data set may just be empty if this is the first synchronization.\n\n2) if set to 'no' the replica will reply with an error \"SYNC with master in progress\" to all the kind of commands but to INFO, replicaOF, AUTH, PING, SHUTDOWN, REPLCONF, ROLE, CONFIG, SUBSCRIBE, UNSUBSCRIBE, PSUBSCRIBE, PUNSUBSCRIBE, PUBLISH, PUBSUB, COMMAND, POST, HOST: and LATENCY." },
         { "key": "replica-serve-stale-data", "defaultValue": "yes", "description": "When a replica loses its connection with the master, or when the replication is still in progress, the replica can act in two different ways:\n\n1) if set to 'yes' (the default) the replica will still reply to client requests, possibly with out of date data, or the data set may just be empty if this is the first synchronization.\n\n2) if set to 'no' the replica will reply with an error \"SYNC with master in progress\" to all the kind of commands but to INFO, replicaOF, AUTH, PING, SHUTDOWN, REPLCONF, ROLE, CONFIG, SUBSCRIBE, UNSUBSCRIBE, PSUBSCRIBE, PUNSUBSCRIBE, PUBLISH, PUBSUB, COMMAND, POST, HOST: and LATENCY." },
@@ -95,7 +95,7 @@
     "section": "Append only mode",
     "configs": [
         { "key": "appendonly", "defaultValue": "no", "description": "" },
-        { "key": "appendfilename", "description": "The name of the append only file (default: \"appendonly.aof\")" },
+        { "key": "appendfilename", "isReadOnly": true, "description": "The name of the append only file (default: \"appendonly.aof\")" },
         { "key": "appendfsync", "possibleValues": ["always", "everysec", "no"], "defaultValue": "everysec", "description": "no: don't fsync, just let the OS flush the data when it wants. Faster.\nalways: fsync after every write to the append only log. Slow, Safest.\neverysec: fsync only one time every second. Compromise." },
         { "key": "no-appendfsync-on-rewrite", "defaultValue": "no", "description": "" },
         { "key": "auto-aof-rewrite-percentage", "description": "Automatic rewrite of the append only file. Redis is able to automatically rewrite the log file implicitly calling BGREWRITEAOF when the AOF log size grows by the specified percentage." },
@@ -157,14 +157,14 @@
         { "key": "hll-sparse-max-bytes", "description": "" },
         { "key": "stream-node-max-bytes", "description": "" },
         { "key": "stream-node-max-entries", "description": "" },
-        { "key": "activerehashing", "description": "" },
+        { "key": "activerehashing", "defaultValue": "yes", "description": "" },
         { "key": "client-output-buffer-limit", "description": "" },
         { "key": "client-query-buffer-limit", "description": "" },
         { "key": "proto-max-bulk-len", "description": "" },
         { "key": "hz", "description": "" },
-        { "key": "dynamic-hz", "description": "" },
-        { "key": "aof-rewrite-incremental-fsync", "description": "" },
-        { "key": "rdb-save-incremental-fsync", "description": "" },
+        { "key": "dynamic-hz", "defaultValue": "yes", "description": "" },
+        { "key": "aof-rewrite-incremental-fsync", "defaultValue": "yes", "description": "" },
+        { "key": "rdb-save-incremental-fsync", "defaultValue": "yes", "description": "" },
         { "key": "lfu-log-factor", "description": "" },
         { "key": "lfu-decay-time", "description": "" }
     ]

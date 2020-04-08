@@ -28,17 +28,40 @@
         <Setter Property="Margin" Value="1,2" />
         <Setter Property="Padding" Value="2" />
         <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Background" Value="Gainsboro" />
-            </Trigger>
             <DataTrigger Binding="{Binding Path=IsSaveFailed}" Value="True">
                 <Setter Property="BorderBrush" Value="Red" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Config.IsReadOnly}" Value="True">
+                <Setter Property="IsReadOnly" Value="True" />
+                <Setter Property="Background" Value="#EEEEEE" />
+                <Setter Property="BorderBrush" Value="#D9D9D9" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
     <Style TargetType="ComboBox">
         <Setter Property="Margin" Value="1,0" />
+        <Setter Property="Background" Value="#F5F5F5" />
         <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=IsSaveFailed}" Value="True">
+                <Setter Property="BorderBrush" Value="Red" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Config.IsReadOnly}" Value="True">
+                <Setter Property="IsEnabled" Value="False" />
+                <Setter Property="IsEditable" Value="False" />
+                <Setter Property="IsReadOnly" Value="True" />
+                <Setter Property="Background" Value="#EEEEEE" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="CheckBox">
+        <Setter Property="Margin" Value="0,2,0,2" />
+        <Setter Property="VerticalContentAlignment" Value="Bottom" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=Config.IsReadOnly}" Value="True">
+                <Setter Property="IsEnabled" Value="False" />
+                <Setter Property="Background" Value="#EEEEEE" />
+                <Setter Property="BorderBrush" Value="#D9D9D9" />
+            </DataTrigger>
             <DataTrigger Binding="{Binding Path=IsSaveFailed}" Value="True">
                 <Setter Property="BorderBrush" Value="Red" />
             </DataTrigger>
@@ -59,15 +82,6 @@
         <Setter Property="TextWrapping" Value="Wrap" />
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
-    <Style TargetType="CheckBox">
-        <Setter Property="Margin" Value="0,2,0,2" />
-        <Setter Property="VerticalContentAlignment" Value="Bottom" />
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding Path=IsSaveFailed}" Value="True">
-                <Setter Property="BorderBrush" Value="Red" />
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>
     <ControlTemplate x:Key="Label" TargetType="Label">
         <StackPanel Margin="0,5,3,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" d:DataContext="{d:DesignInstance cfg:StringPropertyModel}">
             <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
@@ -76,25 +90,25 @@
     </ControlTemplate>
     <ControlTemplate x:Key="Text" TargetType="TextBox">
         <StackPanel Margin="0,0,0,5" d:DataContext="{d:DesignInstance cfg:StringPropertyModel}">
-            <TextBox Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=Config.IsLoaded}" IsReadOnly="{Binding Path=Config.IsReadOnly}" />
+            <TextBox Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock Text="{Binding Path=Config.Description}" Style="{StaticResource Description}" />
         </StackPanel>
     </ControlTemplate>
     <ControlTemplate x:Key="Combo" TargetType="ComboBox">
         <StackPanel Margin="0,3,0,5" d:DataContext="{d:DesignInstance cfg:StringPropertyModel}">
-            <ComboBox ItemsSource="{Binding Path=Config.PossibleValues}" SelectedItem="{Binding Path=Value}" IsEnabled="{Binding Path=Config.IsLoaded}" IsReadOnly="{Binding Path=Config.IsReadOnly}" />
+            <ComboBox ItemsSource="{Binding Path=Config.PossibleValues}" SelectedItem="{Binding Path=Value}" />
             <TextBlock Text="{Binding Path=Config.Description}" Style="{StaticResource Description}" />
         </StackPanel>
     </ControlTemplate>
     <ControlTemplate x:Key="TextN" TargetType="TextBox">
         <StackPanel Margin="0,0,0,5" d:DataContext="{d:DesignInstance cfg:StringPropertyModel}">
-            <TextBox Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=Config.IsLoaded}" IsReadOnly="{Binding Path=Config.IsReadOnly}" />
+            <TextBox Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
     </ControlTemplate>
     <ControlTemplate x:Key="YesNo" TargetType="CheckBox">
         <StackPanel Margin="0,5,0,8" d:DataContext="{d:DesignInstance cfg:YesNoPropertyModel}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <CheckBox Content="{TemplateBinding Content}" IsChecked="{Binding Path=IsYes}" IsEnabled="{Binding Path=Config.IsLoaded}" />
+                <CheckBox Content="{TemplateBinding Content}" IsChecked="{Binding Path=IsYes}" />
                 <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
             <TextBlock Text="{Binding Path=Config.Description}" Style="{StaticResource Description}" />
@@ -103,7 +117,7 @@
     <ControlTemplate x:Key="YesNoN" TargetType="CheckBox">
         <StackPanel Margin="0,0,0,0" d:DataContext="{d:DesignInstance cfg:YesNoPropertyModel}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <CheckBox Content="{TemplateBinding Content}" IsChecked="{Binding Path=IsYes}" IsEnabled="{Binding Path=Config.IsLoaded}" VerticalContentAlignment="Center" />
+                <CheckBox Content="{TemplateBinding Content}" IsChecked="{Binding Path=IsYes}" VerticalContentAlignment="Center" />
                 <TextBlock Style="{StaticResource *}" Visibility="{Binding Path=IsPropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
         </StackPanel>
