@@ -18,7 +18,38 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            In certain deployments, Redis Cluster nodes address discovery fails, because addresses are NAT-ted or because ports are forwarded (the typical case is Docker and other containers).
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            In order to make Redis Cluster working in such environments, a static configuration where each node knows its public address is needed. The following two options are used for this scope, and are:
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10" FontFamily="Consolas">
+                            cluster-announce-ip<LineBreak />
+                            cluster-announce-port<LineBreak />
+                            cluster-announce-bus-port
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            Each instruct the node about its address, client port, and cluster message bus port. The information is then published in the header of the bus packets so that other nodes will be able to correctly map the address of the node publishing the information.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            If the above options are not used, the normal Redis Cluster auto-detection will be used instead.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            Note that when remapped, the bus port may not be at the fixed offset of clients port + 10000, so you can specify any port and bus-port depending on how they get remapped. If the bus-port is not set, a fixed offset of 10000 will be used as usually.
+                        </TextBlock>
+                    </StackPanel>
+                    <Label Grid.Row="1" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding ClusterAnnounceIp}" Content="IP:" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Template="{StaticResource TextN}" DataContext="{Binding ClusterAnnounceIp}" />
+                    <Label Grid.Row="2" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding ClusterAnnouncePort}" Content="Port:" />
+                    <TextBox Grid.Row="2" Grid.Column="1" Template="{StaticResource TextN}" DataContext="{Binding ClusterAnnouncePort}" />
+                    <Label Grid.Row="3" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding ClusterAnnounceBusPort}" Content="Bus port:" />
+                    <TextBox Grid.Row="3" Grid.Column="1" Template="{StaticResource TextN}" DataContext="{Binding ClusterAnnounceBusPort}" />
                 </Grid>
             </GroupBox>
         </StackPanel>
