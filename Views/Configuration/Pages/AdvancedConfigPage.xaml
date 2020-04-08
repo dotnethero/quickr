@@ -370,6 +370,22 @@
                     <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Template="{StaticResource YesNo}" DataContext="{Binding RdbSaveIncrementalFsync}" Content="RDB save incremental" />
                 </Grid>
             </GroupBox>
+            <GroupBox Header="LFU eviction">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="130" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding LfuLogFactor}" Content="LFU log factor:" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Template="{StaticResource TextN}" DataContext="{Binding LfuLogFactor}" />
+                    <Label Grid.Row="1" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding LfuDecayTime}" Content="LFU decay time:" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding LfuDecayTime}" />
+                </Grid>
+            </GroupBox>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

@@ -166,17 +166,17 @@
         { "key": "aof-rewrite-incremental-fsync", "defaultValue": "yes", "description": "When a child rewrites the AOF file, if the following option is enabled the file will be fsync-ed every 32 MB of data generated. This is useful in order to commit the file to the disk more incrementally and avoid big latency spikes." },
         { "key": "rdb-save-incremental-fsync", "defaultValue": "yes", "description": "When redis saves RDB file, if the following option is enabled the file will be fsync-ed every 32 MB of data generated. This is useful in order to commit the file to the disk more incrementally and avoid big latency spikes." },
         { "key": "lfu-log-factor", "description": "" },
-        { "key": "lfu-decay-time", "description": "" }
+        { "key": "lfu-decay-time", "description": "The counter decay time is the time, in minutes, that must elapse in order for the key counter to be divided by two (or decremented if it has a value less <= 10)." }
     ]
 },{
     "section": "Active defragmentation",
     "configs": [
-        { "key": "activedefrag", "description": "" },
-        { "key": "active-defrag-ignore-bytes", "description": "" },
-        { "key": "active-defrag-threshold-lower", "description": "" },
-        { "key": "active-defrag-threshold-upper", "description": "" },
-        { "key": "active-defrag-cycle-min", "description": "" },
-        { "key": "active-defrag-cycle-max", "description": "" },
-        { "key": "active-defrag-max-scan-fields", "description": "" }
+        { "key": "activedefrag", "defaultValue": "no", "description": "Enabled active defragmentation" },
+        { "key": "active-defrag-ignore-bytes", "description": "Minimum amount of fragmentation waste to start active defrag" },
+        { "key": "active-defrag-threshold-lower", "description": "Minimum percentage of fragmentation to start active defrag" },
+        { "key": "active-defrag-threshold-upper", "description": "Maximum percentage of fragmentation at which we use maximum effort" },
+        { "key": "active-defrag-cycle-min", "description": "Minimal effort for defrag in CPU percentage" },
+        { "key": "active-defrag-cycle-max", "description": "Maximal effort for defrag in CPU percentage" },
+        { "key": "active-defrag-max-scan-fields", "description": "Maximum number of set/hash/zset/list fields that will be processed from the main dictionary scan" }
     ]
 }]

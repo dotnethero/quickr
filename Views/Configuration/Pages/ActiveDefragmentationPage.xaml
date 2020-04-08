@@ -18,7 +18,56 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            Active (online) defragmentation allows a Redis server to compact the
+                            spaces left between small allocations and deallocations of data in memory,
+                            thus allowing to reclaim back memory.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            Fragmentation is a natural process that happens with every allocator (but
+                            less so with Jemalloc, fortunately) and certain workloads. Normally a server
+                            restart is needed in order to lower the fragmentation, or at least to flush
+                            away all the data and create it again. However thanks to this feature
+                            implemented by Oran Agra for Redis 4.0 this process can happen at runtime
+                            in an "hot" way, while the server is running.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            Basically when the fragmentation is over a certain level (see the
+                            configuration options below) Redis will start to create new copies of the
+                            values in contiguous memory regions by exploiting certain specific Jemalloc
+                            features (in order to understand if an allocation is causing fragmentation
+                            and to allocate it in a better place), and at the same time, will release the
+                            old copies of the data. This process, repeated incrementally for all the keys
+                            will cause the fragmentation to drop back to normal values.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10" Foreground="DarkRed">
+                            Warning! This feature is disabled by default, and only works if you compiled Redis
+                            to use the copy of Jemalloc we ship with the source code of Redis.
+                            This is the default with Linux builds.
+                        </TextBlock>
+                    </StackPanel>
+                    <CheckBox Grid.Row="1" Grid.Column="1" Template="{StaticResource YesNoN}" DataContext="{Binding ActiveDefrag}" Content="Active defragmentation enabled" />
+                    <Label Grid.Row="2" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding ActiveDefragIgnoreBytes}" Content="Ignore bytes:" />
+                    <TextBox Grid.Row="2" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding ActiveDefragIgnoreBytes}" />
+                    <Label Grid.Row="3" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding ActiveDefragThresholdLower}" Content="Threshold lower:" />
+                    <TextBox Grid.Row="3" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding ActiveDefragThresholdLower}" />
+                    <Label Grid.Row="4" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding ActiveDefragThresholdUpper}" Content="Threshold upper:" />
+                    <TextBox Grid.Row="4" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding ActiveDefragThresholdUpper}" />
+                    <Label Grid.Row="5" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding ActiveDefragCycleMin}" Content="Cycle min:" />
+                    <TextBox Grid.Row="5" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding ActiveDefragCycleMin}" />
+                    <Label Grid.Row="6" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding ActiveDefragCycleMax}" Content="Cycle max:" />
+                    <TextBox Grid.Row="6" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding ActiveDefragCycleMax}" />
+                    <Label Grid.Row="7" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding ActiveDefragMaxScanFields}" Content="Max scan fields:" />
+                    <TextBox Grid.Row="7" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding ActiveDefragMaxScanFields}" />
                 </Grid>
             </GroupBox>
         </StackPanel>

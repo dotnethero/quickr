@@ -6,7 +6,7 @@ namespace Quickr.ViewModels.Configuration
 {
     internal class ActiveDefragmentationPropertyPageModel: BasePropertyPageModel
     {
-        public StringPropertyModel ActiveDefrag { get; set; }
+        public YesNoPropertyModel ActiveDefrag { get; set; }
         public StringPropertyModel ActiveDefragIgnoreBytes { get; set; }
         public StringPropertyModel ActiveDefragThresholdLower { get; set; }
         public StringPropertyModel ActiveDefragThresholdUpper { get; set; }
@@ -17,7 +17,7 @@ namespace Quickr.ViewModels.Configuration
         public ActiveDefragmentationPropertyPageModel(RedisConnection connection, Dictionary<string, ConfigKeyValue> config): 
             base(connection, config)
         {
-            ActiveDefrag = MapToString("activedefrag");
+            ActiveDefrag = MapToYesNo("activedefrag");
             ActiveDefragIgnoreBytes = MapToString("active-defrag-ignore-bytes");
             ActiveDefragThresholdLower = MapToString("active-defrag-threshold-lower");
             ActiveDefragThresholdUpper = MapToString("active-defrag-threshold-upper");
