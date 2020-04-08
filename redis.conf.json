@@ -137,7 +137,7 @@
 },{
     "section": "Latency monitor",
     "configs": [
-        { "key": "latency-monitor-threshold", "description": "" }
+        { "key": "latency-monitor-threshold", "description": "The system only logs operations that were performed in a time equal or greater than the amount of milliseconds specified. When its value is set to zero, the latency monitor is turned off." }
     ]
 },{
     "section": "Event notification",

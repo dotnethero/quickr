@@ -18,7 +18,21 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            The Redis latency monitoring subsystem samples different operations
+                            at runtime in order to collect data related to possible sources of
+                            latency of a Redis instance.
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Description}" Margin="0,0,0,10">
+                            Via the LATENCY command this information is available to the user that can
+                            print graphs and obtain reports.
+                        </TextBlock>
+                    </StackPanel>
+                    <Label Grid.Row="1" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding LatencyMonitorThreshold}" Content="Latency threshold:" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding LatencyMonitorThreshold}" />
                 </Grid>
             </GroupBox>
         </StackPanel>
