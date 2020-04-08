@@ -10,7 +10,7 @@
     </UserControl.Resources>
     <ScrollViewer Style="{StaticResource SidePageScroll}">
         <StackPanel Margin="0,0,10,0">
-            <GroupBox Header="Redis cluster">
+            <GroupBox Header="Cluster">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" MinWidth="130" />
@@ -18,7 +18,24 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
+                    <CheckBox Grid.Row="0" Grid.Column="1" Template="{StaticResource YesNo}" DataContext="{Binding ClusterEnabled}" Content="Cluster enabled" />
+                    <Label Grid.Row="1" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding ClusterConfigFile}" Content="Config file:" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding ClusterConfigFile}" />
+                    <Label Grid.Row="2" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding ClusterNodeTimeout}" Content="Node timeout:" />
+                    <TextBox Grid.Row="2" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding ClusterNodeTimeout}" />
+                    <Label Grid.Row="3" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding ClusterReplicaValidityFactor}" Content="Validity factor:" />
+                    <TextBox Grid.Row="3" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding ClusterReplicaValidityFactor}" />
+                    <Label Grid.Row="4" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding ClusterMigrationBarrier}" Content="Migration barrier:" />
+                    <TextBox Grid.Row="4" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding ClusterMigrationBarrier}" />
+                    <CheckBox Grid.Row="5" Grid.Column="1" Template="{StaticResource YesNo}" DataContext="{Binding ClusterRequireFullCoverage}" Content="Require full coverage" />
+                    <CheckBox Grid.Row="6" Grid.Column="1" Template="{StaticResource YesNo}" DataContext="{Binding ClusterReplicaNoFailover}" Content="Replica no failover" />
                 </Grid>
             </GroupBox>
         </StackPanel>

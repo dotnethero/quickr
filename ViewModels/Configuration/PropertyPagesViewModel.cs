@@ -39,8 +39,8 @@ namespace Quickr.ViewModels.Configuration
             LazyFreeingPage = new LazyFreeingPropertyPageModel(connection, config["Lazy freeing"]);
             AppendOnlyModePage = new AppendOnlyModePropertyPageModel(connection, config["Append only mode"]);
             LuaScriptingPage = new LuaScriptingPropertyPageModel(connection, config["Lua scripting"]);
-            RedisClusterPage = new RedisClusterPropertyPageModel(connection, config["Redis cluster"]);
-            ClusterNatSupportPage = new ClusterNatSupportPropertyPageModel(connection, config["Cluster docker/NAT support"]);
+            RedisClusterPage = new RedisClusterPropertyPageModel(connection, config["Cluster"]);
+            ClusterNatSupportPage = new ClusterNatSupportPropertyPageModel(connection, config["Cluster NAT support"]);
             ShowLogPage = new ShowLogPropertyPageModel(connection, config["Show log"]);
             LatencyMonitorPage = new LatencyMonitorPropertyPageModel(connection, config["Latency monitor"]);
             EventNotificationPage = new EventNotificationPropertyPageModel(connection, config["Event notification"]);

@@ -10,7 +10,7 @@
     </UserControl.Resources>
     <ScrollViewer Style="{StaticResource SidePageScroll}">
         <StackPanel Margin="0,0,10,0">
-            <GroupBox Header="Cluster docker/NAT support">
+            <GroupBox Header="Cluster NAT support">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" MinWidth="130" />

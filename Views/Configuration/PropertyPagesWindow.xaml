@@ -48,8 +48,8 @@
             <ListViewItem>Lazy freeing</ListViewItem>
             <ListViewItem>Append only mode</ListViewItem>
             <ListViewItem>Lua scripting</ListViewItem>
-            <ListViewItem>Redis cluster</ListViewItem>
-            <ListViewItem>Cluster docker/NAT support</ListViewItem>
+            <ListViewItem>Cluster</ListViewItem>
+            <ListViewItem>Cluster NAT support</ListViewItem>
             <ListViewItem>Show log</ListViewItem>
             <ListViewItem>Latency monitor</ListViewItem>
             <ListViewItem>Event notification</ListViewItem>
