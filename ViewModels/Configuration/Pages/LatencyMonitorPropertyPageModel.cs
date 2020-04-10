@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Quickr.Models.Configuration;
-using Quickr.Services;
+using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
@@ -8,8 +8,8 @@ namespace Quickr.ViewModels.Configuration
     {
         public StringPropertyModel LatencyMonitorThreshold { get; set; }
 
-        public LatencyMonitorPropertyPageModel(RedisConnection connection, Dictionary<string, ConfigKeyValue> config): 
-            base(connection, config)
+        public LatencyMonitorPropertyPageModel(EndpointEntry endpoint, Dictionary<string, ConfigKeyValue> config): 
+            base(endpoint, config)
         {
             LatencyMonitorThreshold = MapToString("latency-monitor-threshold");
         }

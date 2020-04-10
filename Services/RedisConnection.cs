@@ -14,22 +14,24 @@ namespace Quickr.Services
     internal class RedisConnection: IDisposable
     {
         private readonly ConnectionMultiplexer _connection;
+        private readonly DnsEndPoint _originEndpoint;
 
-        public RedisConnection(ConnectionMultiplexer connection)
+        public RedisConnection(ConnectionMultiplexer connection, DnsEndPoint originEndpoint)
         {
             _connection = connection;
+            _originEndpoint = originEndpoint;
         }
         
-        public IGrouping<string, KeyValuePair<string, string>>[] Info(EndPoint endpoint)
+        public async Task<IGrouping<string, KeyValuePair<string, string>>[]> Info(EndPoint endpoint)
         {
             var server = _connection.GetServer(endpoint);
-            return server.Info();
+            return await server.InfoAsync().ConfigureAwait(false);
         }
         
         // section -> key -> key * value * spec
-        public Dictionary<string, Dictionary<string, ConfigKeyValue>> ConfigGet()
+        public Dictionary<string, Dictionary<string, ConfigKeyValue>> ConfigGet(EndPoint endpoint)
         {
-            var server = GetOriginServer();
+            var server = _connection.GetServer(endpoint);
             var configs = server.ConfigGet().ToDictionary();
             var redisConfSpec = File.ReadAllText("redis.conf.json");
             var sections = JsonConvert.DeserializeObject<ConfigSection[]>(redisConfSpec);
@@ -77,10 +79,10 @@ namespace Quickr.Services
                 .ToDictionary(x => x.Key, x => x.ToDictionary(v => v.Key, v => v));
         }
         
-        public void ConfigSet(string key, string value)
+        public void ConfigSet(EndPoint endpoint, string key, string value)
         {
-            var db = GetOriginServer();
-            db.ConfigSet(key, value);
+            var server = _connection.GetServer(endpoint);
+            server.ConfigSet(key, value);
         }
 
         public DatabaseEntry[] GetDatabases()
@@ -266,7 +268,7 @@ namespace Quickr.Services
 
         private IServer GetOriginServer()
         {
-            return _connection.GetServer(_connection.GetEndPoints().First());
+            return _connection.GetServer(_originEndpoint);
         }
         
         private List<IServer> GetMasterServers()
@@ -286,11 +288,17 @@ namespace Quickr.Services
         
         public EndpointEntry[] GetEndpoints()
         {
-            return _connection
-                .GetEndPoints()
-                .OrderBy(endpoint => endpoint.AddressFamily)
-                .ThenBy(endpoint => endpoint.ToString())
-                .Select(endpoint => new EndpointEntry(this, endpoint, endpoint.ToString()))
+            var server = GetOriginServer();
+            if (server.ServerType == ServerType.Standalone)
+            {
+                return new[] { new EndpointEntry(this, server) };
+            }
+
+            return server.ClusterConfiguration.Nodes
+                .Where(x => !x.IsSlave && !x.EndPoint.Equals(_originEndpoint))
+                .OrderBy(node => node.EndPoint.AddressFamily)
+                .ThenBy(node => node.EndPoint.ToString())
+                .Select(node => new EndpointEntry(this, node))
                 .ToArray();
         }
 

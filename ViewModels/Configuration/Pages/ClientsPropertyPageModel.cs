@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Quickr.Models.Configuration;
-using Quickr.Services;
+using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
@@ -8,8 +8,8 @@ namespace Quickr.ViewModels.Configuration
     {
         public StringPropertyModel MaxClients { get; set; }
 
-        public ClientsPropertyPageModel(RedisConnection connection, Dictionary<string, ConfigKeyValue> config): 
-            base(connection, config)
+        public ClientsPropertyPageModel(EndpointEntry endpoint, Dictionary<string, ConfigKeyValue> config): 
+            base(endpoint, config)
         {
             MaxClients = MapToString("maxclients");
         }

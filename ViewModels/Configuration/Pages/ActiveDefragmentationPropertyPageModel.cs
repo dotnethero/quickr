@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Quickr.Models.Configuration;
-using Quickr.Services;
+using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
@@ -14,8 +14,8 @@ namespace Quickr.ViewModels.Configuration
         public StringPropertyModel ActiveDefragCycleMax { get; set; }
         public StringPropertyModel ActiveDefragMaxScanFields { get; set; }
 
-        public ActiveDefragmentationPropertyPageModel(RedisConnection connection, Dictionary<string, ConfigKeyValue> config): 
-            base(connection, config)
+        public ActiveDefragmentationPropertyPageModel(EndpointEntry endpoint, Dictionary<string, ConfigKeyValue> config): 
+            base(endpoint, config)
         {
             ActiveDefrag = MapToYesNo("activedefrag");
             ActiveDefragIgnoreBytes = MapToString("active-defrag-ignore-bytes");

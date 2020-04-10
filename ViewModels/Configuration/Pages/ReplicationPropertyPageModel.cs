@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Quickr.Models.Configuration;
-using Quickr.Services;
+using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
@@ -23,8 +23,8 @@ namespace Quickr.ViewModels.Configuration
         public StringPropertyModel ReplicaAnnounceIp { get; set; }
         public StringPropertyModel ReplicaAnnouncePort { get; set; }
 
-        public ReplicationPropertyPageModel(RedisConnection connection, Dictionary<string, ConfigKeyValue> config): 
-            base(connection, config)
+        public ReplicationPropertyPageModel(EndpointEntry endpoint, Dictionary<string, ConfigKeyValue> config): 
+            base(endpoint, config)
         {
             var old =
                 HasKey("slaveof") ||

@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using Quickr.Models.Keys;
 using Quickr.Services;
 using Quickr.Utils;
 
@@ -26,26 +27,27 @@ namespace Quickr.ViewModels.Configuration
         public AdvancedConfigPropertyPageModel AdvancedConfigPage { get; }
         public ActiveDefragmentationPropertyPageModel ActiveDefragmentationPage { get; }
 
-        public PropertyPagesViewModel(RedisConnection connection)
+        public PropertyPagesViewModel(EndpointEntry endpoint)
         {
-            var config = connection.ConfigGet();
-            NetworkPage = new NetworkPropertyPageModel(connection, config["Network"]);
-            GeneralPage = new GeneralPropertyPageModel(connection, config["General"]);
-            SnapshottingPage = new SnapshottingPropertyPageModel(connection, config["Snapshotting"]);
-            ReplicationPage = new ReplicationPropertyPageModel(connection, config["Replication"]);
-            SecurityPage = new SecurityPropertyPageModel(connection, config["Security"]);
-            ClientsPage = new ClientsPropertyPageModel(connection, config["Clients"]);
-            MemoryManagementPage = new MemoryManagementPropertyPageModel(connection, config["Memory management"]);
-            LazyFreeingPage = new LazyFreeingPropertyPageModel(connection, config["Lazy freeing"]);
-            AppendOnlyModePage = new AppendOnlyModePropertyPageModel(connection, config["Append only mode"]);
-            LuaScriptingPage = new LuaScriptingPropertyPageModel(connection, config["Lua scripting"]);
-            RedisClusterPage = new RedisClusterPropertyPageModel(connection, config["Cluster"]);
-            ClusterNatSupportPage = new ClusterNatSupportPropertyPageModel(connection, config["Cluster NAT support"]);
-            ShowLogPage = new ShowLogPropertyPageModel(connection, config["Show log"]);
-            LatencyMonitorPage = new LatencyMonitorPropertyPageModel(connection, config["Latency monitor"]);
-            EventNotificationPage = new EventNotificationPropertyPageModel(connection, config["Event notification"]);
-            AdvancedConfigPage = new AdvancedConfigPropertyPageModel(connection, config["Advanced config"]);
-            ActiveDefragmentationPage = new ActiveDefragmentationPropertyPageModel(connection, config["Active defragmentation"]);
+            var connection = endpoint.Connection;
+            var config = connection.ConfigGet(endpoint.Endpoint);
+            NetworkPage = new NetworkPropertyPageModel(endpoint, config["Network"]);
+            GeneralPage = new GeneralPropertyPageModel(endpoint, config["General"]);
+            SnapshottingPage = new SnapshottingPropertyPageModel(endpoint, config["Snapshotting"]);
+            ReplicationPage = new ReplicationPropertyPageModel(endpoint, config["Replication"]);
+            SecurityPage = new SecurityPropertyPageModel(endpoint, config["Security"]);
+            ClientsPage = new ClientsPropertyPageModel(endpoint, config["Clients"]);
+            MemoryManagementPage = new MemoryManagementPropertyPageModel(endpoint, config["Memory management"]);
+            LazyFreeingPage = new LazyFreeingPropertyPageModel(endpoint, config["Lazy freeing"]);
+            AppendOnlyModePage = new AppendOnlyModePropertyPageModel(endpoint, config["Append only mode"]);
+            LuaScriptingPage = new LuaScriptingPropertyPageModel(endpoint, config["Lua scripting"]);
+            RedisClusterPage = new RedisClusterPropertyPageModel(endpoint, config["Cluster"]);
+            ClusterNatSupportPage = new ClusterNatSupportPropertyPageModel(endpoint, config["Cluster NAT support"]);
+            ShowLogPage = new ShowLogPropertyPageModel(endpoint, config["Show log"]);
+            LatencyMonitorPage = new LatencyMonitorPropertyPageModel(endpoint, config["Latency monitor"]);
+            EventNotificationPage = new EventNotificationPropertyPageModel(endpoint, config["Event notification"]);
+            AdvancedConfigPage = new AdvancedConfigPropertyPageModel(endpoint, config["Advanced config"]);
+            ActiveDefragmentationPage = new ActiveDefragmentationPropertyPageModel(endpoint, config["Active defragmentation"]);
             SaveCommand = new Command(Save);
         }
 

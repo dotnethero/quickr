@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Quickr.Models.Configuration;
-using Quickr.Services;
+using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
@@ -27,8 +27,8 @@ namespace Quickr.ViewModels.Configuration
         public StringPropertyModel LfuLogFactor { get; set; }
         public StringPropertyModel LfuDecayTime { get; set; }
 
-        public AdvancedConfigPropertyPageModel(RedisConnection connection, Dictionary<string, ConfigKeyValue> config): 
-            base(connection, config)
+        public AdvancedConfigPropertyPageModel(EndpointEntry endpoint, Dictionary<string, ConfigKeyValue> config): 
+            base(endpoint, config)
         {
             HashMaxZiplistEntries = MapToString("hash-max-ziplist-entries");
             HashMaxZiplistValue = MapToString("hash-max-ziplist-value");

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Quickr.Models.Configuration;
-using Quickr.Services;
+using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
@@ -11,8 +11,8 @@ namespace Quickr.ViewModels.Configuration
         public StringPropertyModel MaxmemorySamples { get; set; }
         public YesNoPropertyModel ReplicaIgnoreMaxmemory { get; set; }
 
-        public MemoryManagementPropertyPageModel(RedisConnection connection, Dictionary<string, ConfigKeyValue> config): 
-            base(connection, config)
+        public MemoryManagementPropertyPageModel(EndpointEntry endpoint, Dictionary<string, ConfigKeyValue> config): 
+            base(endpoint, config)
         {
             Maxmemory = MapToString("maxmemory");
             MaxmemoryPolicy = MapToString("maxmemory-policy");

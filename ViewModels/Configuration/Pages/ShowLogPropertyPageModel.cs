@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Quickr.Models.Configuration;
-using Quickr.Services;
+using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
@@ -9,8 +9,8 @@ namespace Quickr.ViewModels.Configuration
         public StringPropertyModel SlowlogLogSlowerThan { get; set; }
         public StringPropertyModel SlowlogMaxLen { get; set; }
 
-        public ShowLogPropertyPageModel(RedisConnection connection, Dictionary<string, ConfigKeyValue> config): 
-            base(connection, config)
+        public ShowLogPropertyPageModel(EndpointEntry endpoint, Dictionary<string, ConfigKeyValue> config): 
+            base(endpoint, config)
         {
             SlowlogLogSlowerThan = MapToString("slowlog-log-slower-than");
             SlowlogMaxLen = MapToString("slowlog-max-len");

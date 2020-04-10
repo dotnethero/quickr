@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Quickr.Models.Configuration;
-using Quickr.Services;
+using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
@@ -11,8 +11,8 @@ namespace Quickr.ViewModels.Configuration
         public YesNoPropertyModel LazyfreeLazyServerDel { get; set; }
         public YesNoPropertyModel ReplicaLazyFlush { get; set; }
 
-        public LazyFreeingPropertyPageModel(RedisConnection connection, Dictionary<string, ConfigKeyValue> config): 
-            base(connection, config)
+        public LazyFreeingPropertyPageModel(EndpointEntry endpoint, Dictionary<string, ConfigKeyValue> config): 
+            base(endpoint, config)
         {
             LazyfreeLazyEviction = MapToYesNo("lazyfree-lazy-eviction");
             LazyfreeLazyExpire = MapToYesNo("lazyfree-lazy-expire");

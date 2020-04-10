@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Quickr.Models.Configuration;
-using Quickr.Services;
+using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
@@ -17,8 +17,8 @@ namespace Quickr.ViewModels.Configuration
         public StringPropertyModel Databases { get; set; }
         public YesNoPropertyModel AlwaysShowLogo { get; set; }
 
-        public GeneralPropertyPageModel(RedisConnection connection, Dictionary<string, ConfigKeyValue> config): 
-            base(connection, config)
+        public GeneralPropertyPageModel(EndpointEntry endpoint, Dictionary<string, ConfigKeyValue> config): 
+            base(endpoint, config)
         {
             Daemonize = MapToYesNo("daemonize");
             Supervised = MapToString("supervised");

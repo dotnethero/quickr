@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using Quickr.Models.Configuration;
-using Quickr.Services;
+using Quickr.Models.Keys;
 using StackExchange.Redis;
 
 namespace Quickr.ViewModels.Configuration
 {
     internal abstract class BasePropertyPageModel
     {
-        private readonly RedisConnection _connection;
+        private readonly EndpointEntry _entry;
         private readonly Dictionary<string, ConfigKeyValue> _config;
         private readonly Dictionary<string, IPropertyModel> _mapping;
 
-        protected BasePropertyPageModel(RedisConnection connection, Dictionary<string, ConfigKeyValue> config)
+        protected BasePropertyPageModel(EndpointEntry entry, Dictionary<string, ConfigKeyValue> config)
         {
-            _connection = connection;
+            _entry = entry;
             _config = config;
             _mapping = new Dictionary<string, IPropertyModel>();
         }
@@ -43,11 +42,13 @@ namespace Quickr.ViewModels.Configuration
         
         public void Save()
         {
+            var connection = _entry.Connection;
+            var endpoint = _entry.Endpoint;
             foreach (var (key, value) in _mapping.Where(x => x.Value.IsPropertyChanged))
             {
                 try
                 {
-                    _connection.ConfigSet(key, value.Serialize());
+                    connection.ConfigSet(endpoint, key, value.Serialize());
                     value.ApplyCurrentValue();
                     if (key == "requirepass")
                     {

@@ -108,9 +108,9 @@ namespace Quickr.ViewModels
         
         private void ShowProperties(object obj)
         {
-            if (obj is ServerEntry server)
+            if (obj is EndpointEntry endpoint)
             {
-                var model = new PropertyPagesViewModel(server.Connection);
+                var model = new PropertyPagesViewModel(endpoint);
                 var window = new PropertyPagesWindow(model) { Owner = Window };
                 if (window.ShowDialog() == true)
                 {

@@ -16,7 +16,7 @@ namespace Quickr.ViewModels
         {
             Entry = entry;
             Connection = connection;
-            Info = connection.Info(entry.Endpoint);
+            Info = Connection.Info(Entry.Endpoint).GetAwaiter().GetResult();
         }
     }
 }

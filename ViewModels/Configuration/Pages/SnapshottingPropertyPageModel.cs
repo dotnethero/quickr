@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Quickr.Models.Configuration;
-using Quickr.Services;
+using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
@@ -13,8 +13,8 @@ namespace Quickr.ViewModels.Configuration
         public StringPropertyModel DbFilename { get; set; }
         public StringPropertyModel Dir { get; set; }
 
-        public SnapshottingPropertyPageModel(RedisConnection connection, Dictionary<string, ConfigKeyValue> config): 
-            base(connection, config)
+        public SnapshottingPropertyPageModel(EndpointEntry endpoint, Dictionary<string, ConfigKeyValue> config): 
+            base(endpoint, config)
         {
             SaveProperty = MapToString("save");
             StopWritesOnBgSaveError = MapToYesNo("stop-writes-on-bgsave-error");

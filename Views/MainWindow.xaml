@@ -53,10 +53,6 @@
                                 <StackPanel.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem 
-                                            Header="Properties..." 
-                                            Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.PropertiesCommand}"
-                                            CommandParameter="{Binding}" />
-                                        <MenuItem 
                                             Header="Disconnect" 
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.DisconnectCommand}"
                                             CommandParameter="{Binding}" />
@@ -64,27 +60,36 @@
                                 </StackPanel.ContextMenu>
                             </StackPanel>
                         </HierarchicalDataTemplate>
-                        <DataTemplate DataType="{x:Type keys:EndpointEntry}">
+                        <HierarchicalDataTemplate DataType="{x:Type keys:EndpointEntry}" ItemsSource="{Binding Replicas, Mode=OneWay}">
                             <StackPanel
                                 Tag="{Binding ElementName=Root, Path=DataContext}"
                                 Orientation="Horizontal" 
                                 VerticalAlignment="Center">
-                                <ContentControl Template="{StaticResource Server}" Width="20" Focusable="False" Foreground="Green" />
+                                <ContentControl Template="{StaticResource Server}" Width="20" Focusable="False">
+                                    <ContentControl.Style>
+                                        <Style TargetType="ContentControl">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsReplica}" Value="True">
+                                                    <Setter Property="Foreground" Value="YellowGreen" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsReplica}" Value="False">
+                                                    <Setter Property="Foreground" Value="DodgerBlue" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContentControl.Style>
+                                </ContentControl>
                                 <TextBlock Name="ServerName"  Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
-                                <!--<StackPanel.ContextMenu>
+                                <StackPanel.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem 
                                             Header="Properties..." 
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.PropertiesCommand}"
                                             CommandParameter="{Binding}" />
-                                        <MenuItem 
-                                            Header="Disconnect" 
-                                            Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.DisconnectCommand}"
-                                            CommandParameter="{Binding}" />
                                     </ContextMenu>
-                                </StackPanel.ContextMenu>-->
+                                </StackPanel.ContextMenu>
                             </StackPanel>
-                        </DataTemplate>
+                        </HierarchicalDataTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type keys:DatabaseEntry}" ItemsSource="{Binding Children, Mode=OneWay}">
                             <StackPanel 
                                 Tag="{Binding ElementName=Root, Path=DataContext}"

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Quickr.Models.Configuration;
-using Quickr.Services;
+using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
@@ -10,8 +10,8 @@ namespace Quickr.ViewModels.Configuration
         public StringPropertyModel ClusterAnnouncePort { get; set; }
         public StringPropertyModel ClusterAnnounceBusPort { get; set; }
 
-        public ClusterNatSupportPropertyPageModel(RedisConnection connection, Dictionary<string, ConfigKeyValue> config): 
-            base(connection, config)
+        public ClusterNatSupportPropertyPageModel(EndpointEntry endpoint, Dictionary<string, ConfigKeyValue> config): 
+            base(endpoint, config)
         {
             ClusterAnnounceIp = MapToString("cluster-announce-ip");
             ClusterAnnouncePort = MapToString("cluster-announce-port");

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Quickr.Models.Configuration;
-using Quickr.Services;
+using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
@@ -8,8 +8,8 @@ namespace Quickr.ViewModels.Configuration
     {
         public StringPropertyModel LuaTimeLimit { get; set; }
 
-        public LuaScriptingPropertyPageModel(RedisConnection connection, Dictionary<string, ConfigKeyValue> config): 
-            base(connection, config)
+        public LuaScriptingPropertyPageModel(EndpointEntry endpoint, Dictionary<string, ConfigKeyValue> config): 
+            base(endpoint, config)
         {
             LuaTimeLimit = MapToString("lua-time-limit");
         }

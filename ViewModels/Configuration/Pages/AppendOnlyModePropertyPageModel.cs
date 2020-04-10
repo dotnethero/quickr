@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Quickr.Models.Configuration;
-using Quickr.Services;
+using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
@@ -15,8 +15,8 @@ namespace Quickr.ViewModels.Configuration
         public YesNoPropertyModel AofLoadTruncated { get; set; }
         public YesNoPropertyModel AofUseRdbPreamble { get; set; }
 
-        public AppendOnlyModePropertyPageModel(RedisConnection connection, Dictionary<string, ConfigKeyValue> config): 
-            base(connection, config)
+        public AppendOnlyModePropertyPageModel(EndpointEntry endpoint, Dictionary<string, ConfigKeyValue> config): 
+            base(endpoint, config)
         {
             AppendOnly = MapToYesNo("appendonly");
             AppendFilename = MapToString("appendfilename");

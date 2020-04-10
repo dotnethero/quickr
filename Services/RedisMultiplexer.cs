@@ -13,7 +13,7 @@ namespace Quickr.Services
 
         public async Task<ServerEntry> ConnectAsync(EndpointModel endpoint)
         {
-            var endPoint = new DnsEndPoint(endpoint.Host, endpoint.Port ?? 6379);
+            var originEndpoint = new DnsEndPoint(endpoint.Host, endpoint.Port ?? 6379);
             var options = new ConfigurationOptions
             {
                 AllowAdmin = true,
@@ -22,12 +22,12 @@ namespace Quickr.Services
                 Ssl = endpoint.UseSsl,
                 EndPoints =
                 {
-                    endPoint
+                    originEndpoint
                 }
             };
 
             var multiplexer = await ConnectionMultiplexer.ConnectAsync(options).ConfigureAwait(false);
-            var connection = new RedisConnection(multiplexer);
+            var connection = new RedisConnection(multiplexer, originEndpoint);
             return new ServerEntry(connection, endpoint.Name)
             {
                 Databases = connection.GetDatabases().ToList(),

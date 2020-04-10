@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Quickr.Models.Configuration;
-using Quickr.Services;
+using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
@@ -14,8 +14,8 @@ namespace Quickr.ViewModels.Configuration
         public YesNoPropertyModel ClusterRequireFullCoverage { get; set; }
         public YesNoPropertyModel ClusterReplicaNoFailover { get; set; }
 
-        public RedisClusterPropertyPageModel(RedisConnection connection, Dictionary<string, ConfigKeyValue> config): 
-            base(connection, config)
+        public RedisClusterPropertyPageModel(EndpointEntry endpoint, Dictionary<string, ConfigKeyValue> config): 
+            base(endpoint, config)
         {
             var old =
                 HasKey("cluster-slave-no-failover") ||
