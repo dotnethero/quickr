@@ -28,10 +28,8 @@ namespace Quickr.Services
 
             var multiplexer = await ConnectionMultiplexer.ConnectAsync(options).ConfigureAwait(false);
             var connection = new RedisConnection(multiplexer);
-            return new ServerEntry
+            return new ServerEntry(connection, endpoint.Name)
             {
-                Name = endpoint.Name,
-                Connection = connection,
                 Databases = connection.GetDatabases().ToList(),
                 IsExpanded = true
             };

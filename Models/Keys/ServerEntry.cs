@@ -1,18 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Quickr.Annotations;
 using Quickr.Services;
 
 namespace Quickr.Models.Keys
 {
-    internal class ServerEntry: INotifyPropertyChanged
+    internal class ServerEntry: BaseEntry
     {
         private List<DatabaseEntry> _databases = new List<DatabaseEntry>();
-
-        public RedisConnection Connection { get; set; }
-        public string Name { get; set; }
-        public bool IsExpanded { get; set; }
 
         public List<DatabaseEntry> Databases
         {
@@ -25,12 +18,8 @@ namespace Quickr.Models.Keys
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public ServerEntry(RedisConnection connection, string name) : base(connection, name)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

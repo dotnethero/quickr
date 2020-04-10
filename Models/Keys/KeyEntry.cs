@@ -47,7 +47,8 @@ namespace Quickr.Models.Keys
                 var root = Parent;
                 while (!root.IsRoot) root = root.Parent;
                 Parent.RemoveChild(this);
-                root.AddChild(FullName); // move
+                var entry = root.AddChild(FullName); // move
+                entry.IsSelected = true;
             }
         }
 
