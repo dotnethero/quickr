@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Quickr.Models.Configuration;
@@ -19,9 +20,9 @@ namespace Quickr.Services
             _connection = connection;
         }
         
-        public IGrouping<string, KeyValuePair<string, string>>[] Info()
+        public IGrouping<string, KeyValuePair<string, string>>[] Info(EndPoint endpoint)
         {
-            var server = GetOriginServer();
+            var server = _connection.GetServer(endpoint);
             return server.Info();
         }
         
@@ -287,6 +288,8 @@ namespace Quickr.Services
         {
             return _connection
                 .GetEndPoints()
+                .OrderBy(endpoint => endpoint.AddressFamily)
+                .ThenBy(endpoint => endpoint.ToString())
                 .Select(endpoint => new EndpointEntry(this, endpoint, endpoint.ToString()))
                 .ToArray();
         }

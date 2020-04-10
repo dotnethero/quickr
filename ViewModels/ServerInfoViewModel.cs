@@ -5,18 +5,18 @@ using Quickr.Services;
 
 namespace Quickr.ViewModels
 {
-    internal class ServerViewModel : BaseViewModel
+    internal class ServerInfoViewModel : BaseViewModel
     {
-        protected ServerEntry Entry { get; }
+        protected EndpointEntry Entry { get; }
         protected RedisConnection Connection { get; }
 
         public IGrouping<string, KeyValuePair<string, string>>[] Info { get; }
         
-        public ServerViewModel(RedisConnection connection, ServerEntry entry)
+        public ServerInfoViewModel(RedisConnection connection, EndpointEntry entry)
         {
             Entry = entry;
             Connection = connection;
-            Info = connection.Info();
+            Info = connection.Info(entry.Endpoint);
         }
     }
 }

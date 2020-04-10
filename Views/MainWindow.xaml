@@ -192,7 +192,7 @@
                         <DataTemplate DataType="{x:Type vm:DatabaseViewModel}">
                             <views:DatabaseView DataContext="{Binding}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type vm:ServerViewModel}">
+                        <DataTemplate DataType="{x:Type vm:ServerInfoViewModel}">
                             <server:ServerInfoView DataContext="{Binding}" />
                         </DataTemplate>
                     </ContentControl.Resources>

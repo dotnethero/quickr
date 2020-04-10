@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Quickr.Views.Server"
              xmlns:viewModels="clr-namespace:Quickr.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance viewModels:ServerViewModel}">
+             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance viewModels:ServerInfoViewModel}">
     <Grid>
         <local:KeyValueGroupView DataContext="{Binding Info}"/>
     </Grid>

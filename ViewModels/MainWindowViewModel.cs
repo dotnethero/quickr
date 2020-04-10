@@ -258,8 +258,8 @@ namespace Quickr.ViewModels
                     Current = new DatabaseViewModel(db.Connection, db);
                     break;
                     
-                case ServerEntry server:
-                    Current = new ServerViewModel(server.Connection, server);
+                case EndpointEntry endpoint:
+                    Current = new ServerInfoViewModel(endpoint.Connection, endpoint);
                     break;
                 default:
                     Current = null;
