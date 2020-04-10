@@ -91,7 +91,7 @@ namespace Quickr.Services
                 .Select(x => new DatabaseEntry(this, x))
                 .ToArray();
         }
-
+        
         public async Task<(RedisType, TimeSpan?)> GetTypeTimeToLiveAsync(KeyEntry key)
         {
             var db = GetDatabase(key.DbIndex);
@@ -281,6 +281,14 @@ namespace Quickr.Services
                 .Where(x => !x.IsSlave)
                 .Select(x => _connection.GetServer(x.EndPoint))
                 .ToList();
+        }
+        
+        public EndpointEntry[] GetEndpoints()
+        {
+            return _connection
+                .GetEndPoints()
+                .Select(endpoint => new EndpointEntry(this, endpoint, endpoint.ToString()))
+                .ToArray();
         }
 
         public void Dispose()

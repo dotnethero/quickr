@@ -43,7 +43,7 @@
                         </Style>
                     </TreeView.ItemContainerStyle>
                     <TreeView.Resources>
-                        <HierarchicalDataTemplate DataType="{x:Type keys:ServerEntry}" ItemsSource="{Binding Databases, Mode=OneWay}">
+                        <HierarchicalDataTemplate DataType="{x:Type keys:ServerEntry}" ItemsSource="{Binding Children, Mode=OneWay}">
                             <StackPanel
                                 Tag="{Binding ElementName=Root, Path=DataContext}"
                                 Orientation="Horizontal" 
@@ -64,6 +64,27 @@
                                 </StackPanel.ContextMenu>
                             </StackPanel>
                         </HierarchicalDataTemplate>
+                        <DataTemplate DataType="{x:Type keys:EndpointEntry}">
+                            <StackPanel
+                                Tag="{Binding ElementName=Root, Path=DataContext}"
+                                Orientation="Horizontal" 
+                                VerticalAlignment="Center">
+                                <ContentControl Template="{StaticResource Server}" Width="20" Focusable="False" Foreground="Green" />
+                                <TextBlock Name="ServerName"  Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
+                                <!--<StackPanel.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem 
+                                            Header="Properties..." 
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.PropertiesCommand}"
+                                            CommandParameter="{Binding}" />
+                                        <MenuItem 
+                                            Header="Disconnect" 
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.DisconnectCommand}"
+                                            CommandParameter="{Binding}" />
+                                    </ContextMenu>
+                                </StackPanel.ContextMenu>-->
+                            </StackPanel>
+                        </DataTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type keys:DatabaseEntry}" ItemsSource="{Binding Children, Mode=OneWay}">
                             <StackPanel 
                                 Tag="{Binding ElementName=Root, Path=DataContext}"

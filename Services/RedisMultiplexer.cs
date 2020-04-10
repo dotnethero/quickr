@@ -31,6 +31,7 @@ namespace Quickr.Services
             return new ServerEntry(connection, endpoint.Name)
             {
                 Databases = connection.GetDatabases().ToList(),
+                Endpoints = connection.GetEndpoints().ToList(),
                 IsExpanded = true
             };
         }
