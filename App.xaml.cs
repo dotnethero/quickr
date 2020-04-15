@@ -1,9 +1,11 @@
-﻿using Autofac;
+﻿using System;
+using Autofac;
 using Quickr.Services;
 using Quickr.Utils;
 using Quickr.ViewModels;
 using Quickr.Views;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace Quickr
 {
@@ -12,6 +14,8 @@ namespace Quickr
     /// </summary>
     public partial class App : Application
     {
+        private MainWindow _main;
+
         protected override void OnStartup(StartupEventArgs e)
         {
             var builder = new ContainerBuilder();
@@ -22,8 +26,19 @@ namespace Quickr
             builder.RegisterType<MainWindow>().FindConstructorsWith(Finders.Internal);
 
             var container = builder.Build();
-            var window = container.Resolve<MainWindow>();
-            window.Show();
+            _main = container.Resolve<MainWindow>();
+            _main.Show();
+
+            DispatcherUnhandledException += OnDispatcherUnhandledException;
+        }
+
+        private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            var window = new ErrorWindow();
+            window.DataContext = e.Exception;
+            window.Owner = _main;
+            window.ShowDialog();
+            e.Handled = true;
         }
     }
 }

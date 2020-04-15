@@ -240,6 +240,10 @@ namespace Quickr.ViewModels
 
         private void Refresh(object item)
         {
+            if (item is ServerEntry server)
+            {
+                server.Refresh();
+            }
             if (item is FolderEntry folder)
             {
                 folder.Refresh();

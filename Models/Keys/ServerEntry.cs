@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Quickr.Services;
 
 namespace Quickr.Models.Keys
@@ -45,6 +46,11 @@ namespace Quickr.Models.Keys
 
         public ServerEntry(RedisConnection connection, string name) : base(connection, name)
         {
+        }
+
+        public void Refresh()
+        {
+            Endpoints = Connection.GetEndpoints().ToList();
         }
     }
 }

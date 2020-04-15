@@ -11,10 +11,12 @@ namespace Quickr.Models.Keys
         public EndPoint Endpoint { get; }
         public List<EndpointEntry> Replicas { get; }
         public bool IsReplica { get; }
+        public bool IsConnected { get; }
 
         public EndpointEntry(RedisConnection connection, IServer server) : base(connection, server.EndPoint.ToString())
         {
             IsReplica = false;
+            IsConnected = true;
             Endpoint = server.EndPoint;
             Replicas = new List<EndpointEntry>();
         }
@@ -22,6 +24,7 @@ namespace Quickr.Models.Keys
         public EndpointEntry(RedisConnection connection, ClusterNode node) : base(connection, node.EndPoint.ToString())
         {
             IsReplica = node.IsSlave;
+            IsConnected = node.IsConnected;
             Endpoint = node.EndPoint;
             Replicas = node
                 .Children

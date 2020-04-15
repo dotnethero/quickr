@@ -53,6 +53,10 @@
                                 <StackPanel.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem 
+                                            Header="Refresh" 
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.RefreshCommand}"
+                                            CommandParameter="{Binding}" />
+                                        <MenuItem 
                                             Header="Disconnect" 
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.DisconnectCommand}"
                                             CommandParameter="{Binding}" />
@@ -75,11 +79,14 @@
                                                 <DataTrigger Binding="{Binding IsReplica}" Value="False">
                                                     <Setter Property="Foreground" Value="DodgerBlue" />
                                                 </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsConnected}" Value="False">
+                                                    <Setter Property="Foreground" Value="LightSlateGray" />
+                                                </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </ContentControl.Style>
                                 </ContentControl>
-                                <TextBlock Name="ServerName"  Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
+                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
                                 <StackPanel.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem 
