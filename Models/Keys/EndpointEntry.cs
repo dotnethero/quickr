@@ -18,7 +18,7 @@ namespace Quickr.Models.Keys
             IsReplica = false;
             IsConnected = true;
             Endpoint = server.EndPoint;
-            Entries = CreateNamedEntries(connection, server.EndPoint, replicas: new List<EndpointEntry>());
+            Entries = CreateSystemFolders(connection, server.EndPoint, replicas: new List<EndpointEntry>());
         }
 
         public EndpointEntry(RedisConnection connection, ClusterNode node) : base(connection, node.EndPoint.ToString())
@@ -27,16 +27,16 @@ namespace Quickr.Models.Keys
             IsReplica = node.IsSlave;
             IsConnected = node.IsConnected;
             Endpoint = node.EndPoint;
-            Entries = CreateNamedEntries(connection, node.EndPoint, replicas);
+            Entries = CreateSystemFolders(connection, node.EndPoint, replicas);
         }
 
-        private static List<SystemFolderEntry> CreateNamedEntries(RedisConnection connection, EndPoint endpoint, IEnumerable<EndpointEntry> replicas)
+        private static List<SystemFolderEntry> CreateSystemFolders(RedisConnection connection, EndPoint endpoint, IEnumerable<EndpointEntry> replicas)
         {
             return new List<SystemFolderEntry>
             {
                 new InfoEntry(connection, "Info", endpoint),
                 new ReplicasEntry(connection, "Replicas", replicas),
-                new SystemFolderEntry(connection, "Clients"),
+                new ClientsEntry(connection, "Clients", endpoint),
                 new SystemFolderEntry(connection, "Slow log"),
                 new SystemFolderEntry(connection, "Memory doctor"),
                 new SystemFolderEntry(connection, "Latency doctor"),

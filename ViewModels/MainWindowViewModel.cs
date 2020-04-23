@@ -263,8 +263,13 @@ namespace Quickr.ViewModels
                     break;
                     
                 case InfoEntry info:
-                    Current = new ServerInfoViewModel(info.Connection, info.Endpoint);
+                    Current = new InfoViewModel(info.Connection, info.Endpoint);
                     break;
+                    
+                case ClientsEntry clients:
+                    Current = new ClientsViewModel(clients.Connection, clients.Endpoint);
+                    break;
+
                 default:
                     Current = null;
                     break;

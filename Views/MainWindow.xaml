@@ -222,8 +222,11 @@
                         <DataTemplate DataType="{x:Type vm:DatabaseViewModel}">
                             <views:DatabaseView DataContext="{Binding}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type vm:ServerInfoViewModel}">
-                            <server:ServerInfoView DataContext="{Binding}" />
+                        <DataTemplate DataType="{x:Type vm:InfoViewModel}">
+                            <server:InfoView DataContext="{Binding}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:ClientsViewModel}">
+                            <server:ClientsView DataContext="{Binding}" />
                         </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>

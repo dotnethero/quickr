@@ -20,6 +20,16 @@ namespace Quickr.Models.Keys
             Endpoint = endpoint;
         }
     }
+    
+    internal class ClientsEntry : SystemFolderEntry
+    {
+        public EndPoint Endpoint { get; }
+
+        public ClientsEntry(RedisConnection connection, string name, EndPoint endpoint) : base(connection, name)
+        {
+            Endpoint = endpoint;
+        }
+    }
 
     internal class ReplicasEntry : SystemFolderEntry
     {

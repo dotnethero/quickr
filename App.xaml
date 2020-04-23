@@ -11,6 +11,7 @@
         <converters:NullableTimeSpanToStringConverter x:Key="NullableTimeSpanToStringConverter" />
         <converters:NullableIntToStringConverter x:Key="NullableIntToStringConverter" />
         <converters:EnumMatchToBooleanConverter x:Key="EnumMatchToBooleanConverter" />
+        <converters:IntSecondsToTimeSpanConverter x:Key="IntSecondsToTimeSpanConverter" />
         <Style x:Key="HightlightNewElement" TargetType="DataGridRow">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsNew}" Value="True">
@@ -21,6 +22,16 @@
         <Style x:Key="OnlyNewIsEnabled" TargetType="{x:Type TextBox}">
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="IsEnabled" Value="{Binding IsNew}" />
+        </Style>
+        <Style x:Key="CommonGrid" TargetType="DataGrid">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="MinHeight" Value="200" />
+            <Setter Property="HeadersVisibility" Value="Column" />
+            <Setter Property="AutoGenerateColumns" Value="False" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="HorizontalGridLinesBrush" Value="LightGray" />
+            <Setter Property="VerticalGridLinesBrush" Value="LightGray" />
+            <Setter Property="BorderBrush" Value="#FFABADB3" />
         </Style>
         <Style x:Key="Elements" TargetType="DataGrid">
             <Setter Property="Margin" Value="5" />
