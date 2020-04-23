@@ -64,7 +64,7 @@
                                 </StackPanel.ContextMenu>
                             </StackPanel>
                         </HierarchicalDataTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type keys:EndpointEntry}" ItemsSource="{Binding Replicas, Mode=OneWay}">
+                        <HierarchicalDataTemplate DataType="{x:Type keys:EndpointEntry}" ItemsSource="{Binding Entries, Mode=OneWay}">
                             <StackPanel
                                 Tag="{Binding ElementName=Root, Path=DataContext}"
                                 Orientation="Horizontal" 
@@ -97,6 +97,24 @@
                                 </StackPanel.ContextMenu>
                             </StackPanel>
                         </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type keys:ReplicasEntry}" ItemsSource="{Binding Replicas, Mode=OneWay}">
+                            <StackPanel
+                                Tag="{Binding ElementName=Root, Path=DataContext}"
+                                Orientation="Horizontal" 
+                                VerticalAlignment="Center">
+                                <ContentControl Template="{StaticResource SystemFolder}" Width="20" Focusable="False" />
+                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                        <DataTemplate DataType="{x:Type keys:SystemFolderEntry}">
+                            <StackPanel
+                                Tag="{Binding ElementName=Root, Path=DataContext}"
+                                Orientation="Horizontal" 
+                                VerticalAlignment="Center">
+                                <ContentControl Template="{StaticResource SystemFolder}" Width="20" Focusable="False" />
+                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="0,0,4,2" />
+                            </StackPanel>
+                        </DataTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type keys:DatabaseEntry}" ItemsSource="{Binding Children, Mode=OneWay}">
                             <StackPanel 
                                 Tag="{Binding ElementName=Root, Path=DataContext}"
