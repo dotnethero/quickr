@@ -7,7 +7,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Quickr.Models.Keys;
-using Quickr.Services;
 using Quickr.Utils;
 using StackExchange.Redis;
 
@@ -18,7 +17,7 @@ namespace Quickr.ViewModels.Data
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
 
-        public HashSetViewModel(RedisConnection connection, KeyEntry key, TimeSpan? ttl): base(connection, key, ttl)
+        public HashSetViewModel(KeyEntry key, TimeSpan? ttl): base(key, ttl)
         {
             SetupAsync();
             AddCommand = new ParameterCommand(Add);
@@ -27,7 +26,7 @@ namespace Quickr.ViewModels.Data
         
         private async void SetupAsync()
         {
-            var entries = await Connection.GetHashesAsync(Key);
+            var entries = await GetDatabase().GetHashesAsync(Key);
             var models = entries.Select(HashEntryViewModel.FromEntry);
             Entries = new ObservableCollection<HashEntryViewModel>(models);
         }
@@ -58,7 +57,7 @@ namespace Quickr.ViewModels.Data
 
                 if (fields.Length > 0)
                 {
-                    Connection.HashDelete(Key, fields);
+                    GetDatabase().HashDelete(Key, fields);
                 }
 
                 foreach (var entry in entries)
@@ -73,7 +72,7 @@ namespace Quickr.ViewModels.Data
             if (string.IsNullOrEmpty(Current.Name)) return;
             if (Entries.Any(x => x.Name == Current.Name && x != Current)) return;
 
-            Connection.HashSet(Key, Current.Name, Current.CurrentValue);
+            GetDatabase().HashSet(Key, Current.Name, Current.CurrentValue);
             Current.OriginalValue = Current.CurrentValue;
         }
 

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Quickr.Models.Keys;
-using Quickr.Services;
 using Quickr.Utils;
 using StackExchange.Redis;
 
@@ -16,7 +15,7 @@ namespace Quickr.ViewModels.Data
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
 
-        public SortedSetViewModel(RedisConnection connection, KeyEntry key, TimeSpan? ttl): base(connection, key, ttl)
+        public SortedSetViewModel(KeyEntry key, TimeSpan? ttl): base(key, ttl)
         {
             SetupAsync();
             
@@ -26,7 +25,7 @@ namespace Quickr.ViewModels.Data
 
         private async void SetupAsync()
         {
-            var entries = await Connection.GetSortedSetAsync(Key);
+            var entries = await GetDatabase().GetSortedSetAsync(Key);
             var models = entries.Select(SortedSetEntryViewModel.FromEntry);
             Entries = new ObservableCollection<SortedSetEntryViewModel>(models);
         }
@@ -57,7 +56,7 @@ namespace Quickr.ViewModels.Data
 
                 if (fields.Length > 0)
                 {
-                    Connection.SortedSetRemove(Key, fields);
+                    GetDatabase().SortedSetRemove(Key, fields);
                 }
 
                 foreach (var entry in entries)
@@ -72,7 +71,7 @@ namespace Quickr.ViewModels.Data
             if (Current.IsNew)
             {
                 if (Entries.Any(x => x.OriginalValue == Current.CurrentValue && x != Current)) return;
-                Connection.SortedSetAdd(Key, Value.CurrentValue, Current.Score);
+                GetDatabase().SortedSetAdd(Key, Value.CurrentValue, Current.Score);
                 Current.OriginalValue = Current.CurrentValue;
             }
             else

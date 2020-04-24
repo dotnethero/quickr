@@ -9,20 +9,20 @@ namespace Quickr.Utils
     {
         public BaseKeyViewModel Create(KeyEntry key)
         {
-            var connection = key.Connection;
-            var (type, ttl) = connection
-                .GetTypeTimeToLiveAsync(key)
+            var (type, ttl) = key
+                .GetKeyspace()
+                .GetKeyProperties(key) // TODO: whhatt?
                 .ConfigureAwait(false)
                 .GetAwaiter()
                 .GetResult();
 
             return type switch
             {
-                RedisType.String => new StringViewModel(connection, key, ttl),
-                RedisType.Set => new UnsortedSetViewModel(connection, key, ttl),
-                RedisType.Hash => new HashSetViewModel(connection, key, ttl),
-                RedisType.List => new ListViewModel(connection, key, ttl),
-                RedisType.SortedSet => new SortedSetViewModel(connection, key, ttl),
+                RedisType.String => new StringViewModel(key, ttl),
+                RedisType.Set => new UnsortedSetViewModel(key, ttl),
+                RedisType.Hash => new HashSetViewModel(key, ttl),
+                RedisType.List => new ListViewModel(key, ttl),
+                RedisType.SortedSet => new SortedSetViewModel(key, ttl),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }

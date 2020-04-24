@@ -2,17 +2,27 @@
 
 namespace Quickr.Models.Keys
 {
-    internal abstract class TreeEntry: BaseEntry
+    internal abstract class DbEntry: BaseEntry
     {
         public int DbIndex { get; }
         public FolderEntry Parent { get; }
 
-        protected TreeEntry(RedisConnection connection, int dbIndex, string name, FolderEntry parent): base(connection, name)
+        protected DbEntry(RedisConnection connection, int dbIndex, string name, FolderEntry parent): base(connection, name)
         {
             DbIndex = dbIndex;
             Parent = parent;
         }
         
+        public KeyspaceProxy GetKeyspace()
+        {
+            return Connection.GetKeyspace();
+        }
+        
+        public DatabaseProxy GetDatabase()
+        {
+            return Connection.GetDatabase(DbIndex);
+        }
+
         protected override void OnPropertyChanged(string propertyName = null)
         {
             if (propertyName == nameof(IsSelected) && IsSelected)

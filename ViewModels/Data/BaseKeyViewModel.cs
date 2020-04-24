@@ -9,8 +9,6 @@ namespace Quickr.ViewModels.Data
     {
         private ValueViewModel _value;
 
-        protected RedisConnection Connection { get; }
-
         public KeyEntry Key { get; }
         public PropertiesViewModel Properties { get; }
 
@@ -24,12 +22,21 @@ namespace Quickr.ViewModels.Data
             }
         }
 
-        protected BaseKeyViewModel(RedisConnection connection, KeyEntry key, TimeSpan? ttl)
+        protected BaseKeyViewModel(KeyEntry key, TimeSpan? ttl)
         {
-            Connection = connection;
             Key = key;
-            Properties = CreatePropertiesViewModel(ttl);
             Value = null;
+            Properties = CreatePropertiesViewModel(ttl);
+        }
+
+        protected DatabaseProxy GetDatabase()
+        {
+            return Key.GetDatabase();
+        }
+        
+        protected KeyspaceProxy GetKeyspace()
+        {
+            return Key.GetKeyspace();
         }
 
         private PropertiesViewModel CreatePropertiesViewModel(TimeSpan? ttl)
@@ -45,12 +52,12 @@ namespace Quickr.ViewModels.Data
         {
             if (Properties.Expiration != Properties.OriginalExpiration)
             {
-                Connection.SetTimeToLive(Key, Properties.Expiration);
+                GetKeyspace().SetTimeToLive(Key, Properties.Expiration);
                 Properties.OriginalExpiration = Properties.Expiration;
             }
             if (Properties.Name != Properties.OriginalName)
             {
-                Connection.RenameKey(Key, Properties.Name);
+                GetKeyspace().RenameKey(Key, Properties.Name);
                 Key.FullName = Properties.Name;
                 Properties.OriginalName = Properties.Name;
             }

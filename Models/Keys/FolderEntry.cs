@@ -7,7 +7,7 @@ using StackExchange.Redis;
 
 namespace Quickr.Models.Keys
 {
-    internal class FolderEntry : TreeEntry
+    internal class FolderEntry : DbEntry
     {
         private readonly List<KeyEntry> _keys = new List<KeyEntry>();
         private readonly List<FolderEntry> _subfolders = new List<FolderEntry>();
@@ -44,11 +44,11 @@ namespace Quickr.Models.Keys
 
         public bool IsFilterApplied => Filter != "" && Filter != "*";
 
-        public List<TreeEntry> Children
+        public List<DbEntry> Children
         {
             get
             {
-                var children = new List<TreeEntry>(_subfolders.Count + _keys.Count);
+                var children = new List<DbEntry>(_subfolders.Count + _keys.Count);
                 _subfolders.Sort(Compare);
                 _keys.Sort(Compare);
                 children.AddRange(_subfolders);
@@ -160,7 +160,7 @@ namespace Quickr.Models.Keys
             return folder;
         }
 
-        private static int Compare(TreeEntry a, TreeEntry b)
+        private static int Compare(DbEntry a, DbEntry b)
         {
             return string.Compare(a.Name, b.Name, StringComparison.Ordinal);
         }

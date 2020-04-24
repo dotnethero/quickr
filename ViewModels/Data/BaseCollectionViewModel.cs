@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Quickr.Models.Keys;
-using Quickr.Services;
 using Quickr.ViewModels.Editors;
 
 namespace Quickr.ViewModels.Data
@@ -35,7 +34,7 @@ namespace Quickr.ViewModels.Data
             }
         }
 
-        protected BaseCollectionViewModel(RedisConnection connection, KeyEntry key, TimeSpan? ttl) : base(connection, key, ttl)
+        protected BaseCollectionViewModel(KeyEntry key, TimeSpan? ttl) : base(key, ttl)
         {
         }
 

@@ -7,7 +7,7 @@ namespace Quickr.Models.Keys
 {
     internal abstract class BaseEntry : INotifyPropertyChanged
     {
-        public RedisConnection Connection { get; }
+        public RedisConnection Connection { get; } // TODO: hide
 
         private string _name;
         private bool _isSelected;

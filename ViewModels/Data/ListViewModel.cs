@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Quickr.Models.Keys;
-using Quickr.Services;
 using Quickr.Utils;
 
 namespace Quickr.ViewModels.Data
@@ -15,7 +14,7 @@ namespace Quickr.ViewModels.Data
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
 
-        public ListViewModel(RedisConnection connection, KeyEntry key, TimeSpan? ttl): base(connection, key, ttl)
+        public ListViewModel(KeyEntry key, TimeSpan? ttl): base(key, ttl)
         {
             SetupAsync();
             AddCommand = new ParameterCommand(Add);
@@ -24,7 +23,7 @@ namespace Quickr.ViewModels.Data
         
         private async void SetupAsync()
         {
-            var entries = await Connection.GetListAsync(Key);
+            var entries = await GetDatabase().GetListAsync(Key);
             var models = entries.Select(ListEntryViewModel.FromValue);
             Entries = new ObservableCollection<ListEntryViewModel>(models);
         }
@@ -55,7 +54,11 @@ namespace Quickr.ViewModels.Data
 
                 if (indexes.Length > 0)
                 {
-                    Connection.ListDelete(Key, indexes);
+                    GetDatabase()
+                        .ListDelete(Key, indexes)
+                        .ConfigureAwait(false)
+                        .GetAwaiter()
+                        .GetResult();
                 }
 
                 foreach (var entry in entries)
@@ -69,13 +72,13 @@ namespace Quickr.ViewModels.Data
         {
             if (Current.IsNew)
             {
-                Connection.ListRightPush(Key, Value.CurrentValue);
+                GetDatabase().ListRightPush(Key, Value.CurrentValue);
                 Current.OriginalValue = Current.CurrentValue;
             }
             else
             {
                 var index = Entries.IndexOf(Current);
-                Connection.ListSet(Key, index, Value.CurrentValue);
+                GetDatabase().ListSet(Key, index, Value.CurrentValue);
                 Current.OriginalValue = Current.CurrentValue;
             }
         }

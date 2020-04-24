@@ -120,12 +120,12 @@ namespace Quickr.ViewModels
             }
         }
 
-        private void Clone(object item)
+        private async void Clone(object item)
         {
             switch (item)
             {
                 case KeyEntry key:
-                    var fullname = key.Connection.CloneKey(key);
+                    var fullname = await key.GetKeyspace().CloneKey(key);
                     var entry = key.Parent.AddChild(fullname);
                     entry.IsSelected = true;
                     break;
@@ -148,7 +148,7 @@ namespace Quickr.ViewModels
                     if (DeleteFolderMessage(folder) == MessageBoxResult.Yes)
                     {
                         var folderParent = folder.Parent;
-                        folderParent.Connection.Delete(folder);
+                        folderParent.GetKeyspace().Delete(folder);
                         folderParent.RemoveChild(folder);
                     }
 
@@ -156,7 +156,7 @@ namespace Quickr.ViewModels
 
                 case KeyEntry key:
                     var keyParent = key.Parent;
-                    keyParent.Connection.Delete(key);
+                    keyParent.GetKeyspace().Delete(key);
                     keyParent.RemoveChild(key);
                     break;
             }
@@ -169,7 +169,7 @@ namespace Quickr.ViewModels
                 folder // may affect performance
                     .GetKeys()
                     .ToList()
-                    .ForEach(key => key.Connection.SetTimeToLive(key, TimeSpan.Zero));
+                    .ForEach(key => key.GetKeyspace().SetTimeToLive(key, TimeSpan.Zero));
             }
 
             switch (item)
@@ -193,7 +193,7 @@ namespace Quickr.ViewModels
 
                 case KeyEntry key:
                     var keyParent = key.Parent;
-                    key.Connection.SetTimeToLive(key, TimeSpan.Zero);
+                    key.GetKeyspace().SetTimeToLive(key, TimeSpan.Zero);
                     keyParent.RemoveChild(key);
                     break;
             }
@@ -298,7 +298,7 @@ namespace Quickr.ViewModels
             window.Owner = Window;
             if (window.ShowDialog() == true)
             {
-                var connection = folder.Connection;
+                var connection = folder.GetDatabase();
                 var requiredStart = folder.IsRoot ? "" : folder.FullName + Constants.RegionSeparator;
                 var fullname = requiredStart + model.Name;
                 var entry = folder.AddChild(fullname);

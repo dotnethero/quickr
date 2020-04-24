@@ -5,7 +5,7 @@ using Quickr.Utils;
 
 namespace Quickr.Models.Keys
 {
-    internal class KeyEntry : TreeEntry
+    internal class KeyEntry : DbEntry
     {
         private string _fullName;
 
