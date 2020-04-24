@@ -75,7 +75,7 @@ namespace Quickr.Models.Keys
             var keys = GetKeys().ToList();
             var tran = database.CreateTransaction();
             keys.ForEach(key => tran.KeyExpireAsync(key.FullName, TimeSpan.Zero).ConfigureAwait(false));
-            await tran.ExecuteAsync();
+            await tran.ExecuteAsync().ConfigureAwait(false);
         }
 
         public void Delete() // TODO: rework for cluster, make async

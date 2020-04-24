@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Quickr.Models.Keys;
 using StackExchange.Redis;
@@ -43,20 +44,15 @@ namespace Quickr.Services
             _db.ListRightPush(key.FullName, value);
         }
 
-        public async Task ListDelete(KeyEntry key, int[] indexes) // TODO: test
+        public async Task ListDelete(KeyEntry key, List<int> indexes) // TODO: test
         {
             const string name = "\u0001#removed";
 
             var tran = _db.CreateTransaction();
-            var renames = indexes
-                .Select(index => tran.ListSetByIndexAsync(key.FullName, index, name))
-                .ToArray();
-
-            Task.WaitAll(renames);
-            
-            var removal = tran.ListRemoveAsync(key.FullName, name);
-            await tran.ExecuteAsync();
-            await removal;
+            indexes.ForEach(index => tran.ListSetByIndexAsync(key.FullName, index, name).ConfigureAwait(false));
+            var result = tran.ListRemoveAsync(key.FullName, name).ConfigureAwait(false);
+            await tran.ExecuteAsync().ConfigureAwait(false);
+            await result;
         }
 
         // Set operations

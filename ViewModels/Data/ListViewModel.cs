@@ -51,9 +51,9 @@ namespace Quickr.ViewModels.Data
                 var indexes = entries
                     .Where(x => x.OriginalValue != null)
                     .Select(Entries.IndexOf)
-                    .ToArray();
+                    .ToList();
 
-                if (indexes.Length > 0)
+                if (indexes.Count > 0)
                 {
                     Key.GetDatabase()
                         .ListDelete(Key, indexes)
