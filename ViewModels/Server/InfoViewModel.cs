@@ -3,7 +3,7 @@ using System.Linq;
 using System.Net;
 using Quickr.Services;
 
-namespace Quickr.ViewModels
+namespace Quickr.ViewModels.Server
 {
     internal class InfoViewModel : BaseViewModel
     {

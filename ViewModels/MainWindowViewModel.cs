@@ -9,6 +9,7 @@ using Quickr.Services;
 using Quickr.Utils;
 using Quickr.ViewModels.Configuration;
 using Quickr.ViewModels.Connection;
+using Quickr.ViewModels.Server;
 using Quickr.Views;
 using Quickr.Views.Data;
 

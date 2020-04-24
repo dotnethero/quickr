@@ -2,7 +2,7 @@
 using Quickr.Services;
 using StackExchange.Redis;
 
-namespace Quickr.ViewModels
+namespace Quickr.ViewModels.Server
 {
     internal class ClientsViewModel : BaseViewModel
     {

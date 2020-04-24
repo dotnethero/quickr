@@ -9,10 +9,11 @@
         xmlns:data="clr-namespace:Quickr.ViewModels.Data"
         xmlns:keyViews="clr-namespace:Quickr.Views.Data"
         xmlns:server="clr-namespace:Quickr.Views.Server"
+        xmlns:vm1="clr-namespace:Quickr.ViewModels.Server"
         mc:Ignorable="d"
         x:Name="Root"
         d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=False}"
-        Title="Quickr" Height="720" Width="980" FontSize="14" >
+        Title="Quickr" Height="750" Width="980" FontSize="14" >
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Database">
@@ -222,13 +223,13 @@
                         <DataTemplate DataType="{x:Type vm:DatabaseViewModel}">
                             <views:DatabaseView DataContext="{Binding}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type vm:InfoViewModel}">
+                        <DataTemplate DataType="{x:Type vm1:InfoViewModel}">
                             <server:InfoView DataContext="{Binding}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type vm:ClientsViewModel}">
+                        <DataTemplate DataType="{x:Type vm1:ClientsViewModel}">
                             <server:ClientsView DataContext="{Binding}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type vm:SlowlogViewModel}">
+                        <DataTemplate DataType="{x:Type vm1:SlowlogViewModel}">
                             <server:SlowlogView DataContext="{Binding}" />
                         </DataTemplate>
                     </ContentControl.Resources>
