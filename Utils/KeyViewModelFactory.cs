@@ -10,8 +10,7 @@ namespace Quickr.Utils
         public BaseKeyViewModel Create(KeyEntry key)
         {
             var (type, ttl) = key
-                .GetKeyspace()
-                .GetKeyProperties(key) // TODO: whhatt?
+                .GetProperties()
                 .ConfigureAwait(false)
                 .GetAwaiter()
                 .GetResult();

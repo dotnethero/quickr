@@ -1,7 +1,9 @@
-﻿using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Quickr.Services;
 using Quickr.Utils;
+using StackExchange.Redis;
 
 namespace Quickr.Models.Keys
 {
@@ -12,7 +14,7 @@ namespace Quickr.Models.Keys
         public string FullName
         {
             get => _fullName;
-            set
+            private set
             {
                 if (value == _fullName) return;
                 _fullName = value;
@@ -24,18 +26,56 @@ namespace Quickr.Models.Keys
         {
             _fullName = fullname;
         }
-
-        protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        
+        public async Task<(RedisType, TimeSpan?)> GetProperties()
         {
-            if (propertyName == nameof(FullName))
+            var database = GetDatabaseInternal();
+            var batch = database.CreateBatch();
+            var type = batch.KeyTypeAsync(FullName).ConfigureAwait(false);
+            var ttl = batch.KeyTimeToLiveAsync(FullName).ConfigureAwait(false);
+            batch.Execute();
+            return (await type, await ttl);
+        }
+        
+        public async Task<string> CloneAsync()
+        {
+            var database = GetDatabaseInternal();
+            var baseName = FullName + "_copy";
+            var name = baseName;
+            var index = 1;
+            while (database.KeyExists(name))
             {
-                RenameKey();
+                name = baseName + (index++);
             }
-            base.OnPropertyChanged(propertyName);
+            var batch = database.CreateBatch();
+            var data = batch.KeyDumpAsync(FullName).ConfigureAwait(false);
+            var ttl = batch.KeyTimeToLiveAsync(FullName).ConfigureAwait(false);
+            batch.Execute();
+
+            await database.KeyRestoreAsync(name, await data, await ttl);
+            return name;
+        }
+        
+        public void Delete()
+        {
+            var database = GetDatabaseInternal();
+            database.KeyDelete(FullName);
+            Parent.RemoveChild(this);
         }
 
-        private void RenameKey()
+        public void SetTimeToLive(TimeSpan? timeSpan)
         {
+            var database = GetDatabaseInternal();
+            database.KeyExpire(FullName, timeSpan);
+        }
+        
+        public void Rename(string fullname)
+        {
+            var database = GetDatabaseInternal();
+            database.KeyRename(FullName, fullname);
+
+            FullName = fullname;
+       
             if (Parent.IsKeyBelongHere(FullName))
             {
                 var requiredStart = Parent.IsRoot ? "" : Parent.FullName + Constants.RegionSeparator;

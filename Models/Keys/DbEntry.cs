@@ -1,4 +1,5 @@
 ﻿using Quickr.Services;
+using StackExchange.Redis;
 
 namespace Quickr.Models.Keys
 {
@@ -12,15 +13,17 @@ namespace Quickr.Models.Keys
             DbIndex = dbIndex;
             Parent = parent;
         }
-        
-        public KeyspaceProxy GetKeyspace()
-        {
-            return Connection.GetKeyspace();
-        }
+
+        // TODO: review what is mandatory:
         
         public DatabaseProxy GetDatabase()
         {
             return Connection.GetDatabase(DbIndex);
+        }
+        
+        public IDatabase GetDatabaseInternal()
+        {
+            return Connection.GetDatabaseInternal(DbIndex);
         }
 
         protected override void OnPropertyChanged(string propertyName = null)

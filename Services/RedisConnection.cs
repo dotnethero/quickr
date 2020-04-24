@@ -186,11 +186,6 @@ namespace Quickr.Services
             return new DatabaseProxy(db);
         }
 
-        public KeyspaceProxy GetKeyspace()
-        {
-            return new KeyspaceProxy(this);
-        }
-
         public void Dispose()
         {
             _connection.Dispose();

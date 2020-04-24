@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Quickr.Models.Keys;
+using Quickr.Services;
 using Quickr.Utils;
 using StackExchange.Redis;
 
@@ -26,7 +27,7 @@ namespace Quickr.ViewModels.Data
         
         private async void SetupAsync()
         {
-            var entries = await GetDatabase().GetHashesAsync(Key);
+            var entries = await Key.GetDatabase().GetHashesAsync(Key);
             var models = entries.Select(HashEntryViewModel.FromEntry);
             Entries = new ObservableCollection<HashEntryViewModel>(models);
         }
@@ -57,7 +58,7 @@ namespace Quickr.ViewModels.Data
 
                 if (fields.Length > 0)
                 {
-                    GetDatabase().HashDelete(Key, fields);
+                    Key.GetDatabase().HashDelete(Key, fields);
                 }
 
                 foreach (var entry in entries)
@@ -72,7 +73,7 @@ namespace Quickr.ViewModels.Data
             if (string.IsNullOrEmpty(Current.Name)) return;
             if (Entries.Any(x => x.Name == Current.Name && x != Current)) return;
 
-            GetDatabase().HashSet(Key, Current.Name, Current.CurrentValue);
+            Key.GetDatabase().HashSet(Key, Current.Name, Current.CurrentValue);
             Current.OriginalValue = Current.CurrentValue;
         }
 

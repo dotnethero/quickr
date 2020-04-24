@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Quickr.Models;
@@ -125,7 +124,7 @@ namespace Quickr.ViewModels
             switch (item)
             {
                 case KeyEntry key:
-                    var fullname = await key.GetKeyspace().CloneKey(key);
+                    var fullname = await key.CloneAsync();
                     var entry = key.Parent.AddChild(fullname);
                     entry.IsSelected = true;
                     break;
@@ -139,61 +138,45 @@ namespace Quickr.ViewModels
                 case DatabaseEntry database:
                     if (FlushDatabaseMessage(database) == MessageBoxResult.Yes)
                     {
-                        database.Connection.Flush(database);
-                        database.RemoveChildren();
+                        database.Flush();
                     }
                     break;
 
                 case FolderEntry folder:
                     if (DeleteFolderMessage(folder) == MessageBoxResult.Yes)
                     {
-                        var folderParent = folder.Parent;
-                        folderParent.GetKeyspace().Delete(folder);
-                        folderParent.RemoveChild(folder);
+                        folder.Delete();
                     }
 
                     break;
 
                 case KeyEntry key:
-                    var keyParent = key.Parent;
-                    keyParent.GetKeyspace().Delete(key);
-                    keyParent.RemoveChild(key);
+                    key.Delete();
                     break;
             }
         }
 
-        private void MarkAsExpired(object item)
+        private async void MarkAsExpired(object item)
         {
-            void MarkFolder(FolderEntry folder)
-            {
-                folder // may affect performance
-                    .GetKeys()
-                    .ToList()
-                    .ForEach(key => key.GetKeyspace().SetTimeToLive(key, TimeSpan.Zero));
-            }
-
             switch (item)
             {
                 case DatabaseEntry database:
                     if (MarkDatabaseAsExpired(database) == MessageBoxResult.Yes)
                     {
-                        MarkFolder(database);
-                        database.RemoveChildren();
+                        await database.MarkAsExpiredAsync();
                     }
                     break;
 
                 case FolderEntry folder:
                     if (MarkFolderAsExpired(folder) == MessageBoxResult.Yes)
                     {
-                        var folderParent = folder.Parent;
-                        MarkFolder(folder);
-                        folderParent.RemoveChild(folder);
+                        await folder.MarkAsExpiredAsync();
                     }
                     break;
 
                 case KeyEntry key:
                     var keyParent = key.Parent;
-                    key.GetKeyspace().SetTimeToLive(key, TimeSpan.Zero);
+                    key.SetTimeToLive(TimeSpan.Zero);
                     keyParent.RemoveChild(key);
                     break;
             }

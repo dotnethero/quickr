@@ -1,5 +1,6 @@
 ﻿using System;
 using Quickr.Models.Keys;
+using Quickr.Services;
 using Quickr.ViewModels.Editors;
 
 namespace Quickr.ViewModels.Data
@@ -13,14 +14,14 @@ namespace Quickr.ViewModels.Data
 
         private async void SetupAsync()
         {
-            var str = await GetDatabase().GetStringAsync(Key);
+            var str = await Key.GetDatabase().GetStringAsync(Key);
             Value = new ValueViewModel(str);
             Value.ValueSaved += OnValueSaved;
         }
 
         protected void OnValueSaved(object sender, EventArgs e)
         {
-            GetDatabase().SetString(Key, Value.CurrentValue);
+            Key.GetDatabase().SetString(Key, Value.CurrentValue);
             Value.OriginalValue = Value.CurrentValue;
         }
     }

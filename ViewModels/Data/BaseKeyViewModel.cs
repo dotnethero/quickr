@@ -29,16 +29,6 @@ namespace Quickr.ViewModels.Data
             Properties = CreatePropertiesViewModel(ttl);
         }
 
-        protected DatabaseProxy GetDatabase()
-        {
-            return Key.GetDatabase();
-        }
-        
-        protected KeyspaceProxy GetKeyspace()
-        {
-            return Key.GetKeyspace();
-        }
-
         private PropertiesViewModel CreatePropertiesViewModel(TimeSpan? ttl)
         {
             var name = Key.FullName;
@@ -52,13 +42,12 @@ namespace Quickr.ViewModels.Data
         {
             if (Properties.Expiration != Properties.OriginalExpiration)
             {
-                GetKeyspace().SetTimeToLive(Key, Properties.Expiration);
+                Key.SetTimeToLive(Properties.Expiration);
                 Properties.OriginalExpiration = Properties.Expiration;
             }
             if (Properties.Name != Properties.OriginalName)
             {
-                GetKeyspace().RenameKey(Key, Properties.Name);
-                Key.FullName = Properties.Name;
+                Key.Rename(Properties.Name);
                 Properties.OriginalName = Properties.Name;
             }
         }

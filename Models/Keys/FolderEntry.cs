@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Quickr.Services;
 using Quickr.Utils;
 using StackExchange.Redis;
@@ -60,6 +61,33 @@ namespace Quickr.Models.Keys
         public FolderEntry(RedisConnection connection, int dbIndex, string name, string fullname, FolderEntry parent): base(connection, dbIndex, name, parent)
         {
             _fullName = fullname;
+        }
+        
+        public virtual async Task MarkAsExpiredAsync()
+        {
+            await MarkAllKeysAsExpiredAsync();
+            Parent.RemoveChild(this);
+        }
+
+        protected async Task MarkAllKeysAsExpiredAsync()
+        {
+            var database = GetDatabaseInternal();
+            var keys = GetKeys().ToList();
+            var tran = database.CreateTransaction();
+            keys.ForEach(key => tran.KeyExpireAsync(key.FullName, TimeSpan.Zero).ConfigureAwait(false));
+            await tran.ExecuteAsync();
+        }
+
+        public void Delete() // TODO: rework for cluster, make async
+        {
+            var database = GetDatabaseInternal();
+            var keys = Connection
+                .GetMasterServers()
+                .SelectMany(server => server.Keys(DbIndex, SearchPattern, 2500)) // TODO: too deep and complex
+                .ToArray();
+
+            database.KeyDelete(keys);
+            Parent.RemoveChild(this);
         }
 
         protected override void OnPropertyChanged(string propertyName = null)

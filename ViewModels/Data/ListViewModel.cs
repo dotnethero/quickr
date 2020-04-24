@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Quickr.Models.Keys;
+using Quickr.Services;
 using Quickr.Utils;
 
 namespace Quickr.ViewModels.Data
@@ -23,7 +24,7 @@ namespace Quickr.ViewModels.Data
         
         private async void SetupAsync()
         {
-            var entries = await GetDatabase().GetListAsync(Key);
+            var entries = await Key.GetDatabase().GetListAsync(Key);
             var models = entries.Select(ListEntryViewModel.FromValue);
             Entries = new ObservableCollection<ListEntryViewModel>(models);
         }
@@ -54,7 +55,7 @@ namespace Quickr.ViewModels.Data
 
                 if (indexes.Length > 0)
                 {
-                    GetDatabase()
+                    Key.GetDatabase()
                         .ListDelete(Key, indexes)
                         .ConfigureAwait(false)
                         .GetAwaiter()
@@ -72,13 +73,13 @@ namespace Quickr.ViewModels.Data
         {
             if (Current.IsNew)
             {
-                GetDatabase().ListRightPush(Key, Value.CurrentValue);
+                Key.GetDatabase().ListRightPush(Key, Value.CurrentValue);
                 Current.OriginalValue = Current.CurrentValue;
             }
             else
             {
                 var index = Entries.IndexOf(Current);
-                GetDatabase().ListSet(Key, index, Value.CurrentValue);
+                Key.GetDatabase().ListSet(Key, index, Value.CurrentValue);
                 Current.OriginalValue = Current.CurrentValue;
             }
         }

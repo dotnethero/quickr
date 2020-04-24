@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Quickr.Models.Keys;
+using Quickr.Services;
 using Quickr.Utils;
 using StackExchange.Redis;
 
@@ -24,7 +25,7 @@ namespace Quickr.ViewModels.Data
         
         private async void SetupAsync()
         {
-            var entries = await GetDatabase().GetUnsortedSetAsync(Key);
+            var entries = await Key.GetDatabase().GetUnsortedSetAsync(Key);
             var models = entries.Select(UnsortedSetEntryViewModel.FromValue);
             Entries = new ObservableCollection<UnsortedSetEntryViewModel>(models);
         }
@@ -55,7 +56,7 @@ namespace Quickr.ViewModels.Data
 
                 if (values.Length > 0)
                 {
-                    GetDatabase().UnsortedSetRemove(Key, values);
+                    Key.GetDatabase().UnsortedSetRemove(Key, values);
                 }
 
                 foreach (var entry in entries)
@@ -70,7 +71,7 @@ namespace Quickr.ViewModels.Data
             if (Current.IsNew)
             {
                 if (Entries.Any(x => x.OriginalValue == Current.CurrentValue && x != Current)) return;
-                GetDatabase().UnsortedSetAdd(Key, Value.CurrentValue);
+                Key.GetDatabase().UnsortedSetAdd(Key, Value.CurrentValue);
                 Current.OriginalValue = Current.CurrentValue;
             }
         }
