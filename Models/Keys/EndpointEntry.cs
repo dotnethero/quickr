@@ -38,8 +38,8 @@ namespace Quickr.Models.Keys
                 new ReplicasEntry(connection, "Replicas", replicas),
                 new ClientsEntry(connection, "Clients", endpoint),
                 new SlowlogEntry(connection, "Slow log", endpoint),
-                new SystemFolderEntry(connection, "Memory doctor"),
-                new SystemFolderEntry(connection, "Latency doctor"),
+                new MemoryDoctorEntry(connection, "Memory doctor", endpoint),
+                new LatencyDoctorEntry(connection, "Latency doctor", endpoint),
                 new SystemFolderEntry(connection, "Monitor"),
             };
         }

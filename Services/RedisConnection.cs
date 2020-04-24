@@ -40,6 +40,18 @@ namespace Quickr.Services
             return await server.SlowlogGetAsync().ConfigureAwait(false);
         }
         
+        public async Task<string> MemoryDoctor(EndPoint endpoint)
+        {
+            var server = _connection.GetServer(endpoint);
+            return await server.MemoryDoctorAsync().ConfigureAwait(false);
+        }
+        
+        public async Task<string> LatencyDoctor(EndPoint endpoint)
+        {
+            var server = _connection.GetServer(endpoint);
+            return await server.LatencyDoctorAsync().ConfigureAwait(false);
+        }
+
         // section -> key -> key * value * spec
         public Dictionary<string, Dictionary<string, ConfigKeyValue>> ConfigGet(EndPoint endpoint)
         {

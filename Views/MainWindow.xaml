@@ -232,6 +232,12 @@
                         <DataTemplate DataType="{x:Type vm1:SlowlogViewModel}">
                             <server:SlowlogView DataContext="{Binding}" />
                         </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm1:MemoryDoctorViewModel}">
+                            <server:MemoryDoctorView DataContext="{Binding}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm1:LatencyDoctorViewModel}">
+                            <server:LatencyDoctorView DataContext="{Binding}" />
+                        </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
             </Grid>

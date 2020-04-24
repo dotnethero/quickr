@@ -263,16 +263,24 @@ namespace Quickr.ViewModels
                     Current = new DatabaseViewModel(db.Connection, db);
                     break;
                     
-                case InfoEntry info:
-                    Current = new InfoViewModel(info.Connection, info.Endpoint);
+                case InfoEntry entry:
+                    Current = new InfoViewModel(entry.Connection, entry.Endpoint);
                     break;
                     
-                case ClientsEntry clients:
-                    Current = new ClientsViewModel(clients.Connection, clients.Endpoint);
+                case ClientsEntry entry:
+                    Current = new ClientsViewModel(entry.Connection, entry.Endpoint);
                     break;
                     
-                case SlowlogEntry slowlog:
-                    Current = new SlowlogViewModel(slowlog.Connection, slowlog.Endpoint);
+                case SlowlogEntry entry:
+                    Current = new SlowlogViewModel(entry.Connection, entry.Endpoint);
+                    break;
+                    
+                case MemoryDoctorEntry entry:
+                    Current = new MemoryDoctorViewModel(entry.Connection, entry.Endpoint);
+                    break;
+
+                case LatencyDoctorEntry entry:
+                    Current = new LatencyDoctorViewModel(entry.Connection, entry.Endpoint);
                     break;
 
                 default:
