@@ -228,6 +228,9 @@
                         <DataTemplate DataType="{x:Type vm:ClientsViewModel}">
                             <server:ClientsView DataContext="{Binding}" />
                         </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:SlowlogViewModel}">
+                            <server:SlowlogView DataContext="{Binding}" />
+                        </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
             </Grid>

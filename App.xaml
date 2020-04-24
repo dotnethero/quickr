@@ -12,6 +12,7 @@
         <converters:NullableIntToStringConverter x:Key="NullableIntToStringConverter" />
         <converters:EnumMatchToBooleanConverter x:Key="EnumMatchToBooleanConverter" />
         <converters:IntSecondsToTimeSpanConverter x:Key="IntSecondsToTimeSpanConverter" />
+        <converters:SlowlogArgumentsConverter x:Key="SlowlogArgumentsConverter" />
         <Style x:Key="HightlightNewElement" TargetType="DataGridRow">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsNew}" Value="True">

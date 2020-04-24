@@ -33,6 +33,12 @@ namespace Quickr.Services
             var server = _connection.GetServer(endpoint);
             return await server.ClientListAsync().ConfigureAwait(false);
         }
+
+        public async Task<CommandTrace[]> SlowlogGet(EndPoint endpoint)
+        {
+            var server = _connection.GetServer(endpoint);
+            return await server.SlowlogGetAsync().ConfigureAwait(false);
+        }
         
         // section -> key -> key * value * spec
         public Dictionary<string, Dictionary<string, ConfigKeyValue>> ConfigGet(EndPoint endpoint)

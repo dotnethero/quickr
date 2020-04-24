@@ -30,7 +30,7 @@ namespace Quickr.Models.Keys
             Endpoint = endpoint;
         }
     }
-
+    
     internal class ReplicasEntry : SystemFolderEntry
     {
         public List<EndpointEntry> Replicas { get; }

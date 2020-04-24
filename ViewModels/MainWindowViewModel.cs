@@ -269,6 +269,10 @@ namespace Quickr.ViewModels
                 case ClientsEntry clients:
                     Current = new ClientsViewModel(clients.Connection, clients.Endpoint);
                     break;
+                    
+                case SlowlogEntry slowlog:
+                    Current = new SlowlogViewModel(slowlog.Connection, slowlog.Endpoint);
+                    break;
 
                 default:
                     Current = null;

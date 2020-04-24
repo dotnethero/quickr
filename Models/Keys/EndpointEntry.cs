@@ -37,7 +37,7 @@ namespace Quickr.Models.Keys
                 new InfoEntry(connection, "Info", endpoint),
                 new ReplicasEntry(connection, "Replicas", replicas),
                 new ClientsEntry(connection, "Clients", endpoint),
-                new SystemFolderEntry(connection, "Slow log"),
+                new SlowlogEntry(connection, "Slow log", endpoint),
                 new SystemFolderEntry(connection, "Memory doctor"),
                 new SystemFolderEntry(connection, "Latency doctor"),
                 new SystemFolderEntry(connection, "Monitor"),
