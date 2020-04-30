@@ -73,12 +73,12 @@ namespace Quickr.ViewModels.Data
             }
             if (Current.IsNew)
             {
-                Key.GetDatabase().UnsortedSetAdd(Key, Value.CurrentValue);
+                Key.GetDatabase().UnsortedSetAdd(Key, Current.CurrentValue);
                 Current.OriginalValue = Current.CurrentValue;
             }
             else
             {
-                Key.GetDatabase().UnsortedSetUpdate(Key, Value.OriginalValue, Value.CurrentValue);
+                Key.GetDatabase().UnsortedSetUpdate(Key, Current.OriginalValue, Current.CurrentValue);
                 Current.OriginalValue = Current.CurrentValue;
             }
         }

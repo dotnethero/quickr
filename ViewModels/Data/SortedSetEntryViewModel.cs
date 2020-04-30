@@ -16,8 +16,7 @@ namespace Quickr.ViewModels.Data
             {
                 if (_originalScore == value) return;
                 _originalScore = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsValueSaved));
+                OnValuePropertyChanged();
             }
         }
 
@@ -28,14 +27,15 @@ namespace Quickr.ViewModels.Data
             {
                 if (_currentScore == value) return;
                 _currentScore = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsValueSaved));
+                OnValuePropertyChanged();
             }
         }
+        
+        public override bool IsValueChanged => 
+            OriginalValue != CurrentValue ||
+            OriginalScore != CurrentScore;
 
-        public override bool IsValueSaved => 
-            OriginalValue == CurrentValue && 
-            OriginalScore == CurrentScore;
+        public override bool IsValueSaved => !IsValueChanged;
 
         public static SortedSetEntryViewModel FromEntry(SortedSetEntry entry) => new SortedSetEntryViewModel(entry);
         public static SortedSetEntryViewModel Empty() => new SortedSetEntryViewModel();

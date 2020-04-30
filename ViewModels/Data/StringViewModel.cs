@@ -6,6 +6,18 @@ namespace Quickr.ViewModels.Data
 {
     internal class StringViewModel: BaseKeyViewModel
     {
+        private ValueViewModel _value;
+
+        public ValueViewModel Value
+        {
+            get => _value;
+            protected set
+            {
+                _value = value;
+                OnPropertyChanged();
+            }
+        }
+
         public StringViewModel(KeyEntry key, TimeSpan? ttl): base(key, ttl)
         {
             SetupAsync();

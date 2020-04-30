@@ -1,7 +1,16 @@
-﻿namespace Quickr.ViewModels.Data
+﻿using System;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using Quickr.Annotations;
+using Quickr.Utils;
+
+namespace Quickr.ViewModels.Data
 {
-    internal abstract class BaseEntryViewModel : BaseViewModel
+    internal abstract class BaseEntryViewModel : BaseViewModel // TODO: Create separate view
     {
+        public event EventHandler ValueSaved;
+        public event EventHandler ValueDiscarded;
+        
         private string _originalValue;
         private string _currentValue;
 
@@ -12,8 +21,7 @@
             {
                 if (_originalValue == value) return;
                 _originalValue = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsValueSaved));
+                OnValuePropertyChanged();
                 OnPropertyChanged(nameof(IsNew));
             }
         }
@@ -25,22 +33,45 @@
             {
                 if (_currentValue == value) return;
                 _currentValue = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsValueSaved));
+                OnValuePropertyChanged();
             }
         }
 
-        public virtual bool IsValueSaved => OriginalValue == CurrentValue;
+        public virtual bool IsValueChanged => OriginalValue != CurrentValue;
+        public virtual bool IsValueSaved => !IsValueChanged;
         public virtual bool IsNew => OriginalValue == null;
+        
+        public ICommand SaveCommand { get; }
+        public ICommand CancelCommand { get; }
 
         protected BaseEntryViewModel()
         {
+            SaveCommand = new Command(Save);
+            CancelCommand = new Command(Cancel);
         }
 
-        protected BaseEntryViewModel(string value)
+        protected BaseEntryViewModel(string value): this()
         {
             _originalValue = value;
             _currentValue = value;
+        }
+        
+        protected virtual void Save()
+        {
+            ValueSaved?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected virtual void Cancel()
+        {
+            ValueDiscarded?.Invoke(this, EventArgs.Empty);
+        }
+        
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnValuePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            OnPropertyChanged(propertyName);
+            OnPropertyChanged(nameof(IsValueSaved));
+            OnPropertyChanged(nameof(IsValueChanged));
         }
     }
 }

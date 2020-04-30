@@ -74,11 +74,11 @@ namespace Quickr.ViewModels.Data
             }
             if (Current.IsNew)
             {
-                Key.GetDatabase().SortedSetAdd(Key, Value.CurrentValue, Current.CurrentScore);
+                Key.GetDatabase().SortedSetAdd(Key, Current.CurrentValue, Current.CurrentScore);
             }
             else
             {
-                Key.GetDatabase().SortedSetUpdate(Key, Value.OriginalValue, Value.CurrentValue, Current.CurrentScore);
+                Key.GetDatabase().SortedSetUpdate(Key, Current.OriginalValue, Current.CurrentValue, Current.CurrentScore);
             }
             Current.OriginalValue = Current.CurrentValue;
             Current.OriginalScore = Current.CurrentScore;

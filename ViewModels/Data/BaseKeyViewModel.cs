@@ -7,25 +7,12 @@ namespace Quickr.ViewModels.Data
 {
     internal abstract class BaseKeyViewModel : BaseViewModel
     {
-        private ValueViewModel _value;
-
         public KeyEntry Key { get; }
         public PropertiesViewModel Properties { get; }
-
-        public ValueViewModel Value
-        {
-            get => _value;
-            protected set
-            {
-                _value = value;
-                OnPropertyChanged();
-            }
-        }
 
         protected BaseKeyViewModel(KeyEntry key, TimeSpan? ttl)
         {
             Key = key;
-            Value = null;
             Properties = CreatePropertiesViewModel(ttl);
         }
 

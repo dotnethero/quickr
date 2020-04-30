@@ -48,7 +48,7 @@
             </StackPanel>
         </Grid>
         <views:ValueEditor 
-            DataContext="{Binding Path=Value}" 
+            DataContext="{Binding Path=Current}" 
             DockPanel.Dock="Bottom" 
             Margin="5" />
     </DockPanel>

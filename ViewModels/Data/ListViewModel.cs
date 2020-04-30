@@ -72,13 +72,13 @@ namespace Quickr.ViewModels.Data
         {
             if (Current.IsNew)
             {
-                Key.GetDatabase().ListRightPush(Key, Value.CurrentValue);
+                Key.GetDatabase().ListRightPush(Key, Current.CurrentValue);
                 Current.OriginalValue = Current.CurrentValue;
             }
             else
             {
                 var index = Entries.IndexOf(Current);
-                Key.GetDatabase().ListSet(Key, index, Value.CurrentValue);
+                Key.GetDatabase().ListSet(Key, index, Current.CurrentValue);
                 Current.OriginalValue = Current.CurrentValue;
             }
         }
