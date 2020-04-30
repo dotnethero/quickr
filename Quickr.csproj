@@ -31,7 +31,7 @@
     <Compile Update="Views\Configuration\Pages\LatencyMonitorPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Configuration\Pages\ShowLogPage.xaml.cs">
+    <Compile Update="Views\Configuration\Pages\SlowLogPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Configuration\Pages\ClusterNatSupportPage.xaml.cs">
@@ -100,7 +100,7 @@
     <Page Update="Views\Configuration\Pages\LatencyMonitorPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Configuration\Pages\ShowLogPage.xaml">
+    <Page Update="Views\Configuration\Pages\SlowLogPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Configuration\Pages\ClusterNatSupportPage.xaml">

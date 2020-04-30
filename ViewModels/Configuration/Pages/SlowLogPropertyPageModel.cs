@@ -4,12 +4,12 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class ShowLogPropertyPageModel: BasePropertyPageModel
+    internal class SlowLogPropertyPageModel: BasePropertyPageModel
     {
         public StringPropertyModel SlowlogLogSlowerThan { get; set; }
         public StringPropertyModel SlowlogMaxLen { get; set; }
 
-        public ShowLogPropertyPageModel(EndpointEntry endpoint, Dictionary<string, ConfigKeyValue> config): 
+        public SlowLogPropertyPageModel(EndpointEntry endpoint, Dictionary<string, ConfigKeyValue> config): 
             base(endpoint, config)
         {
             SlowlogLogSlowerThan = MapToString("slowlog-log-slower-than");

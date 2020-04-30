@@ -50,7 +50,7 @@
             <ListViewItem>Lua scripting</ListViewItem>
             <ListViewItem>Cluster</ListViewItem>
             <ListViewItem>Cluster NAT support</ListViewItem>
-            <ListViewItem>Show log</ListViewItem>
+            <ListViewItem>Slow log</ListViewItem>
             <ListViewItem>Latency monitor</ListViewItem>
             <ListViewItem>Event notification</ListViewItem>
             <ListViewItem>Advanced config</ListViewItem>
@@ -107,7 +107,7 @@
                 <views:ClusterNatSupportPage DataContext="{Binding Path=ClusterNatSupportPage}" />
             </TabItem>
             <TabItem>
-                <views:ShowLogPage DataContext="{Binding Path=ShowLogPage}" />
+                <views:SlowLogPage DataContext="{Binding Path=SlowLogPage}" />
             </TabItem>
             <TabItem>
                 <views:LatencyMonitorPage DataContext="{Binding Path=LatencyMonitorPage}" />

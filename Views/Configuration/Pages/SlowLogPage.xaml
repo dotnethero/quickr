@@ -1,16 +1,16 @@
-﻿<UserControl x:Class="Quickr.Views.Configuration.ShowLogPage"
+﻿<UserControl x:Class="Quickr.Views.Configuration.SlowLogPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cfg="clr-namespace:Quickr.ViewModels.Configuration"
-             mc:Ignorable="d" d:DataContext="{d:DesignInstance cfg:ShowLogPropertyPageModel}">
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance cfg:SlowLogPropertyPageModel}">
     <UserControl.Resources>
         <ResourceDictionary Source="../PropertyPagesDictionary.xaml" />
     </UserControl.Resources>
     <ScrollViewer Style="{StaticResource SidePageScroll}">
         <StackPanel Margin="0,0,10,0">
-            <GroupBox Header="Show log">
+            <GroupBox Header="Slow log">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" MinWidth="130" />
@@ -40,7 +40,7 @@
                     </StackPanel>
                     <Label Grid.Row="1" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding SlowlogLogSlowerThan}" Content="Log slower than:" />
                     <TextBox Grid.Row="1" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding SlowlogLogSlowerThan}" />
-                    <Label Grid.Row="2" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding SlowlogMaxLen}" Content="Show log max len:" />
+                    <Label Grid.Row="2" Grid.Column="0" Template="{StaticResource Label}" DataContext="{Binding SlowlogMaxLen}" Content="Slow log max len:" />
                     <TextBox Grid.Row="2" Grid.Column="1" Template="{StaticResource Text}" DataContext="{Binding SlowlogMaxLen}" />
                 </Grid>
             </GroupBox>

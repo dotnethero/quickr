@@ -20,7 +20,7 @@ namespace Quickr.ViewModels.Configuration
         public LuaScriptingPropertyPageModel LuaScriptingPage { get; }
         public RedisClusterPropertyPageModel RedisClusterPage { get; }
         public ClusterNatSupportPropertyPageModel ClusterNatSupportPage { get; }
-        public ShowLogPropertyPageModel ShowLogPage { get; }
+        public SlowLogPropertyPageModel SlowLogPage { get; }
         public LatencyMonitorPropertyPageModel LatencyMonitorPage { get; }
         public EventNotificationPropertyPageModel EventNotificationPage { get; }
         public AdvancedConfigPropertyPageModel AdvancedConfigPage { get; }
@@ -42,7 +42,7 @@ namespace Quickr.ViewModels.Configuration
             LuaScriptingPage = new LuaScriptingPropertyPageModel(endpoint, config["Lua scripting"]);
             RedisClusterPage = new RedisClusterPropertyPageModel(endpoint, config["Cluster"]);
             ClusterNatSupportPage = new ClusterNatSupportPropertyPageModel(endpoint, config["Cluster NAT support"]);
-            ShowLogPage = new ShowLogPropertyPageModel(endpoint, config["Show log"]);
+            SlowLogPage = new SlowLogPropertyPageModel(endpoint, config["Slow log"]);
             LatencyMonitorPage = new LatencyMonitorPropertyPageModel(endpoint, config["Latency monitor"]);
             EventNotificationPage = new EventNotificationPropertyPageModel(endpoint, config["Event notification"]);
             AdvancedConfigPage = new AdvancedConfigPropertyPageModel(endpoint, config["Advanced config"]);
@@ -63,7 +63,7 @@ namespace Quickr.ViewModels.Configuration
             LuaScriptingPage.Save();
             RedisClusterPage.Save();
             ClusterNatSupportPage.Save();
-            ShowLogPage.Save();
+            SlowLogPage.Save();
             LatencyMonitorPage.Save();
             EventNotificationPage.Save();
             AdvancedConfigPage.Save();
