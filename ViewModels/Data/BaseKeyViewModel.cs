@@ -40,6 +40,10 @@ namespace Quickr.ViewModels.Data
 
         private async Task OnPropertiesSaved()
         {
+            if (Properties.Expiration < TimeSpan.Zero)
+            {
+                Properties.Expiration = null;
+            }
             if (Properties.Expiration != Properties.OriginalExpiration)
             {
                 await Key.SetTimeToLive(Properties.Expiration);
