@@ -71,13 +71,13 @@ namespace Quickr.ViewModels
                 var server = model.Server;
                 foreach (var database in server.Databases)
                 {
-                    database.Refresh();
+                    database.Refresh(); // NOTE: load database async
                 }
                 Servers.Add(server);
             }
         }
 
-        public void ConnectToTest()
+        public async Task ConnectToTest()
         {
             var model = new EndpointModel
             {
@@ -85,15 +85,15 @@ namespace Quickr.ViewModels
                 Host = "localhost",
                 Port = 6379
             };
-            ConnectToEndpoint(model);
+            await ConnectToEndpoint(model);
         }
 
-        private void ConnectToEndpoint(EndpointModel endpoint)
+        private async Task ConnectToEndpoint(EndpointModel endpoint)
         {
-            var server = _multiplexer.ConnectAsync(endpoint).ConfigureAwait(false).GetAwaiter().GetResult();
+            var server = await _multiplexer.ConnectAsync(endpoint).ConfigureAwait(false);
             foreach (var database in server.Databases)
             {
-                database.Refresh();
+                database.Refresh(); // NOTE: load database async
             }
             Servers.Add(server);
         }
@@ -221,7 +221,7 @@ namespace Quickr.ViewModels
                 MessageBoxImage.Warning);
         }
 
-        private void Refresh(object item)
+        private async void Refresh(object item)
         {
             if (item is ServerEntry server)
             {
@@ -229,16 +229,16 @@ namespace Quickr.ViewModels
             }
             if (item is FolderEntry folder)
             {
-                folder.Refresh();
+                await folder.Refresh();
             }
         }
 
-        private void Select(object item)
+        private async void Select(object item)
         {
             switch (item)
             {
                 case KeyEntry key:
-                    Current = _keyFactory.Create(key);
+                    Current = await _keyFactory.Create(key);
                     break;
 
                 case DatabaseEntry db:

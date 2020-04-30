@@ -2,19 +2,15 @@
 using Quickr.ViewModels.Data;
 using StackExchange.Redis;
 using System;
+using System.Threading.Tasks;
 
 namespace Quickr.Utils
 {
     internal class KeyViewModelFactory
     {
-        public BaseKeyViewModel Create(KeyEntry key)
+        public async Task<BaseKeyViewModel> Create(KeyEntry key)
         {
-            var (type, ttl) = key
-                .GetProperties()
-                .ConfigureAwait(false)
-                .GetAwaiter()
-                .GetResult();
-
+            var (type, ttl) = await key.GetProperties();
             return type switch
             {
                 RedisType.String => new StringViewModel(key, ttl),
