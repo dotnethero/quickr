@@ -63,13 +63,13 @@ namespace Quickr.Models.Keys
             _fullName = fullname;
         }
         
-        public virtual async Task MarkAsExpiredAsync()
+        public async Task MarkAsExpired()
         {
-            await MarkAllKeysAsExpiredAsync();
+            await MarkKeysAsExpired();
             Parent.RemoveChild(this);
         }
 
-        protected async Task MarkAllKeysAsExpiredAsync()
+        protected async Task MarkKeysAsExpired()
         {
             var keyspace = GetKeyspace();
             var keys = GetKeys().Select(key => key.FullName).ToList();

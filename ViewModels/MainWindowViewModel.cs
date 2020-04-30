@@ -63,7 +63,7 @@ namespace Quickr.ViewModels
             MarkAsExpiredCommand = new ParameterCommand(MarkAsExpired);
         }
 
-        private void Connect()
+        private async void Connect()
         {
             var model = new ConnectViewModel(_multiplexer);
             var window = new ConnectWindow(model) { Owner = Window };
@@ -165,14 +165,14 @@ namespace Quickr.ViewModels
                 case DatabaseEntry database:
                     if (MarkDatabaseAsExpired(database) == MessageBoxResult.Yes)
                     {
-                        await database.MarkAsExpiredAsync();
+                        await database.MarkChildrenAsExpired();
                     }
                     break;
 
                 case FolderEntry folder:
                     if (MarkFolderAsExpired(folder) == MessageBoxResult.Yes)
                     {
-                        await folder.MarkAsExpiredAsync();
+                        await folder.MarkAsExpired();
                     }
                     break;
 

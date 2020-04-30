@@ -20,9 +20,9 @@ namespace Quickr.Models.Keys
             RemoveChildren();
         }
 
-        public override async Task MarkAsExpiredAsync()
+        public async Task MarkChildrenAsExpired()
         {
-            await MarkAllKeysAsExpiredAsync();
+            await MarkKeysAsExpired();
             RemoveChildren();
         }
     }
