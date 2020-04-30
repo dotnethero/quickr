@@ -9,9 +9,14 @@ namespace Quickr.Models.Keys
         {
         }
         
-        public void Flush()
+        public async Task<long> GetSize()
         {
-            Connection.Flush(this);
+            return await GetKeyspace().GetSize();
+        }
+
+        public async Task Flush()
+        {
+            await GetKeyspace().Flush();
             RemoveChildren();
         }
 

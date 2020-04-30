@@ -119,26 +119,6 @@ namespace Quickr.Services
                 .ToArray();
         }
         
-        public long GetSize(DatabaseEntry database)
-        {
-            return GetMasterServers()
-                .Select(server => server.DatabaseSize(database.DbIndex))
-                .Sum();
-        }
-
-        public void Flush(DatabaseEntry database)
-        {
-            GetMasterServers()
-                .ForEach(server => server.FlushDatabase(database.DbIndex));
-        }
-
-        public RedisKey[] GetKeys(int dbIndex, RedisValue pattern = default)
-        {
-            return GetMasterServers()
-                .SelectMany(server => server.Keys(dbIndex, pattern, 2500))
-                .ToArray();
-        }
-
         private IServer GetOriginServer()
         {
             return _connection.GetServer(_originEndpoint);
@@ -175,9 +155,10 @@ namespace Quickr.Services
                 .ToArray();
         }
         
-        public IDatabase GetDatabaseInternal(int dbIndex)
+        public KeyspaceProxy GetKeyspace(int dbIndex)
         {
-            return _connection.GetDatabase(dbIndex);
+            var db = _connection.GetDatabase(dbIndex);
+            return new KeyspaceProxy(db, this);
         }
 
         public DatabaseProxy GetDatabase(int dbIndex)

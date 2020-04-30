@@ -71,30 +71,30 @@ namespace Quickr.Models.Keys
 
         protected async Task MarkAllKeysAsExpiredAsync()
         {
-            var database = GetDatabaseInternal();
-            var keys = GetKeys().ToList();
-            var tran = database.CreateTransaction();
-            keys.ForEach(key => tran.KeyExpireAsync(key.FullName, TimeSpan.Zero).ConfigureAwait(false));
-            await tran.ExecuteAsync().ConfigureAwait(false);
+            var keyspace = GetKeyspace();
+            var keys = GetKeys().Select(key => key.FullName).ToList();
+            await keyspace.SetKeyTimeToLive(keys, TimeSpan.Zero);
         }
 
-        public void Delete() // TODO: rework for cluster, make async
+        public async Task Delete()
         {
-            var database = GetDatabaseInternal();
-            var keys = Connection
-                .GetMasterServers()
-                .SelectMany(server => server.Keys(DbIndex, SearchPattern, 2500)) // TODO: too deep and complex
-                .ToArray();
-
-            database.KeyDelete(keys);
+            var keyspace = GetKeyspace();
+            await keyspace.DeleteKeys(SearchPattern);
             Parent.RemoveChild(this);
+        }
+        
+        public async Task Refresh()
+        {
+            var keyspace = GetKeyspace();
+            var keys = await keyspace.GetKeys(SearchPattern);
+            UpdateChildren(keys);
         }
 
         protected override void OnPropertyChanged(string propertyName = null)
         {
             if (propertyName == nameof(SearchPattern))
             {
-                Refresh();
+                Refresh(); // TODO: make event subscription
             }
             base.OnPropertyChanged(propertyName);
         }
@@ -112,12 +112,6 @@ namespace Quickr.Models.Keys
             if (!fullname.StartsWith(requiredStart)) return false;
             var parts = fullname.Substring(requiredStart.Length).Split(Constants.RegionSeparator).ToList();
             return parts.Count == 1;
-        }
-
-        public void Refresh()
-        {
-            var keys = Connection.GetKeys(DbIndex, SearchPattern);
-            UpdateChildren(keys);
         }
 
         private void UpdateChildren(IEnumerable<RedisKey> keys)

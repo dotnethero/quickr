@@ -14,16 +14,14 @@ namespace Quickr.Models.Keys
             Parent = parent;
         }
 
-        // TODO: review what is mandatory:
-        
         public DatabaseProxy GetDatabase()
         {
             return Connection.GetDatabase(DbIndex);
         }
         
-        public IDatabase GetDatabaseInternal()
+        public KeyspaceProxy GetKeyspace()
         {
-            return Connection.GetDatabaseInternal(DbIndex);
+            return Connection.GetKeyspace(DbIndex);
         }
 
         protected override void OnPropertyChanged(string propertyName = null)

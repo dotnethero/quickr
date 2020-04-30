@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Quickr.Models.Keys;
-using Quickr.Services;
 using Quickr.ViewModels.Editors;
 
 namespace Quickr.ViewModels.Data
@@ -33,26 +33,26 @@ namespace Quickr.ViewModels.Data
         {
             var name = Key.FullName;
             var props = new PropertiesViewModel(name, ttl);
-            props.ValueSaved += OnPropertiesSaved;
-            props.ValueDiscarded += OnPropertiesDiscarded;
+            props.ValueSaved += async (sender, args) => await OnPropertiesSaved();
+            props.ValueDiscarded += (sender, args) => OnPropertiesDiscarded();
             return props;
         }
 
-        private void OnPropertiesSaved(object sender, EventArgs args)
+        private async Task OnPropertiesSaved()
         {
             if (Properties.Expiration != Properties.OriginalExpiration)
             {
-                Key.SetTimeToLive(Properties.Expiration);
+                await Key.SetTimeToLive(Properties.Expiration);
                 Properties.OriginalExpiration = Properties.Expiration;
             }
             if (Properties.Name != Properties.OriginalName)
             {
-                Key.Rename(Properties.Name);
+                await Key.Rename(Properties.Name);
                 Properties.OriginalName = Properties.Name;
             }
         }
         
-        private void OnPropertiesDiscarded(object sender, EventArgs args)
+        private void OnPropertiesDiscarded()
         {
             Properties.Name = Properties.OriginalName;
             Properties.Expiration = Properties.OriginalExpiration;

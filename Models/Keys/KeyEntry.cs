@@ -29,50 +29,48 @@ namespace Quickr.Models.Keys
         
         public async Task<(RedisType, TimeSpan?)> GetProperties()
         {
-            var database = GetDatabaseInternal();
-            var batch = database.CreateBatch();
-            var type = batch.KeyTypeAsync(FullName).ConfigureAwait(false);
-            var ttl = batch.KeyTimeToLiveAsync(FullName).ConfigureAwait(false);
-            batch.Execute();
-            return (await type, await ttl);
+            var keyspace = GetKeyspace();
+            return await keyspace.GetKeyProperties(FullName);
         }
         
         public async Task<string> CloneAsync()
         {
-            var database = GetDatabaseInternal();
+            var keyspace = GetKeyspace();
             var baseName = FullName + "_copy";
             var name = baseName;
             var index = 1;
-            while (database.KeyExists(name))
+            while (await keyspace.KeyExists(name))
             {
                 name = baseName + (index++);
             }
-            var batch = database.CreateBatch();
-            var data = batch.KeyDumpAsync(FullName).ConfigureAwait(false);
-            var ttl = batch.KeyTimeToLiveAsync(FullName).ConfigureAwait(false);
-            batch.Execute();
-
-            await database.KeyRestoreAsync(name, await data, await ttl);
+            await keyspace.CloneKey(FullName, name);
             return name;
         }
         
-        public void Delete()
+        public async Task Delete()
         {
-            var database = GetDatabaseInternal();
-            database.KeyDelete(FullName);
+            var keyspace = GetKeyspace();
+            await keyspace.DeleteKey(FullName);
+            Parent.RemoveChild(this);
+        }
+        
+        public async Task MarkAsExpired()
+        {
+            var keyspace = GetKeyspace();
+            await keyspace.SetKeyTimeToLive(FullName, TimeSpan.Zero);
             Parent.RemoveChild(this);
         }
 
-        public void SetTimeToLive(TimeSpan? timeSpan)
+        public async Task SetTimeToLive(TimeSpan? expiry)
         {
-            var database = GetDatabaseInternal();
-            database.KeyExpire(FullName, timeSpan);
+            var keyspace = GetKeyspace();
+            await keyspace.SetKeyTimeToLive(FullName, expiry);
         }
-        
-        public void Rename(string fullname)
+
+        public async Task Rename(string fullname)
         {
-            var database = GetDatabaseInternal();
-            database.KeyRename(FullName, fullname);
+            var keyspace = GetKeyspace();
+            await keyspace.RenameKey(FullName, fullname);
 
             FullName = fullname;
        

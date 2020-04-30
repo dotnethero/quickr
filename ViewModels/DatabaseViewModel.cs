@@ -1,14 +1,12 @@
 ﻿using Quickr.Models.Keys;
-using Quickr.Services;
 
 namespace Quickr.ViewModels
 {
     internal class DatabaseViewModel : BaseViewModel
     {
         protected DatabaseEntry Entry { get; }
-        protected RedisConnection Connection { get; }
 
-        public long KeyCount { get; }
+        public long KeyCount { get; private set; }
 
         public string Filter
         {
@@ -21,11 +19,15 @@ namespace Quickr.ViewModels
             }
         }
 
-        public DatabaseViewModel(RedisConnection connection, DatabaseEntry entry)
+        public DatabaseViewModel(DatabaseEntry entry)
         {
             Entry = entry;
-            Connection = connection;
-            KeyCount = connection.GetSize(entry);
+            Initialize();
+        }
+
+        private async void Initialize()
+        {
+            KeyCount = await Entry.GetSize();
         }
     }
 }

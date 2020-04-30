@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Quickr.Models;
@@ -131,27 +132,27 @@ namespace Quickr.ViewModels
             }
         }
 
-        private void Delete(object item)
+        private async void Delete(object item)
         {
             switch (item)
             {
                 case DatabaseEntry database:
                     if (FlushDatabaseMessage(database) == MessageBoxResult.Yes)
                     {
-                        database.Flush();
+                        await database.Flush();
                     }
                     break;
 
                 case FolderEntry folder:
                     if (DeleteFolderMessage(folder) == MessageBoxResult.Yes)
                     {
-                        folder.Delete();
+                        await folder.Delete();
                     }
 
                     break;
 
                 case KeyEntry key:
-                    key.Delete();
+                    await key.Delete();
                     break;
             }
         }
@@ -175,9 +176,7 @@ namespace Quickr.ViewModels
                     break;
 
                 case KeyEntry key:
-                    var keyParent = key.Parent;
-                    key.SetTimeToLive(TimeSpan.Zero);
-                    keyParent.RemoveChild(key);
+                    await key.MarkAsExpired();
                     break;
             }
         }
@@ -243,7 +242,7 @@ namespace Quickr.ViewModels
                     break;
 
                 case DatabaseEntry db:
-                    Current = new DatabaseViewModel(db.Connection, db);
+                    Current = new DatabaseViewModel(db);
                     break;
                     
                 case InfoEntry entry:
