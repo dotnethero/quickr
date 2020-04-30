@@ -2,12 +2,9 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using Quickr.Models.Keys;
-using Quickr.Services;
 using Quickr.Utils;
 using StackExchange.Redis;
 

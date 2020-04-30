@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Quickr.Models.Keys;
-using Quickr.Services;
 using Quickr.Utils;
 
 namespace Quickr.ViewModels.Data

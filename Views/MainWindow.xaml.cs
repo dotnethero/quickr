@@ -15,7 +15,7 @@ namespace Quickr.Views
             InitializeComponent();
             DataContext = ViewModel = viewModel;
             ViewModel.Window = this;
-            ViewModel.ConnectToTest();
+            ViewModel.ConnectToTest(); // NOTE: load test connection async
         }
 
         private void OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

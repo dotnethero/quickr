@@ -1,16 +1,14 @@
 ﻿using System.Windows;
 using Quickr.ViewModels.Configuration;
 
-namespace Quickr.Views
+namespace Quickr.Views.Configuration
 {
     public partial class PropertyPagesWindow : Window
     {
-        private PropertyPagesViewModel ViewModel { get; }
-
         internal PropertyPagesWindow(PropertyPagesViewModel viewModel)
         {
             InitializeComponent();
-            DataContext = ViewModel = viewModel;
+            DataContext = viewModel;
         }
     }
 }

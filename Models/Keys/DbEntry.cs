@@ -1,5 +1,4 @@
 ﻿using Quickr.Services;
-using StackExchange.Redis;
 
 namespace Quickr.Models.Keys
 {

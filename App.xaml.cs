@@ -1,5 +1,4 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 using Quickr.Services;
 using Quickr.Utils;
 using Quickr.ViewModels;
