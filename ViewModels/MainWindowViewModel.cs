@@ -91,7 +91,7 @@ namespace Quickr.ViewModels
 
         private async Task ConnectToEndpoint(EndpointModel endpoint)
         {
-            var server = await _multiplexer.ConnectAsync(endpoint).ConfigureAwait(false);
+            var server = await _multiplexer.ConnectAsync(endpoint);
             foreach (var database in server.Databases)
             {
                 database.Refresh(); // NOTE: load database async
