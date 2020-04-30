@@ -9,6 +9,7 @@ using Quickr.Services;
 using Quickr.Utils;
 using Quickr.ViewModels.Configuration;
 using Quickr.ViewModels.Connection;
+using Quickr.ViewModels.Data;
 using Quickr.ViewModels.Server;
 using Quickr.Views;
 using Quickr.Views.Configuration;
@@ -45,6 +46,9 @@ namespace Quickr.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public bool IsUnsaved => Current is BaseKeyViewModel key && key.IsUnsaved;
+        public bool IsKeyRemoved => Current is BaseKeyViewModel key && key.IsKeyRemoved;
 
         public MainWindowViewModel(RedisMultiplexer multiplexer, KeyViewModelFactory keyFactory)
         {

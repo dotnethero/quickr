@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Quickr.Models.Keys;
 
@@ -31,6 +32,9 @@ namespace Quickr.ViewModels.Data
                 OnPropertyChanged();
             }
         }
+
+        public override bool IsUnsaved => Entries.Any(x => !x.IsValueSaved);
+        public override bool IsKeyRemoved => !Entries.Any();
 
         protected BaseCollectionViewModel(KeyEntry key, TimeSpan? ttl) : base(key, ttl)
         {

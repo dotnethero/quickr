@@ -10,6 +10,9 @@ namespace Quickr.ViewModels.Data
         public KeyEntry Key { get; }
         public PropertiesViewModel Properties { get; }
 
+        public virtual bool IsUnsaved => false;
+        public virtual bool IsKeyRemoved => false;
+
         protected BaseKeyViewModel(KeyEntry key, TimeSpan? ttl)
         {
             Key = key;
