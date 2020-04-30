@@ -68,6 +68,12 @@ namespace Quickr.Views
         private void OnSaveChanges(object sender, RoutedEventArgs e)
         {
             ViewModel.SaveChanges();
+            MessageBox.Show(
+                this,
+                "Connection options have been saved!",
+                "Saved!", 
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
         }
         
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
