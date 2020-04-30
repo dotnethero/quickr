@@ -43,7 +43,7 @@ namespace Quickr.Services
             _db.ListRightPush(key.FullName, value);
         }
 
-        public async Task ListDelete(KeyEntry key, List<int> indexes) // TODO: test
+        public async Task ListDelete(KeyEntry key, List<int> indexes)
         {
             const string name = "\u0001#removed";
 
@@ -66,9 +66,17 @@ namespace Quickr.Services
             _db.SetAdd(key.FullName, value);
         }
         
-        public void UnsortedSetRemove(KeyEntry key, RedisValue[] values)
+        public void UnsortedSetRemove(KeyEntry key, params RedisValue[] values)
         {
             _db.SetRemove(key.FullName, values);
+        }
+        
+        public void UnsortedSetUpdate(KeyEntry key, RedisValue originValue, RedisValue newValue)
+        {
+            var tran = _db.CreateTransaction();
+            tran.SetRemoveAsync(key.FullName, originValue);
+            tran.SetAddAsync(key.FullName, newValue);
+            tran.Execute();
         }
 
         // SortedSet operations
@@ -83,9 +91,17 @@ namespace Quickr.Services
             _db.SortedSetAdd(key.FullName, value, score);
         }
         
-        public void SortedSetRemove(KeyEntry key, RedisValue[] values)
+        public void SortedSetRemove(KeyEntry key, params RedisValue[] values)
         {
             _db.SortedSetRemove(key.FullName, values);
+        }
+        
+        public void SortedSetUpdate(KeyEntry key, RedisValue originValue, RedisValue newValue, double newScore)
+        {
+            var tran = _db.CreateTransaction();
+            tran.SortedSetRemoveAsync(key.FullName, originValue);
+            tran.SortedSetAddAsync(key.FullName, newValue, newScore);
+            tran.Execute();
         }
 
         // Hash operations
@@ -100,7 +116,7 @@ namespace Quickr.Services
             return _db.HashSet(key.FullName, hashField, value);
         }
         
-        public long HashDelete(KeyEntry key, RedisValue[] hashFields)
+        public long HashDelete(KeyEntry key, params RedisValue[] hashFields)
         {
             return _db.HashDelete(key.FullName, hashFields);
         }

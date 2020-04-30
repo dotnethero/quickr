@@ -26,12 +26,11 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn 
                         Header="Score"
-                        Binding="{Binding Path=Score, Mode=TwoWay}" 
+                        Binding="{Binding Path=CurrentScore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                         Width="Auto" MinWidth="90" />
                     <DataGridTextColumn 
                         Header="Value"
                         Binding="{Binding Path=CurrentValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                        EditingElementStyle="{StaticResource OnlyNewIsEnabled}"
                         Width="*" 
                         MinWidth="90" />
                 </DataGrid.Columns>

@@ -68,21 +68,26 @@ namespace Quickr.ViewModels.Data
 
         protected override void OnValueSaved(object sender, EventArgs e)
         {
+            if (Entries.Any(x => x.OriginalValue == Current.CurrentValue && x != Current))
+            {
+                return;
+            }
             if (Current.IsNew)
             {
-                if (Entries.Any(x => x.OriginalValue == Current.CurrentValue && x != Current)) return;
-                Key.GetDatabase().SortedSetAdd(Key, Value.CurrentValue, Current.Score);
-                Current.OriginalValue = Current.CurrentValue;
+                Key.GetDatabase().SortedSetAdd(Key, Value.CurrentValue, Current.CurrentScore);
             }
             else
             {
-                // TODO: set score ?
+                Key.GetDatabase().SortedSetUpdate(Key, Value.OriginalValue, Value.CurrentValue, Current.CurrentScore);
             }
+            Current.OriginalValue = Current.CurrentValue;
+            Current.OriginalScore = Current.CurrentScore;
         }
 
         protected override void OnValueDiscarded(object sender, EventArgs e)
         {
             Current.CurrentValue = Current.OriginalValue;
+            Current.CurrentScore = Current.OriginalScore;
         }
     }
 }

@@ -67,10 +67,18 @@ namespace Quickr.ViewModels.Data
 
         protected override void OnValueSaved(object sender, EventArgs e)
         {
+            if (Entries.Any(x => x.OriginalValue == Current.CurrentValue && x != Current))
+            {
+                return;
+            }
             if (Current.IsNew)
             {
-                if (Entries.Any(x => x.OriginalValue == Current.CurrentValue && x != Current)) return;
                 Key.GetDatabase().UnsortedSetAdd(Key, Value.CurrentValue);
+                Current.OriginalValue = Current.CurrentValue;
+            }
+            else
+            {
+                Key.GetDatabase().UnsortedSetUpdate(Key, Value.OriginalValue, Value.CurrentValue);
                 Current.OriginalValue = Current.CurrentValue;
             }
         }

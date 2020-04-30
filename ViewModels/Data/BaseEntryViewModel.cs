@@ -30,8 +30,8 @@
             }
         }
 
-        public bool IsValueSaved => OriginalValue == CurrentValue;
-        public bool IsNew => OriginalValue == null;
+        public virtual bool IsValueSaved => OriginalValue == CurrentValue;
+        public virtual bool IsNew => OriginalValue == null;
 
         protected BaseEntryViewModel()
         {

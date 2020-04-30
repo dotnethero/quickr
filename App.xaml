@@ -18,6 +18,9 @@
                 <DataTrigger Binding="{Binding IsNew}" Value="True">
                     <Setter Property="Background" Value="#8EBDE767" />
                 </DataTrigger>
+                <DataTrigger Binding="{Binding IsValueSaved}" Value="False">
+                    <Setter Property="Background" Value="#8EE7DD67" />
+                </DataTrigger>
             </Style.Triggers>
         </Style>
         <Style x:Key="OnlyNewIsEnabled" TargetType="{x:Type TextBox}">
