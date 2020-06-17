@@ -60,14 +60,19 @@ namespace Quickr.ViewModels
             DisconnectCommand = new ParameterCommand(Disconnect);
             PropertiesCommand = new ParameterCommand(ShowProperties);
             CreateKeyCommand = new ParameterCommand(CreateKey);
-            SelectCommand = new ParameterCommand(Select);
+            SelectCommand = new ParameterCommand(async item => await Select(item));
             RefreshCommand = new ParameterCommand(Refresh);
             CloneCommand = new ParameterCommand(Clone);
             DeleteCommand = new ParameterCommand(Delete);
             MarkAsExpiredCommand = new ParameterCommand(MarkAsExpired);
         }
 
-        private async void Connect()
+        public async Task Save()
+        {
+            if (Current is BaseKeyViewModel key) await key.Save();
+        }
+
+        private void Connect()
         {
             var model = new ConnectViewModel(_multiplexer);
             var window = new ConnectWindow(model) { Owner = Window };
@@ -238,7 +243,7 @@ namespace Quickr.ViewModels
             }
         }
 
-        private async void Select(object item)
+        public async Task Select(object item)
         {
             switch (item)
             {
@@ -276,7 +281,7 @@ namespace Quickr.ViewModels
             }
         }
         
-        private void CreateKey(object obj)
+        private async void CreateKey(object obj)
         {
             if (!(obj is FolderEntry folder)) return;
             var window = new CreateKeyWindow();
@@ -293,7 +298,7 @@ namespace Quickr.ViewModels
                 switch (model.Type)
                 {
                     case KeyType.String:
-                        connection.SetString(entry, string.Empty);
+                        await connection.SetString(entry, string.Empty);
                         break;
                     case KeyType.List:
                         connection.ListRightPush(entry, string.Empty);

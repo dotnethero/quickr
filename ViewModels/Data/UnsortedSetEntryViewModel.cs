@@ -14,5 +14,8 @@ namespace Quickr.ViewModels.Data
         protected UnsortedSetEntryViewModel(RedisValue value) : base(value)
         {
         }
+
+        public RedisValue ToOriginalEntry() => OriginalValue;
+        public RedisValue ToEntry() => CurrentValue;
     }
 }

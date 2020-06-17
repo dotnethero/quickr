@@ -19,6 +19,8 @@ namespace Quickr.ViewModels.Data
             Properties = CreatePropertiesViewModel(ttl);
         }
 
+        public abstract Task Save();
+
         private PropertiesViewModel CreatePropertiesViewModel(TimeSpan? ttl)
         {
             var name = Key.FullName;

@@ -49,5 +49,8 @@ namespace Quickr.ViewModels.Data
             _originalScore = entry.Score;
             _currentScore = entry.Score;
         }
+
+        public RedisValue ToOriginalValue() => OriginalValue;
+        public SortedSetEntry ToEntry() => new SortedSetEntry(CurrentValue, CurrentScore);
     }
 }

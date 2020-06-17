@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Quickr.Models.Keys;
@@ -13,12 +14,14 @@ namespace Quickr.ViewModels.Data
     {
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
+        public ICommand SaveCommand { get; }
 
         public ListViewModel(KeyEntry key, TimeSpan? ttl): base(key, ttl)
         {
             SetupAsync();
             AddCommand = new ParameterCommand(Add);
             DeleteCommand = new ParameterCommand(Delete);
+            SaveCommand = new Command(async() => await Save());
         }
         
         private async void SetupAsync()
@@ -42,48 +45,70 @@ namespace Quickr.ViewModels.Data
             }
         }
 
-        private void Delete(object parameter)
+        private async void Delete(object parameter)
         {
             if (parameter is IList items)
             {
                 var entries = items.Cast<ListEntryViewModel>().ToList();
                 var indexes = entries
                     .Where(x => x.OriginalValue != null)
-                    .Select(Entries.IndexOf)
+                    .Select(x => x.Index)
                     .ToList();
 
                 if (indexes.Count > 0)
                 {
-                    Key.GetDatabase()
-                        .ListDelete(Key, indexes)
-                        .ConfigureAwait(false)
-                        .GetAwaiter()
-                        .GetResult();
+                    await Key.GetDatabase().ListDelete(Key, indexes);
                 }
 
                 foreach (var entry in entries)
                 {
                     Entries.Remove(entry);
                 }
+
+                foreach (var entry in Entries)
+                {
+                    entry.Index -= indexes.Count(i => i < entry.Index);
+                }
+            }
+        }
+        
+        public override async Task Save()
+        {
+            // TODO: save existing
+
+            var items = Entries.Where(x => x.IsNew && x.CurrentValue != null).ToArray();
+            var values = items.Select(x => x.ToValue()).ToArray();
+
+            var count = await Key.GetDatabase().ListRightPush(Key, values);
+            var countBefore = count - items.Length;
+
+            for (var index = 0; index < items.Length; index++)
+            {
+                var item = items[index];
+                item.Index = countBefore + index;
+                item.OriginalValue = item.CurrentValue;
             }
         }
 
-        protected override void OnValueSaved(object sender, EventArgs e)
+        protected override async Task SaveItem()
         {
             if (Current.IsNew)
             {
-                Key.GetDatabase().ListRightPush(Key, Current.CurrentValue);
+                var count = await Key.GetDatabase().ListRightPush(Key, Current.CurrentValue);
+                Current.Index = count - 1;
                 Current.OriginalValue = Current.CurrentValue;
+
+                var prev = Entries.IndexOf(Current);
+                Entries.Move(prev, (int) Current.Index);
             }
             else
             {
-                var index = Entries.IndexOf(Current);
-                Key.GetDatabase().ListSet(Key, index, Current.CurrentValue);
+                await Key.GetDatabase().ListSet(Key, Current.Index, Current.CurrentValue);
                 Current.OriginalValue = Current.CurrentValue;
             }
         }
 
-        protected override void OnValueDiscarded(object sender, EventArgs e)
+        protected override async Task DiscardItemChanges()
         {
             Current.CurrentValue = Current.OriginalValue;
         }

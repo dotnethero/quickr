@@ -1,7 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Quickr.Utils;
 using Quickr.ViewModels;
 
 namespace Quickr.Views
@@ -18,9 +20,35 @@ namespace Quickr.Views
             ViewModel.ConnectToTest(); // NOTE: load test connection async
         }
 
-        private void OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        private async void OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            ViewModel.SelectCommand.Execute(e.NewValue);
+            if (!ViewModel.IsUnsaved)
+            {
+                await ViewModel.Select(e.NewValue);
+            }
+            else
+            {
+                var result = MessageBox.Show(
+                    this,
+                    "Key has unsaved changes! Do you want to save them?",
+                    "Unsaved changes!",
+                    MessageBoxButton.YesNoCancel,
+                    MessageBoxImage.Warning);
+
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        await ViewModel.Save();
+                        await ViewModel.Select(e.NewValue);
+                        break;
+                    case MessageBoxResult.No:
+                        await ViewModel.Select(e.NewValue);
+                        break;
+                    case MessageBoxResult.Cancel:
+                        // TODO: Cancel select
+                        break;
+                }
+            }
         }
 
         private void BeforeRightClick(object sender, MouseButtonEventArgs e)

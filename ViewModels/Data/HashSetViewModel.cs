@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Quickr.Models.Keys;
@@ -14,14 +15,16 @@ namespace Quickr.ViewModels.Data
     {
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
+        public ICommand SaveCommand { get; set; }
 
         public HashSetViewModel(KeyEntry key, TimeSpan? ttl): base(key, ttl)
         {
             SetupAsync();
             AddCommand = new ParameterCommand(Add);
             DeleteCommand = new ParameterCommand(Delete);
+            SaveCommand = new Command(async() => await Save());
         }
-        
+
         private async void SetupAsync()
         {
             var entries = await Key.GetDatabase().GetHashesAsync(Key);
@@ -43,7 +46,7 @@ namespace Quickr.ViewModels.Data
             }
         }
 
-        private void Delete(object parameter)
+        private async void Delete(object parameter)
         {
             if (parameter is IList items)
             {
@@ -55,7 +58,7 @@ namespace Quickr.ViewModels.Data
 
                 if (fields.Length > 0)
                 {
-                    Key.GetDatabase().HashDelete(Key, fields);
+                    await Key.GetDatabase().HashDelete(Key, fields);
                 }
 
                 foreach (var entry in entries)
@@ -64,17 +67,26 @@ namespace Quickr.ViewModels.Data
                 }
             }
         }
+        
+        public override async Task Save()
+        {
+            var items = Entries.Where(x => x.IsValueChanged && x.CurrentValue != null).ToArray();
+            if (items.GroupBy(x => x.Name).Any(g => g.Count() > 1)) return; // TODO: error
 
-        protected override void OnValueSaved(object sender, EventArgs e)
+            var fields = items.Select(x => x.ToEntry()).ToArray();
+            await Key.GetDatabase().HashSet(Key, fields);
+        }
+
+        protected override async Task SaveItem()
         {
             if (string.IsNullOrEmpty(Current.Name)) return;
             if (Entries.Any(x => x.Name == Current.Name && x != Current)) return;
 
-            Key.GetDatabase().HashSet(Key, Current.Name, Current.CurrentValue);
+            await Key.GetDatabase().HashSet(Key, Current.Name, Current.CurrentValue);
             Current.OriginalValue = Current.CurrentValue;
         }
 
-        protected override void OnValueDiscarded(object sender, EventArgs e)
+        protected override async Task DiscardItemChanges()
         {
             Current.CurrentValue = Current.OriginalValue;
         }

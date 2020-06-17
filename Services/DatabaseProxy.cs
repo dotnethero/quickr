@@ -16,14 +16,14 @@ namespace Quickr.Services
 
         // String operations
 
-        public async Task<RedisValue> GetStringAsync(KeyEntry key)
+        public async Task<RedisValue> GetString(KeyEntry key)
         {
-            return await _db.StringGetAsync(key.FullName).ConfigureAwait(false);
+            return await _db.StringGetAsync(key.FullName);
         }
 
-        public bool SetString(KeyEntry key, string value)
+        public async Task<bool> SetString(KeyEntry key, string value)
         {
-            return _db.StringSet(key.FullName, value);
+            return await _db.StringSetAsync(key.FullName, value);
         }
 
         // List operations
@@ -33,75 +33,113 @@ namespace Quickr.Services
             return await _db.ListRangeAsync(key.FullName);
         }
         
-        public void ListSet(KeyEntry key, int index, RedisValue value)
+        public async Task ListSet(KeyEntry key, long index, RedisValue value)
         {
-            _db.ListSetByIndex(key.FullName, index, value);
+            await _db.ListSetByIndexAsync(key.FullName, index, value);
+        }
+        
+        public async Task<long> ListRightPush(KeyEntry key, RedisValue value)
+        {
+            return await _db.ListRightPushAsync(key.FullName, value);
+        }
+        
+        public async Task<long> ListRightPush(KeyEntry key, RedisValue[] values)
+        {
+            return await _db.ListRightPushAsync(key.FullName, values);
         }
 
-        public void ListRightPush(KeyEntry key, RedisValue value)
-        {
-            _db.ListRightPush(key.FullName, value);
-        }
-
-        public async Task ListDelete(KeyEntry key, List<int> indexes)
+        public async Task<long> ListDelete(KeyEntry key, List<long> indexes)
         {
             const string name = "\u0001#removed";
 
             var tran = _db.CreateTransaction();
-            indexes.ForEach(index => tran.ListSetByIndexAsync(key.FullName, index, name).ConfigureAwait(false));
-            var result = tran.ListRemoveAsync(key.FullName, name).ConfigureAwait(false);
-            await tran.ExecuteAsync().ConfigureAwait(false);
-            await result;
+            indexes.ForEach(index => tran.ListSetByIndexAsync(key.FullName, index, name));
+            var result = tran.ListRemoveAsync(key.FullName, name);
+            await tran.ExecuteAsync();
+            return await result;
         }
 
         // Set operations
 
         public async Task<RedisValue[]> GetUnsortedSetAsync(KeyEntry key)
         {
-            return await _db.SetMembersAsync(key.FullName).ConfigureAwait(false);
+            return await _db.SetMembersAsync(key.FullName);
         }
         
-        public void UnsortedSetAdd(KeyEntry key, RedisValue value)
+        public async Task UnsortedSetAdd(KeyEntry key, params RedisValue[] values)
         {
-            _db.SetAdd(key.FullName, value);
+            await _db.SetAddAsync(key.FullName, values);
         }
         
-        public void UnsortedSetRemove(KeyEntry key, params RedisValue[] values)
+        public async Task UnsortedSetRemove(KeyEntry key, params RedisValue[] values)
         {
-            _db.SetRemove(key.FullName, values);
+            await _db.SetRemoveAsync(key.FullName, values);
         }
         
-        public void UnsortedSetUpdate(KeyEntry key, RedisValue originValue, RedisValue newValue)
+        public async Task<bool> UnsortedSetUpdate(KeyEntry key, RedisValue originValue, RedisValue newValue)
         {
             var tran = _db.CreateTransaction();
-            tran.SetRemoveAsync(key.FullName, originValue);
-            tran.SetAddAsync(key.FullName, newValue);
-            tran.Execute();
+            var removeResult = tran.SetRemoveAsync(key.FullName, originValue);
+            var addResult = tran.SetAddAsync(key.FullName, newValue);
+            await tran.ExecuteAsync();
+            return await removeResult && await addResult;
+        }
+
+        public async Task<long> UnsortedSetSave(KeyEntry key, RedisValue[] removed, RedisValue[] added)
+        {
+            var tran = _db.CreateTransaction();
+            var removeResult = removed.Length > 0 
+                ? tran.SetRemoveAsync(key.FullName, removed)
+                : Task.FromResult(0L);
+
+            var addResult = added.Length > 0
+                ? tran.SetAddAsync(key.FullName, added)
+                : Task.FromResult(0L);
+
+            await tran.ExecuteAsync();
+            return await removeResult + await addResult;
         }
 
         // SortedSet operations
 
         public async Task<SortedSetEntry[]> GetSortedSetAsync(KeyEntry key)
         {
-            return await _db.SortedSetRangeByRankWithScoresAsync(key.FullName).ConfigureAwait(false);
+            return await _db.SortedSetRangeByRankWithScoresAsync(key.FullName);
         }
         
-        public void SortedSetAdd(KeyEntry key, RedisValue value, double score)
+        public async Task SortedSetAdd(KeyEntry key, RedisValue value, double score)
         {
-            _db.SortedSetAdd(key.FullName, value, score);
+            await _db.SortedSetAddAsync(key.FullName, value, score);
         }
         
-        public void SortedSetRemove(KeyEntry key, params RedisValue[] values)
+        public async Task SortedSetRemove(KeyEntry key, params RedisValue[] values)
         {
-            _db.SortedSetRemove(key.FullName, values);
+            await _db.SortedSetRemoveAsync(key.FullName, values);
         }
         
-        public void SortedSetUpdate(KeyEntry key, RedisValue originValue, RedisValue newValue, double newScore)
+        public async Task<bool> SortedSetUpdate(KeyEntry key, RedisValue originValue, RedisValue newValue, double newScore)
         {
             var tran = _db.CreateTransaction();
-            tran.SortedSetRemoveAsync(key.FullName, originValue);
-            tran.SortedSetAddAsync(key.FullName, newValue, newScore);
-            tran.Execute();
+            var removeResult = tran.SortedSetRemoveAsync(key.FullName, originValue);
+            var addResult = tran.SortedSetAddAsync(key.FullName, newValue, newScore);
+            await tran.ExecuteAsync();
+            return await removeResult && await addResult;
+        }
+        
+        public async Task<long> SortedSetSave(KeyEntry key, RedisValue[] removed, SortedSetEntry[] added)
+        {
+            var tran = _db.CreateTransaction();
+           
+            var removeResult = removed.Length > 0 
+                ? tran.SortedSetRemoveAsync(key.FullName, removed)
+                : Task.FromResult(0L);
+
+            var addResult = added.Length > 0
+                ? tran.SortedSetAddAsync(key.FullName, added)
+                : Task.FromResult(0L);
+
+            await tran.ExecuteAsync();
+            return await removeResult + await addResult;
         }
 
         // Hash operations
@@ -111,14 +149,19 @@ namespace Quickr.Services
             return await _db.HashGetAllAsync(key.FullName);
         }
         
-        public bool HashSet(KeyEntry key, RedisValue hashField, RedisValue value)
+        public async Task<bool> HashSet(KeyEntry key, RedisValue hashField, RedisValue value)
         {
-            return _db.HashSet(key.FullName, hashField, value);
+            return await _db.HashSetAsync(key.FullName, hashField, value);
         }
         
-        public long HashDelete(KeyEntry key, params RedisValue[] hashFields)
+        public async Task HashSet(KeyEntry key, HashEntry[] hashFields)
         {
-            return _db.HashDelete(key.FullName, hashFields);
+            await _db.HashSetAsync(key.FullName, hashFields);
+        }
+
+        public async Task<long> HashDelete(KeyEntry key, params RedisValue[] hashFields)
+        {
+            return await _db.HashDeleteAsync(key.FullName, hashFields);
         }
     }
 }

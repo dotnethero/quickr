@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Data
@@ -17,6 +18,7 @@ namespace Quickr.ViewModels.Data
             set
             {
                 if (Equals(value, _entries)) return;
+                BeforePropertyChanged();
                 _entries = value;
                 OnPropertyChanged();
             }
@@ -28,6 +30,7 @@ namespace Quickr.ViewModels.Data
             set
             {
                 if (_current == value) return;
+                BeforePropertyChanged();
                 _current = value;
                 OnPropertyChanged();
             }
@@ -39,23 +42,31 @@ namespace Quickr.ViewModels.Data
         protected BaseCollectionViewModel(KeyEntry key, TimeSpan? ttl) : base(key, ttl)
         {
         }
+        
+        private void BeforePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            if (propertyName == nameof(Current) && Current != null)
+            {
+                Current.ValueSaved -= SaveHandler;
+                Current.ValueSaved -= DiscardHandler;
+            }
+        }
 
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (propertyName == nameof(Current))
+            if (propertyName == nameof(Current) && Current != null)
             {
-                if (Current != null)
-                {
-                    // TODO: Unsubscribe previous
-                    Current.ValueSaved += OnValueSaved;
-                    Current.ValueDiscarded += OnValueDiscarded;
-                }
+                Current.ValueSaved += SaveHandler;
+                Current.ValueDiscarded += DiscardHandler;
             }
+
             base.OnPropertyChanged(propertyName);
         }
 
-        protected abstract void OnValueSaved(object sender, EventArgs e);
+        private async void SaveHandler(object sender, EventArgs e) => await SaveItem();
+        private async void DiscardHandler(object sender, EventArgs e) => await DiscardItemChanges();
 
-        protected abstract void OnValueDiscarded(object sender, EventArgs e);
+        protected abstract Task SaveItem();
+        protected abstract Task DiscardItemChanges();
     }
 }

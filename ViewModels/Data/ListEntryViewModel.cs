@@ -4,15 +4,21 @@ namespace Quickr.ViewModels.Data
 {
     internal class ListEntryViewModel : BaseEntryViewModel
     {
-        public static ListEntryViewModel FromValue(RedisValue value) => new ListEntryViewModel(value);
+        public long Index { get; set; }
+
+        public static ListEntryViewModel FromValue(RedisValue value, int index) => new ListEntryViewModel(value, index);
         public static ListEntryViewModel Empty() => new ListEntryViewModel();
 
         protected ListEntryViewModel()
         {
         }
 
-        protected ListEntryViewModel(RedisValue value) : base(value)
+        protected ListEntryViewModel(RedisValue value, int index) : base(value)
         {
+            Index = index;
         }
+
+        public RedisValue ToValue() => CurrentValue;
+
     }
 }

@@ -17,5 +17,8 @@ namespace Quickr.ViewModels.Data
         {
             Name = entry.Name;
         }
+
+        public HashEntry ToEntry() => new HashEntry(Name, CurrentValue);
+
     }
 }

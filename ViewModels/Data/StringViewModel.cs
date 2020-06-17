@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Quickr.Models.Keys;
 using Quickr.ViewModels.Editors;
 
@@ -18,21 +19,23 @@ namespace Quickr.ViewModels.Data
             }
         }
 
+        public override bool IsUnsaved => Value.IsValueChanged;
+
         public StringViewModel(KeyEntry key, TimeSpan? ttl): base(key, ttl)
         {
             SetupAsync();
         }
-
+        
         private async void SetupAsync()
         {
-            var str = await Key.GetDatabase().GetStringAsync(Key);
+            var str = await Key.GetDatabase().GetString(Key);
             Value = new ValueViewModel(str);
-            Value.ValueSaved += OnValueSaved;
+            Value.ValueSaved += async (sender, e) => await Save();
         }
 
-        protected void OnValueSaved(object sender, EventArgs e)
+        public override async Task Save()
         {
-            Key.GetDatabase().SetString(Key, Value.CurrentValue);
+            await Key.GetDatabase().SetString(Key, Value.CurrentValue);
             Value.OriginalValue = Value.CurrentValue;
         }
     }

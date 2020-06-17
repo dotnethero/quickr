@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Quickr.Models.Keys;
@@ -14,12 +15,14 @@ namespace Quickr.ViewModels.Data
     {
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
+        public ICommand SaveCommand { get; }
 
         public UnsortedSetViewModel(KeyEntry key, TimeSpan? ttl): base(key, ttl)
         {
             SetupAsync();
             AddCommand = new ParameterCommand(Add);
             DeleteCommand = new ParameterCommand(Delete);
+            SaveCommand = new Command(async() => await Save());
         }
         
         private async void SetupAsync()
@@ -43,7 +46,7 @@ namespace Quickr.ViewModels.Data
             }
         }
 
-        private void Delete(object parameter)
+        private async void Delete(object parameter)
         {
             if (parameter is IList items)
             {
@@ -55,7 +58,7 @@ namespace Quickr.ViewModels.Data
 
                 if (values.Length > 0)
                 {
-                    Key.GetDatabase().UnsortedSetRemove(Key, values);
+                    await Key.GetDatabase().UnsortedSetRemove(Key, values);
                 }
 
                 foreach (var entry in entries)
@@ -64,8 +67,23 @@ namespace Quickr.ViewModels.Data
                 }
             }
         }
+        
+        public override async Task Save()
+        {
+            var items = Entries.Where(x => x.IsValueChanged && x.CurrentValue != null).ToArray();
+            if (items.GroupBy(x => x.CurrentValue).Any(g => g.Count() > 1)) return; // TODO: error
 
-        protected override void OnValueSaved(object sender, EventArgs e)
+            var removed = items.Where(x => !x.IsNew).Select(x => x.ToOriginalEntry()).ToArray();
+            var added = items.Select(x => x.ToEntry()).ToArray();
+            await Key.GetDatabase().UnsortedSetSave(Key, removed, added);
+
+            foreach (var item in items)
+            {
+                item.OriginalValue = item.CurrentValue;
+            }
+        }
+
+        protected override async Task SaveItem()
         {
             if (Entries.Any(x => x.OriginalValue == Current.CurrentValue && x != Current))
             {
@@ -73,17 +91,17 @@ namespace Quickr.ViewModels.Data
             }
             if (Current.IsNew)
             {
-                Key.GetDatabase().UnsortedSetAdd(Key, Current.CurrentValue);
+                await Key.GetDatabase().UnsortedSetAdd(Key, Current.CurrentValue);
                 Current.OriginalValue = Current.CurrentValue;
             }
             else
             {
-                Key.GetDatabase().UnsortedSetUpdate(Key, Current.OriginalValue, Current.CurrentValue);
+                await Key.GetDatabase().UnsortedSetUpdate(Key, Current.OriginalValue, Current.CurrentValue);
                 Current.OriginalValue = Current.CurrentValue;
             }
         }
 
-        protected override void OnValueDiscarded(object sender, EventArgs e)
+        protected override async Task DiscardItemChanges()
         {
             Current.CurrentValue = Current.OriginalValue;
         }
