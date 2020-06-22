@@ -43,9 +43,17 @@ namespace Quickr.Services
             return await _db.ListRightPushAsync(key.FullName, value);
         }
         
-        public async Task<long> ListRightPush(KeyEntry key, RedisValue[] values)
+        public async Task<long> ListSave(KeyEntry key, Dictionary<long, RedisValue> existingItems, RedisValue[] newItems)
         {
-            return await _db.ListRightPushAsync(key.FullName, values);
+            var tran = _db.CreateTransaction();
+            foreach (var item in existingItems)
+            {
+                var _ = tran.ListSetByIndexAsync(key.FullName, item.Key, item.Value);
+            }
+
+            var addResult = tran.ListRightPushAsync(key.FullName, newItems);
+            await tran.ExecuteAsync();
+            return await addResult + existingItems.Count;
         }
 
         public async Task<long> ListDelete(KeyEntry key, List<long> indexes)

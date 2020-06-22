@@ -72,14 +72,13 @@ namespace Quickr.ViewModels.Data
             }
         }
         
-        public override async Task Save()
+        public override async Task<bool> Save()
         {
-            // TODO: save existing
+            var items = Entries.Where(x => x.CurrentValue != null).ToArray();
+            var existingItems = items.Where(x => !x.IsNew).ToDictionary(x => x.Index, x => x.ToValue());
+            var newItems = items.Where(x => x.IsNew).Select(x => x.ToValue()).ToArray();
 
-            var items = Entries.Where(x => x.IsNew && x.CurrentValue != null).ToArray();
-            var values = items.Select(x => x.ToValue()).ToArray();
-
-            var count = await Key.GetDatabase().ListRightPush(Key, values);
+            var count = await Key.GetDatabase().ListSave(Key, existingItems, newItems);
             var countBefore = count - items.Length;
 
             for (var index = 0; index < items.Length; index++)
@@ -88,6 +87,8 @@ namespace Quickr.ViewModels.Data
                 item.Index = countBefore + index;
                 item.OriginalValue = item.CurrentValue;
             }
+
+            return true;
         }
 
         protected override async Task SaveItem()

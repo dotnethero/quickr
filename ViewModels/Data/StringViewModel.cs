@@ -33,10 +33,11 @@ namespace Quickr.ViewModels.Data
             Value.ValueSaved += async (sender, e) => await Save();
         }
 
-        public override async Task Save()
+        public override async Task<bool> Save()
         {
             await Key.GetDatabase().SetString(Key, Value.CurrentValue);
             Value.OriginalValue = Value.CurrentValue;
+            return true;
         }
     }
 }

@@ -68,13 +68,14 @@ namespace Quickr.ViewModels.Data
             }
         }
         
-        public override async Task Save()
+        public override async Task<bool> Save()
         {
             var items = Entries.Where(x => x.IsValueChanged && x.CurrentValue != null).ToArray();
-            if (items.GroupBy(x => x.Name).Any(g => g.Count() > 1)) return; // TODO: error
+            if (items.GroupBy(x => x.Name).Any(g => g.Count() > 1)) return false;
 
             var fields = items.Select(x => x.ToEntry()).ToArray();
             await Key.GetDatabase().HashSet(Key, fields);
+            return true;
         }
 
         protected override async Task SaveItem()

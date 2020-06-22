@@ -19,7 +19,7 @@ namespace Quickr.ViewModels.Data
             Properties = CreatePropertiesViewModel(ttl);
         }
 
-        public abstract Task Save();
+        public abstract Task<bool> Save();
 
         private PropertiesViewModel CreatePropertiesViewModel(TimeSpan? ttl)
         {

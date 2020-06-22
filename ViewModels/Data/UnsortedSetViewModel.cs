@@ -68,10 +68,10 @@ namespace Quickr.ViewModels.Data
             }
         }
         
-        public override async Task Save()
+        public override async Task<bool> Save()
         {
             var items = Entries.Where(x => x.IsValueChanged && x.CurrentValue != null).ToArray();
-            if (items.GroupBy(x => x.CurrentValue).Any(g => g.Count() > 1)) return; // TODO: error
+            if (items.GroupBy(x => x.CurrentValue).Any(g => g.Count() > 1)) return false;
 
             var removed = items.Where(x => !x.IsNew).Select(x => x.ToOriginalEntry()).ToArray();
             var added = items.Select(x => x.ToEntry()).ToArray();
@@ -81,6 +81,8 @@ namespace Quickr.ViewModels.Data
             {
                 item.OriginalValue = item.CurrentValue;
             }
+
+            return true;
         }
 
         protected override async Task SaveItem()
