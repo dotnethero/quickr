@@ -36,7 +36,8 @@
                           ItemsSource="{Binding Servers, Mode=OneWay}"
                           VirtualizingStackPanel.IsVirtualizing="True"
                           SelectedItemChanged="OnSelectedItemChanged"
-                          PreviewMouseRightButtonDown="BeforeRightClick">
+                          PreviewMouseLeftButtonDown="BeforeClick"
+                          PreviewMouseRightButtonDown="BeforeClick">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}">
                             <Setter Property="IsSelected" Value="{Binding IsSelected}" />
