@@ -3,63 +3,124 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:models="clr-namespace:Quickr.Models"
+        xmlns:vm="clr-namespace:Quickr.ViewModels.Data"
+        xmlns:views="clr-namespace:Quickr.Views.Data"
         mc:Ignorable="d"
         Title="Create key..." 
-        Height="280" Width="400"
+        Height="640" Width="740"
         FontSize="14" 
         WindowStartupLocation="CenterOwner" 
         ResizeMode="CanResize" 
         ShowInTaskbar="False"
-        d:DataContext="{d:DesignInstance models:CreateKeyModel}">
-    <Grid Margin="10,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <StackPanel Margin="8">
-            <TextBlock 
-                HorizontalAlignment="Left" 
-                Text="Key name:" />
-            <TextBox 
-                Height="24" 
-                VerticalAlignment="Center" 
-                VerticalContentAlignment="Center"
-                Text="{Binding Name}" />
-        </StackPanel>
-        <GroupBox 
-            Grid.Row="1"
-            Padding="8"
-            Margin="0,0,6,0"
-            Header="Key type:"
-            BorderBrush="#FFABADB3">
-            <StackPanel>
-                <RadioButton 
-                    Content="String" 
-                    VerticalContentAlignment="Center" 
-                    IsChecked="{Binding Path=Type, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=String}" />
-                <RadioButton 
-                    Content="List"
-                    VerticalContentAlignment="Center"
-                    IsChecked="{Binding Path=Type, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=List}" />
-                <RadioButton 
-                    Content="Set" 
-                    VerticalContentAlignment="Center" 
-                    IsChecked="{Binding Path=Type, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=Set}" />
-                <RadioButton 
-                    Content="Sorted Set"
-                    VerticalContentAlignment="Center" 
-                    IsChecked="{Binding Path=Type, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=SortedSet}" />
-                <RadioButton 
-                    Content="Hash Set"
-                    VerticalContentAlignment="Center" 
-                    IsChecked="{Binding Path=Type, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=HashSet}" />
-            </StackPanel>
-        </GroupBox>
-        <StackPanel Grid.Row="2" Margin="4,8,6,8" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Margin="2" Width="80" Height="28" IsDefault="True" Content="Save" Click="OnSave" />
-            <Button Margin="2" Width="80" Height="28" IsCancel="True" Content="Cancel" />
-        </StackPanel>
-    </Grid>
+        d:DataContext="{d:DesignInstance vm:CreateKeyViewModel}">
+    <Window.Resources>
+        <Style TargetType="TabItem">
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+        <Style x:Key="ButtonRow" TargetType="StackPanel">
+            <Setter Property="Margin" Value="4,8,6,8" />
+            <Setter Property="Orientation" Value="Horizontal" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Width" Value="80" />
+            <Setter Property="Height" Value="28" />
+        </Style>
+    </Window.Resources>
+    <TabControl BorderThickness="0" SelectedIndex="{Binding Tab}">
+        <TabItem>
+            <Grid Margin="10,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <Border
+                    Grid.RowSpan="4"
+                    Grid.Column="0"
+                    Margin="5,10,15,15"
+                    Background="Gainsboro">
+                </Border>
+                <views:PropertiesEditor
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    DataContext="{Binding Path=Properties}" 
+                    IsButtonsVisible="False"
+                    VerticalAlignment="Top"
+                    GroupBoxPadding="5,10"
+                    Margin="0,0,6,0" />
+                <GroupBox 
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Padding="8"
+                    Margin="0,0,6,0"
+                    Header="Type"
+                    BorderBrush="#FFABADB3">
+                    <StackPanel Margin="56,0,0,0">
+                        <RadioButton 
+                            Content="String" 
+                            VerticalContentAlignment="Center" 
+                            IsChecked="{Binding Path=Type, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=String}" />
+                        <RadioButton 
+                            Content="List"
+                            VerticalContentAlignment="Center"
+                            IsChecked="{Binding Path=Type, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=List}" />
+                        <RadioButton 
+                            Content="Set" 
+                            VerticalContentAlignment="Center" 
+                            IsChecked="{Binding Path=Type, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=Set}" />
+                        <RadioButton 
+                            Content="Sorted Set"
+                            VerticalContentAlignment="Center" 
+                            IsChecked="{Binding Path=Type, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=SortedSet}" />
+                        <RadioButton 
+                            Content="Hash Set"
+                            VerticalContentAlignment="Center" 
+                            IsChecked="{Binding Path=Type, Mode=TwoWay, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter=HashSet}" />
+                    </StackPanel>
+                </GroupBox>
+                <StackPanel Style="{StaticResource ButtonRow}" Grid.Row="3" Grid.Column="1">
+                    <Button IsCancel="True" Content="Cancel" />
+                    <Button Content="Next" Command="{Binding NextCommand}" />
+                </StackPanel>
+            </Grid>
+        </TabItem>
+        <TabItem>
+            <Grid Margin="10,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <ContentControl DataContext="{Binding Key, Mode=OneWay}" Content="{Binding}" Grid.Row="0">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type vm:StringViewModel}">
+                            <views:StringView DataContext="{Binding}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:UnsortedSetViewModel}">
+                            <views:UnsortedSetView DataContext="{Binding}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:SortedSetViewModel}">
+                            <views:SortedSetView DataContext="{Binding}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:HashSetViewModel}">
+                            <views:HashSetView DataContext="{Binding}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:ListViewModel}">
+                            <views:ListView DataContext="{Binding}" />
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
+                <StackPanel Style="{StaticResource ButtonRow}" Grid.Row="1">
+                    <Button Content="Previous" Command="{Binding PrevCommand}" />
+                    <Button Content="Save" Click="OnSave" />
+                </StackPanel>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Window>

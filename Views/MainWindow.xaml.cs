@@ -21,10 +21,6 @@ namespace Quickr.Views
             ViewModel.ConnectToTest(); // NOTE: load test connection async
         }
 
-        private async void OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-        }
-
         private async Task<bool> Select(BaseEntry entry)
         {
             if (!ViewModel.IsUnsaved)

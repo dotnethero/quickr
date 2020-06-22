@@ -8,9 +8,9 @@
     mc:Ignorable="d" 
     d:DataContext="{d:DesignInstance Type=data:StringViewModel, IsDesignTimeCreatable=False}"
     d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel Margin="5" >
+    <DockPanel Margin="5">
         <views:PropertiesEditor
-            DataContext="{Binding Path=Properties}" 
+            DataContext="{Binding Path=Properties}"
             DockPanel.Dock="Top"
             VerticalAlignment="Top"
             Margin="5" />

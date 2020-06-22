@@ -41,6 +41,7 @@ namespace Quickr.ViewModels.Data
 
         protected BaseCollectionViewModel(KeyEntry key, TimeSpan? ttl) : base(key, ttl)
         {
+            Entries = new ObservableCollection<TEntry>();
         }
         
         private void BeforePropertyChanged([CallerMemberName] string propertyName = null)

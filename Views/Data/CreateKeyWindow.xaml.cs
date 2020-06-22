@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
+using Quickr.ViewModels.Data;
 
 namespace Quickr.Views.Data
 {
@@ -7,13 +9,25 @@ namespace Quickr.Views.Data
     /// </summary>
     public partial class CreateKeyWindow : Window
     {
-        public CreateKeyWindow()
+        private CreateKeyViewModel ViewModel { get; }
+
+        internal CreateKeyWindow(CreateKeyViewModel viewModel)
         {
             InitializeComponent();
+            DataContext = ViewModel = viewModel;
         }
 
-        private void OnSave(object sender, RoutedEventArgs e)
+        protected override void OnClosing(CancelEventArgs e)
         {
+            if (DialogResult != true)
+            {
+                ViewModel.Cancel();
+            }
+        }
+
+        private async void OnSave(object sender, RoutedEventArgs e)
+        {
+            await ViewModel.Save();
             DialogResult = true;
         }
     }

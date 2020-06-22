@@ -285,37 +285,32 @@ namespace Quickr.ViewModels
         private async void CreateKey(object obj)
         {
             if (!(obj is FolderEntry folder)) return;
-            var window = new CreateKeyWindow();
-            var model = new CreateKeyModel();
-            window.DataContext = model;
-            window.Owner = Window;
+
+            var model = new CreateKeyViewModel(folder);
+            var window = new CreateKeyWindow(model) { Owner = Window };
             if (window.ShowDialog() == true)
             {
                 var connection = folder.GetDatabase();
-                var requiredStart = folder.IsRoot ? "" : folder.FullName + Constants.RegionSeparator;
-                var fullname = requiredStart + model.Name;
-                var entry = folder.AddChild(fullname);
-                entry.IsSelected = true;
-                switch (model.Type)
-                {
-                    case KeyType.String:
-                        await connection.SetString(entry, string.Empty);
-                        break;
-                    case KeyType.List:
-                        connection.ListRightPush(entry, string.Empty);
-                        break;
-                    case KeyType.Set:
-                        connection.UnsortedSetAdd(entry, string.Empty);
-                        break;
-                    case KeyType.SortedSet:
-                        connection.SortedSetAdd(entry, string.Empty, 0);
-                        break;
-                    case KeyType.HashSet:
-                        connection.HashSet(entry, string.Empty, string.Empty);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                //switch (model.Type)
+                //{
+                //    case KeyType.String:
+                //        await connection.SetString(entry, string.Empty);
+                //        break;
+                //    case KeyType.List:
+                //        connection.ListRightPush(entry, string.Empty);
+                //        break;
+                //    case KeyType.Set:
+                //        connection.UnsortedSetAdd(entry, string.Empty);
+                //        break;
+                //    case KeyType.SortedSet:
+                //        connection.SortedSetAdd(entry, string.Empty, 0);
+                //        break;
+                //    case KeyType.HashSet:
+                //        connection.HashSet(entry, string.Empty, string.Empty);
+                //        break;
+                //    default:
+                //        throw new ArgumentOutOfRangeException();
+                //}
             }
         }
     }

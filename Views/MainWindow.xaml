@@ -35,7 +35,6 @@
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           ItemsSource="{Binding Servers, Mode=OneWay}"
                           VirtualizingStackPanel.IsVirtualizing="True"
-                          SelectedItemChanged="OnSelectedItemChanged"
                           PreviewMouseLeftButtonDown="BeforeClick"
                           PreviewMouseRightButtonDown="BeforeClick">
                     <TreeView.ItemContainerStyle>

@@ -21,9 +21,10 @@ namespace Quickr.ViewModels.Data
 
         public override bool IsUnsaved => Value.IsValueChanged;
 
-        public StringViewModel(KeyEntry key, TimeSpan? ttl): base(key, ttl)
+        public StringViewModel(KeyEntry key, TimeSpan? ttl, bool load = true): base(key, ttl)
         {
-            SetupAsync();
+            if (load) SetupAsync(); 
+            else Value = new ValueViewModel(string.Empty);
         }
         
         private async void SetupAsync()

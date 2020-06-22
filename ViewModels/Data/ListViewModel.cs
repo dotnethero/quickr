@@ -16,9 +16,9 @@ namespace Quickr.ViewModels.Data
         public ICommand DeleteCommand { get; }
         public ICommand SaveCommand { get; }
 
-        public ListViewModel(KeyEntry key, TimeSpan? ttl): base(key, ttl)
+        public ListViewModel(KeyEntry key, TimeSpan? ttl, bool load = true): base(key, ttl)
         {
-            SetupAsync();
+            if (load) SetupAsync();
             AddCommand = new ParameterCommand(Add);
             DeleteCommand = new ParameterCommand(Delete);
             SaveCommand = new Command(async() => await Save());

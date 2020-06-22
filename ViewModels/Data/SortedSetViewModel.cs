@@ -17,9 +17,9 @@ namespace Quickr.ViewModels.Data
         public ICommand DeleteCommand { get; }
         public ICommand SaveCommand { get; set; }
 
-        public SortedSetViewModel(KeyEntry key, TimeSpan? ttl): base(key, ttl)
+        public SortedSetViewModel(KeyEntry key, TimeSpan? ttl, bool load = true): base(key, ttl)
         {
-            SetupAsync();
+            if (load) SetupAsync();
             
             AddCommand = new ParameterCommand(Add);
             DeleteCommand = new ParameterCommand(Delete);
