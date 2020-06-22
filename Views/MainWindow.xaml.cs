@@ -1,12 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Quickr.Models.Keys;
-using Quickr.Utils;
 using Quickr.ViewModels;
 
 namespace Quickr.Views
@@ -45,9 +43,16 @@ namespace Quickr.Views
             switch (result)
             {
                 case MessageBoxResult.Yes:
-                    await ViewModel.Save();
-                    await ViewModel.Select(entry);
-                    return true;
+                    var saveResult = await ViewModel.Save();
+                    if (saveResult)
+                    {
+                        await ViewModel.Select(entry);
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
 
                 case MessageBoxResult.No:
                     await ViewModel.Select(entry);

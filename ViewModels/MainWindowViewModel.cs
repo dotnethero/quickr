@@ -67,9 +67,10 @@ namespace Quickr.ViewModels
             MarkAsExpiredCommand = new ParameterCommand(MarkAsExpired);
         }
 
-        public async Task Save()
+        public async Task<bool> Save()
         {
-            if (Current is BaseKeyViewModel key) await key.Save();
+            if (Current is BaseKeyViewModel key) return await key.Save();
+            return false;
         }
 
         private void Connect()
