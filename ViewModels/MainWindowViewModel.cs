@@ -249,7 +249,7 @@ namespace Quickr.ViewModels
             switch (item)
             {
                 case KeyEntry key:
-                    Current = await _keyFactory.Create(key);
+                    Current = await _keyFactory.Load(key);
                     break;
 
                 case DatabaseEntry db:
@@ -286,7 +286,7 @@ namespace Quickr.ViewModels
         {
             if (!(obj is FolderEntry folder)) return;
 
-            var model = new CreateKeyViewModel(folder);
+            var model = new CreateKeyViewModel(folder, _keyFactory);
             var window = new CreateKeyWindow(model) { Owner = Window };
             if (window.ShowDialog() == true)
             {

@@ -19,10 +19,11 @@ namespace Quickr.ViewModels.Data
     internal class CreateKeyViewModel: BaseViewModel
     {
         private readonly FolderEntry _folder;
+        private readonly KeyViewModelFactory _keyFactory;
 
         private int _tab;
         private KeyType _type;
-        private BaseKeyViewModel _key;
+        private BaseKeyViewModel _keyViewModel;
 
         public ICommand PrevCommand { get; }
         public ICommand NextCommand { get; }
@@ -53,20 +54,21 @@ namespace Quickr.ViewModels.Data
 
         public BaseKeyViewModel Key
         {
-            get => _key;
+            get => _keyViewModel;
             set
             {
-                if (_key != null) _folder.RemoveChild(_key.Key);
-                _key = value;
+                if (_keyViewModel != null) _folder.RemoveChild(_keyViewModel.Key);
+                _keyViewModel = value;
                 OnPropertyChanged();
             }
         }
 
         public PropertiesViewModel Properties { get; }
 
-        public CreateKeyViewModel(FolderEntry folder)
+        public CreateKeyViewModel(FolderEntry folder, KeyViewModelFactory keyFactory)
         {
             _folder = folder;
+            _keyFactory = keyFactory;
 
             Properties = new PropertiesViewModel("", null);
 
@@ -82,7 +84,10 @@ namespace Quickr.ViewModels.Data
 
         public void Cancel()
         {
-            _folder.RemoveChild(_key.Key);
+            if (_keyViewModel != null)
+            {
+                _folder.RemoveChild(_keyViewModel.Key);
+            }
         }
 
         private void OnTabChanged(int prev, int tab)
@@ -98,32 +103,7 @@ namespace Quickr.ViewModels.Data
             var requiredStart = _folder.IsRoot ? "" : _folder.FullName + Constants.RegionSeparator;
             var fullname = requiredStart + Properties.Name;
             var entry = _folder.AddChild(fullname);
-
-            switch (Type)
-            {
-                case KeyType.String:
-                    Key = new StringViewModel(entry, Properties.Expiration, load: false);
-                    break;
-
-                case KeyType.List:
-                    Key = new ListViewModel(entry, Properties.Expiration, load: false);
-                    break;
-
-                case KeyType.Set:
-                    Key = new UnsortedSetViewModel(entry, Properties.Expiration, load: false);
-                    break;
-
-                case KeyType.SortedSet:
-                    Key = new SortedSetViewModel(entry, Properties.Expiration, load: false);
-                    break;
-
-                case KeyType.HashSet:
-                    Key = new HashSetViewModel(entry, Properties.Expiration, load: false);
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            Key = _keyFactory.Create(entry, Type, Properties.Expiration);
         }
     }
 }

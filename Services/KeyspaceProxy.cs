@@ -107,7 +107,7 @@ namespace Quickr.Services
         public async Task SetKeyTimeToLive(List<string> keys, TimeSpan? expiry)
         {
             var tran = _db.CreateTransaction();
-            keys.ForEach(key => tran.KeyExpireAsync(key, TimeSpan.Zero).ConfigureAwait(false));
+            keys.ForEach(key => tran.KeyExpireAsync(key, expiry).ConfigureAwait(false));
             await tran.ExecuteAsync().ConfigureAwait(false);
         }
     }

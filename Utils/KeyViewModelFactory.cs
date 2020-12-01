@@ -8,7 +8,20 @@ namespace Quickr.Utils
 {
     internal class KeyViewModelFactory
     {
-        public async Task<BaseKeyViewModel> Create(KeyEntry key)
+        public BaseKeyViewModel Create(KeyEntry key, KeyType type, TimeSpan? ttl)
+        {
+            return type switch
+            {
+                KeyType.String => new StringViewModel(key, ttl, false),
+                KeyType.Set => new UnsortedSetViewModel(key, ttl, false),
+                KeyType.HashSet => new HashSetViewModel(key, ttl, false),
+                KeyType.List => new ListViewModel(key, ttl, false),
+                KeyType.SortedSet => new SortedSetViewModel(key, ttl, false),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
+
+        public async Task<BaseKeyViewModel> Load(KeyEntry key)
         {
             var (type, ttl) = await key.GetProperties();
             return type switch
