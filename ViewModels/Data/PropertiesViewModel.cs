@@ -64,7 +64,7 @@ namespace Quickr.ViewModels.Data
             if (Expiration < TimeSpan.Zero) 
                 Expiration = null;
 
-            if (Expiration != OriginalExpiration)
+            if (Key.Exists && Expiration != OriginalExpiration)
             {
                 await Key.SetTimeToLive(Expiration);
                 OriginalExpiration = Expiration;

@@ -82,8 +82,7 @@ namespace Quickr.Models.Keys
 
         public async Task Rename(string fullname)
         {
-            var keyspace = GetKeyspace();
-            await keyspace.RenameKey(FullName, fullname);
+            if (Exists) await GetKeyspace().RenameKey(FullName, fullname);
 
             FullName = fullname;
        

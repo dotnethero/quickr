@@ -36,7 +36,6 @@ namespace Quickr.ViewModels.Data
                 var prev = _tab;
                 _tab = value;
                 OnTabChanged(prev, _tab);
-                OnPropertyChanged();
             }
         }
 
@@ -56,7 +55,6 @@ namespace Quickr.ViewModels.Data
             get => _value;
             set
             {
-                if (_value != null && !_value.Key.Exists) _folder.RemoveChild(_value.Key);
                 _value = value;
                 OnPropertyChanged();
             }
@@ -88,12 +86,15 @@ namespace Quickr.ViewModels.Data
             if (_value != null && !_value.Key.Exists) _folder.RemoveChild(_value.Key);
         }
 
-        void OnTabChanged(int prev, int tab)
+        async void OnTabChanged(int prev, int tab)
         {
             if (prev == 0 && tab == 1)
             {
+                await Properties.Save();
                 Value = _keyFactory.CreateValueViewModel(_keyEntry, Type);
             }
+
+            OnPropertyChanged(nameof(Tab));
         }
 
         static KeyEntry CreateModel(FolderEntry folder)
