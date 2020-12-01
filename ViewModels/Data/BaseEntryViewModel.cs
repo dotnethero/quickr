@@ -6,7 +6,7 @@ using Quickr.Utils;
 
 namespace Quickr.ViewModels.Data
 {
-    abstract class BaseEntryViewModel : BaseViewModel // TODO: Create separate view
+    abstract class BaseEntryViewModel : BaseViewModel
     {
         public event EventHandler ValueSaved;
         public event EventHandler ValueDiscarded;

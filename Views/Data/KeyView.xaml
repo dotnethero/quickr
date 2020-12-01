@@ -8,14 +8,32 @@
     mc:Ignorable="d" 
     d:DataContext="{d:DesignInstance Type=data:KeyViewModel, IsDesignTimeCreatable=False}"
     d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel Margin="5">
+    <UserControl.Resources>
+        <Style x:Key="ButtonRow" TargetType="StackPanel">
+            <Setter Property="Margin" Value="4,4" />
+            <Setter Property="Orientation" Value="Horizontal" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Width" Value="80" />
+            <Setter Property="Height" Value="28" />
+        </Style>
+    </UserControl.Resources>
+    <DockPanel Margin="5" LastChildFill="True">
+
         <views:PropertiesEditor
             DataContext="{Binding Path=Properties}"
             DockPanel.Dock="Top"
             VerticalAlignment="Top"
             Margin="5" />
-        <ContentControl 
-            DockPanel.Dock="Bottom" 
+
+        <StackPanel DockPanel.Dock="Bottom" Style="{StaticResource ButtonRow}">
+            <Button Content="Save" Command="{Binding SaveCommand}" IsEnabled="{Binding IsUnsaved}" />
+        </StackPanel>
+
+        <!-- last control fills center -->
+        <ContentControl
             DataContext="{Binding Path=Value, Mode=OneWay}" 
             Content="{Binding}">
             <ContentControl.Resources>
@@ -36,5 +54,6 @@
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
+
     </DockPanel>
 </UserControl>

@@ -2,7 +2,7 @@
 
 namespace Quickr.ViewModels.Editors
 {
-    class StringValueViewModel : BaseEditorViewModel
+    class StringValueViewModel : BaseViewModel
     {
         string _currentValue;
         string _originalValue;
@@ -15,7 +15,7 @@ namespace Quickr.ViewModels.Editors
                 if (_originalValue == value) return;
                 _originalValue = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(IsValueChanged));
+                OnPropertyChanged(nameof(IsUnsaved));
             }
         }
 
@@ -27,22 +27,16 @@ namespace Quickr.ViewModels.Editors
                 if (_currentValue == value) return;
                 _currentValue = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(IsValueChanged));
+                OnPropertyChanged(nameof(IsUnsaved));
             }
         }
 
-        public bool IsValueChanged => CurrentValue != OriginalValue;
+        public bool IsUnsaved => CurrentValue != OriginalValue;
 
         public StringValueViewModel(RedisValue originalValue)
         {
             OriginalValue = originalValue;
             CurrentValue = originalValue;
-        }
-        
-        public StringValueViewModel(RedisValue originalValue, RedisValue currentValue)
-        {
-            _originalValue = originalValue;
-            _currentValue = currentValue;
         }
     }
 }

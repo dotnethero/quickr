@@ -16,10 +16,13 @@ namespace Quickr.ViewModels.Data
             {
                 _value = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(IsUnsaved));
             }
         }
 
-        public override bool IsUnsaved => Value.IsValueChanged;
+        public override bool IsUnsaved => 
+            Value != null && // loaded
+            Value.IsUnsaved;
 
         public StringViewModel(KeyEntry key): base(key)
         {
@@ -30,7 +33,12 @@ namespace Quickr.ViewModels.Data
         {
             var str = Key.Exists ? await Key.GetDatabase().GetString(Key) : RedisValue.EmptyString;
             Value = new StringValueViewModel(str);
-            Value.ValueSaved += async (sender, e) => await Save();
+            Value.PropertyChanged += ValuePropertyChanged;
+        }
+
+        void ValuePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(StringValueViewModel.IsUnsaved)) OnPropertyChanged(nameof(IsUnsaved));
         }
 
         public override async Task<bool> Save()

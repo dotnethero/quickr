@@ -43,7 +43,6 @@
                 VerticalAlignment="Bottom"
                 Margin="5,5,13,13">
                 <Button Margin="2" Width="80" Height="28" Command="{Binding AddCommand}" CommandParameter="{Binding Path=., ElementName=Grid}">Add</Button>
-                <Button Margin="2" Width="80" Height="28" Command="{Binding SaveCommand}" CommandParameter="{Binding Path=., ElementName=Grid}">Save all</Button>
             </StackPanel>
         </Grid>
         <views:ValueEditor 

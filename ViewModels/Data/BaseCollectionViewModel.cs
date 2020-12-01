@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -37,6 +39,7 @@ namespace Quickr.ViewModels.Data
         }
 
         public override bool IsUnsaved => Entries.Any(x => !x.IsValueSaved);
+
         public override bool IsKeyRemoved => !Entries.Any();
 
         protected BaseCollectionViewModel(KeyEntry key) : base(key)
@@ -50,6 +53,12 @@ namespace Quickr.ViewModels.Data
             {
                 Current.ValueSaved -= SaveHandler;
                 Current.ValueSaved -= DiscardHandler;
+                Current.PropertyChanged -= PropertyChangedHandler;
+            }
+
+            if (propertyName == nameof(Entries) && Entries != null)
+            {
+                Entries.CollectionChanged -= CollectionChangedHandler;
             }
         }
 
@@ -59,6 +68,12 @@ namespace Quickr.ViewModels.Data
             {
                 Current.ValueSaved += SaveHandler;
                 Current.ValueDiscarded += DiscardHandler;
+                Current.PropertyChanged += PropertyChangedHandler;
+            }
+
+            if (propertyName == nameof(Entries) && Entries != null)
+            {
+                Entries.CollectionChanged += CollectionChangedHandler;
             }
 
             base.OnPropertyChanged(propertyName);
@@ -66,6 +81,17 @@ namespace Quickr.ViewModels.Data
 
         async void SaveHandler(object sender, EventArgs e) => await SaveItem();
         async void DiscardHandler(object sender, EventArgs e) => await DiscardItemChanges();
+
+        void PropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(BaseEntryViewModel.IsValueSaved)) 
+                OnPropertyChanged(nameof(IsUnsaved));
+        }
+
+        void CollectionChangedHandler(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(IsUnsaved));
+        }
 
         protected abstract Task SaveItem();
         protected abstract Task DiscardItemChanges();

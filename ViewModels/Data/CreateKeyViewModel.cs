@@ -99,7 +99,7 @@ namespace Quickr.ViewModels.Data
         static KeyEntry CreateModel(FolderEntry folder)
         {
             var requiredStart = folder.IsRoot ? "" : folder.FullName + Constants.RegionSeparator;
-            var fullname = requiredStart + "#new";
+            var fullname = requiredStart + "";
             return folder.AddChild(fullname, false);
         }
     }
