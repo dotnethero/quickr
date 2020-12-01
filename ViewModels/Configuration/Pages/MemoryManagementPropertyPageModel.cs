@@ -4,7 +4,7 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class MemoryManagementPropertyPageModel: BasePropertyPageModel
+    class MemoryManagementPropertyPageModel: BasePropertyPageModel
     {
         public StringPropertyModel Maxmemory { get; set; }
         public StringPropertyModel MaxmemoryPolicy { get; set; }

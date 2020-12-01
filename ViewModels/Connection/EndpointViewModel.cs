@@ -2,14 +2,14 @@
 
 namespace Quickr.ViewModels.Connection
 {
-    internal class EndpointViewModel : BaseViewModel
+    class EndpointViewModel : BaseViewModel
     {
-        private readonly EndpointModel _original;
-        private string _name;
-        private string _host;
-        private int? _port;
-        private string _password;
-        private bool _useSsl;
+        readonly EndpointModel _original;
+        string _name;
+        string _host;
+        int? _port;
+        string _password;
+        bool _useSsl;
 
         public string Name
         {

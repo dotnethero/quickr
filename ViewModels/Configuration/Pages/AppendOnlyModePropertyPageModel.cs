@@ -4,7 +4,7 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class AppendOnlyModePropertyPageModel: BasePropertyPageModel
+    class AppendOnlyModePropertyPageModel: BasePropertyPageModel
     {
         public YesNoPropertyModel AppendOnly { get; set; }
         public StringPropertyModel AppendFilename { get; set; }

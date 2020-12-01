@@ -7,10 +7,10 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Data
 {
-    internal abstract class BaseCollectionViewModel<TEntry> : BaseKeyViewModel where TEntry: BaseEntryViewModel
+    abstract class BaseCollectionViewModel<TEntry> : BaseValueViewModel where TEntry: BaseEntryViewModel
     {
-        private TEntry _current;
-        private ObservableCollection<TEntry> _entries;
+        TEntry _current;
+        ObservableCollection<TEntry> _entries;
 
         public ObservableCollection<TEntry> Entries
         {
@@ -39,12 +39,12 @@ namespace Quickr.ViewModels.Data
         public override bool IsUnsaved => Entries.Any(x => !x.IsValueSaved);
         public override bool IsKeyRemoved => !Entries.Any();
 
-        protected BaseCollectionViewModel(KeyEntry key, TimeSpan? ttl) : base(key, ttl)
+        protected BaseCollectionViewModel(KeyEntry key) : base(key)
         {
             Entries = new ObservableCollection<TEntry>();
         }
-        
-        private void BeforePropertyChanged([CallerMemberName] string propertyName = null)
+
+        void BeforePropertyChanged([CallerMemberName] string propertyName = null)
         {
             if (propertyName == nameof(Current) && Current != null)
             {
@@ -64,8 +64,8 @@ namespace Quickr.ViewModels.Data
             base.OnPropertyChanged(propertyName);
         }
 
-        private async void SaveHandler(object sender, EventArgs e) => await SaveItem();
-        private async void DiscardHandler(object sender, EventArgs e) => await DiscardItemChanges();
+        async void SaveHandler(object sender, EventArgs e) => await SaveItem();
+        async void DiscardHandler(object sender, EventArgs e) => await DiscardItemChanges();
 
         protected abstract Task SaveItem();
         protected abstract Task DiscardItemChanges();

@@ -7,9 +7,10 @@ using StackExchange.Redis;
 
 namespace Quickr.Models.Keys
 {
-    internal class KeyEntry : DbEntry
+    class KeyEntry : DbEntry
     {
-        private string _fullName;
+        string _fullName;
+        bool _exists;
 
         public string FullName
         {
@@ -22,9 +23,21 @@ namespace Quickr.Models.Keys
             }
         }
 
-        public KeyEntry(RedisConnection connection, int dbIndex, string name, string fullname, FolderEntry parent): base(connection, dbIndex, name, parent)
+        public bool Exists
+        {
+            get => _exists;
+            set
+            {
+                if (value == _exists) return;
+                _exists = value;
+                OnPropertyChanged(nameof(Exists));
+            }
+        }
+
+        public KeyEntry(RedisConnection connection, int dbIndex, string name, string fullname, bool exists, FolderEntry parent): base(connection, dbIndex, name, parent)
         {
             _fullName = fullname;
+            _exists = exists;
         }
         
         public async Task<(RedisType, TimeSpan?)> GetProperties()
@@ -86,7 +99,7 @@ namespace Quickr.Models.Keys
                 while (!root.IsRoot) root = root.Parent;
                 IsSelected = false;
                 Parent.RemoveChild(this);
-                var entry = root.AddChild(FullName); // move
+                var entry = root.AddChild(FullName, Exists); // move
                 entry.IsSelected = true;
             }
         }

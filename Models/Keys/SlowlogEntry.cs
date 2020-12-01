@@ -3,7 +3,7 @@ using Quickr.Services;
 
 namespace Quickr.Models.Keys
 {
-    internal class SlowlogEntry : SystemFolderEntry
+    class SlowlogEntry : SystemFolderEntry
     {
         public EndPoint Endpoint { get; }
 

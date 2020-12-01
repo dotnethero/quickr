@@ -4,7 +4,7 @@ using Quickr.Utils;
 
 namespace Quickr.ViewModels.Editors
 {
-    internal abstract class BaseEditorViewModel: BaseViewModel
+    abstract class BaseEditorViewModel: BaseViewModel
     {
         public event EventHandler ValueSaved;
         public event EventHandler ValueDiscarded;

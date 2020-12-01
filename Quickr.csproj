@@ -136,6 +136,10 @@
     <Page Update="Views\Configuration\PropertyPagesWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\Data\KeyView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Server\MemoryDoctorView.xaml">
       <SubType>Designer</SubType>
     </Page>

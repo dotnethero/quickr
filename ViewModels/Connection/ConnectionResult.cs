@@ -1,6 +1,6 @@
 ﻿namespace Quickr.ViewModels.Connection
 {
-    internal class ConnectionResult
+    class ConnectionResult
     {
         public bool IsSuccess { get; }
         public string Message { get; }

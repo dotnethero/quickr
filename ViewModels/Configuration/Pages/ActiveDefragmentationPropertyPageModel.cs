@@ -4,7 +4,7 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class ActiveDefragmentationPropertyPageModel: BasePropertyPageModel
+    class ActiveDefragmentationPropertyPageModel: BasePropertyPageModel
     {
         public YesNoPropertyModel ActiveDefrag { get; set; }
         public StringPropertyModel ActiveDefragIgnoreBytes { get; set; }

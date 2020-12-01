@@ -11,11 +11,11 @@ using Quickr.Utils;
 
 namespace Quickr.ViewModels.Connection
 {
-    internal class ConnectViewModel: BaseViewModel
+    class ConnectViewModel: BaseViewModel
     {
-        private readonly RedisMultiplexer _multiplexer;
-        private EndpointViewModel _current;
-        private bool _isReady;
+        readonly RedisMultiplexer _multiplexer;
+        EndpointViewModel _current;
+        bool _isReady;
 
         public ICommand AddCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
@@ -116,7 +116,7 @@ namespace Quickr.ViewModels.Connection
             }
         }
 
-        private void EnsureAtLeastOneItemPresent()
+        void EnsureAtLeastOneItemPresent()
         {
             if (Endpoints.Count == 0)
             {

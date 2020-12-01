@@ -2,7 +2,7 @@
 
 namespace Quickr.Models.Keys
 {
-    internal abstract class DbEntry: BaseEntry
+    abstract class DbEntry: BaseEntry
     {
         public int DbIndex { get; }
         public FolderEntry Parent { get; }
@@ -31,8 +31,8 @@ namespace Quickr.Models.Keys
             }
             base.OnPropertyChanged(propertyName);
         }
-        
-        private void ExpandParents()
+
+        void ExpandParents()
         {
             var parent = Parent;
             while (parent != null)

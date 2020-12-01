@@ -2,7 +2,7 @@
 
 namespace Quickr.ViewModels.Data
 {
-    internal class HashEntryViewModel : BaseEntryViewModel
+    class HashEntryViewModel : BaseEntryViewModel
     {
         public string Name { get; set; }
 

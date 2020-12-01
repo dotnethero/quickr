@@ -2,10 +2,10 @@
 
 namespace Quickr.ViewModels.Editors
 {
-    internal class ValueViewModel : BaseEditorViewModel
+    class StringValueViewModel : BaseEditorViewModel
     {
-        private string _currentValue;
-        private string _originalValue;
+        string _currentValue;
+        string _originalValue;
         
         public string OriginalValue
         {
@@ -33,13 +33,13 @@ namespace Quickr.ViewModels.Editors
 
         public bool IsValueChanged => CurrentValue != OriginalValue;
 
-        public ValueViewModel(RedisValue originalValue)
+        public StringValueViewModel(RedisValue originalValue)
         {
             OriginalValue = originalValue;
             CurrentValue = originalValue;
         }
         
-        public ValueViewModel(RedisValue originalValue, RedisValue currentValue)
+        public StringValueViewModel(RedisValue originalValue, RedisValue currentValue)
         {
             _originalValue = originalValue;
             _currentValue = currentValue;

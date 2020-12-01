@@ -17,12 +17,12 @@ using Quickr.Views.Data;
 
 namespace Quickr.ViewModels
 {
-    internal class MainWindowViewModel: BaseViewModel
+    class MainWindowViewModel: BaseViewModel
     {
-        private readonly RedisMultiplexer _multiplexer;
-        private readonly KeyViewModelFactory _keyFactory;
+        readonly RedisMultiplexer _multiplexer;
+        readonly KeyViewModelFactory _keyFactory;
 
-        private object _current;
+        object _current;
 
         public ICommand ConnectCommand { get; }
         public ICommand DisconnectCommand { get; }
@@ -47,8 +47,8 @@ namespace Quickr.ViewModels
             }
         }
 
-        public bool IsUnsaved => Current is BaseKeyViewModel key && key.IsUnsaved;
-        public bool IsKeyRemoved => Current is BaseKeyViewModel key && key.IsKeyRemoved;
+        public bool IsUnsaved => Current is KeyViewModel key && key.IsUnsaved;
+        public bool IsKeyRemoved => Current is KeyViewModel key && key.IsKeyRemoved;
 
         public MainWindowViewModel(RedisMultiplexer multiplexer, KeyViewModelFactory keyFactory)
         {
@@ -69,11 +69,11 @@ namespace Quickr.ViewModels
 
         public async Task<bool> Save()
         {
-            if (Current is BaseKeyViewModel key) return await key.Save();
+            if (Current is KeyViewModel key) return await key.Save();
             return false;
         }
 
-        private void Connect()
+        void Connect()
         {
             var model = new ConnectViewModel(_multiplexer);
             var window = new ConnectWindow(model) { Owner = Window };
@@ -99,7 +99,7 @@ namespace Quickr.ViewModels
             await ConnectToEndpoint(model);
         }
 
-        private async Task ConnectToEndpoint(EndpointModel endpoint)
+        async Task ConnectToEndpoint(EndpointModel endpoint)
         {
             var server = await _multiplexer.ConnectAsync(endpoint);
             foreach (var database in server.Databases)
@@ -109,7 +109,7 @@ namespace Quickr.ViewModels
             Servers.Add(server);
         }
 
-        private void Disconnect(object obj)
+        void Disconnect(object obj)
         {
             if (obj is ServerEntry server)
             {
@@ -117,8 +117,8 @@ namespace Quickr.ViewModels
                 Servers.Remove(server);
             }
         }
-        
-        private void ShowProperties(object obj)
+
+        void ShowProperties(object obj)
         {
             if (obj is EndpointEntry endpoint)
             {
@@ -131,19 +131,19 @@ namespace Quickr.ViewModels
             }
         }
 
-        private async void Clone(object item)
+        async void Clone(object item)
         {
             switch (item)
             {
                 case KeyEntry key:
                     var fullname = await key.CloneAsync();
-                    var entry = key.Parent.AddChild(fullname);
+                    var entry = key.Parent.AddChild(fullname, key.Exists);
                     entry.IsSelected = true;
                     break;
             }
         }
 
-        private async void Delete(object item)
+        async void Delete(object item)
         {
             switch (item)
             {
@@ -168,7 +168,7 @@ namespace Quickr.ViewModels
             }
         }
 
-        private async void MarkAsExpired(object item)
+        async void MarkAsExpired(object item)
         {
             switch (item)
             {
@@ -191,8 +191,8 @@ namespace Quickr.ViewModels
                     break;
             }
         }
-        
-        private MessageBoxResult FlushDatabaseMessage(DatabaseEntry database)
+
+        MessageBoxResult FlushDatabaseMessage(DatabaseEntry database)
         {
             return MessageBox.Show(
                 Window, 
@@ -201,8 +201,8 @@ namespace Quickr.ViewModels
                 MessageBoxButton.YesNo, 
                 MessageBoxImage.Warning);
         }
-        
-        private MessageBoxResult MarkDatabaseAsExpired(DatabaseEntry database)
+
+        MessageBoxResult MarkDatabaseAsExpired(DatabaseEntry database)
         {
             return MessageBox.Show(
                 Window,
@@ -212,7 +212,7 @@ namespace Quickr.ViewModels
                 MessageBoxImage.Warning);
         }
 
-        private MessageBoxResult DeleteFolderMessage(FolderEntry folder)
+        MessageBoxResult DeleteFolderMessage(FolderEntry folder)
         {
             return MessageBox.Show(
                 Window,
@@ -221,8 +221,8 @@ namespace Quickr.ViewModels
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning);
         }
-        
-        private MessageBoxResult MarkFolderAsExpired(FolderEntry folder)
+
+        MessageBoxResult MarkFolderAsExpired(FolderEntry folder)
         {
             return MessageBox.Show(
                 Window,
@@ -232,7 +232,7 @@ namespace Quickr.ViewModels
                 MessageBoxImage.Warning);
         }
 
-        private async void Refresh(object item)
+        async void Refresh(object item)
         {
             if (item is ServerEntry server)
             {
@@ -249,7 +249,7 @@ namespace Quickr.ViewModels
             switch (item)
             {
                 case KeyEntry key:
-                    Current = await _keyFactory.Load(key);
+                    Current = await _keyFactory.LoadKey(key);
                     break;
 
                 case DatabaseEntry db:
@@ -281,8 +281,8 @@ namespace Quickr.ViewModels
                     break;
             }
         }
-        
-        private async void CreateKey(object obj)
+
+        async void CreateKey(object obj)
         {
             if (!(obj is FolderEntry folder)) return;
 

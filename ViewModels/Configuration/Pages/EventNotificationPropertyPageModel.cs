@@ -4,7 +4,7 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class EventNotificationPropertyPageModel: BasePropertyPageModel
+    class EventNotificationPropertyPageModel: BasePropertyPageModel
     {
         public StringPropertyModel NotifyKeyspaceEvents { get; set; }
 

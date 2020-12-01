@@ -4,7 +4,7 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class SlowLogPropertyPageModel: BasePropertyPageModel
+    class SlowLogPropertyPageModel: BasePropertyPageModel
     {
         public StringPropertyModel SlowlogLogSlowerThan { get; set; }
         public StringPropertyModel SlowlogMaxLen { get; set; }

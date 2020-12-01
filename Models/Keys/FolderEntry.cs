@@ -8,12 +8,12 @@ using StackExchange.Redis;
 
 namespace Quickr.Models.Keys
 {
-    internal class FolderEntry : DbEntry
+    class FolderEntry : DbEntry
     {
-        private readonly List<KeyEntry> _keys = new List<KeyEntry>();
-        private readonly List<FolderEntry> _subfolders = new List<FolderEntry>();
-        private string _filter = "*";
-        private string _fullName;
+        readonly List<KeyEntry> _keys = new List<KeyEntry>();
+        readonly List<FolderEntry> _subfolders = new List<FolderEntry>();
+        string _filter = "*";
+        string _fullName;
 
         public string FullName
         {
@@ -114,13 +114,13 @@ namespace Quickr.Models.Keys
             return parts.Count == 1;
         }
 
-        private void UpdateChildren(IEnumerable<RedisKey> keys)
+        void UpdateChildren(IEnumerable<RedisKey> keys)
         {
             _keys.Clear();
             _subfolders.Clear();
             foreach (var key in keys)
             {
-                Add(key);
+                Add(key, true);
             }
             OnPropertyChanged(nameof(Children));
         }
@@ -144,14 +144,14 @@ namespace Quickr.Models.Keys
             OnPropertyChanged(nameof(Children));
         }
 
-        public KeyEntry AddChild(string fullname)
+        public KeyEntry AddChild(string fullname, bool exists)
         {
-            var entry = Add(fullname);
+            var entry = Add(fullname, exists);
             OnPropertyChanged(nameof(Children));
             return entry;
         }
 
-        private KeyEntry Add(string fullname)
+        KeyEntry Add(string fullname, bool exists)
         {
             var requiredStart = IsRoot ? "" : FullName + Constants.RegionSeparator;
             if (!fullname.StartsWith(requiredStart)) throw new InvalidOperationException();
@@ -160,7 +160,7 @@ namespace Quickr.Models.Keys
             if (parts.Count == 1)
             {
                 var name = string.IsNullOrWhiteSpace(parts[0]) ? "(none)" : parts[0];
-                var key = new KeyEntry(Connection, DbIndex, name, fullname, this);
+                var key = new KeyEntry(Connection, DbIndex, name, fullname, exists, this);
                 _keys.Add(key);
                 return key;
             }
@@ -169,11 +169,11 @@ namespace Quickr.Models.Keys
                 var name = parts[0];
                 var fullFolderName = requiredStart + name;
                 var folder = CreateFolder(name, fullFolderName);
-                return folder.Add(fullname);
+                return folder.Add(fullname, exists);
             }
         }
 
-        private FolderEntry CreateFolder(string name, string fullname)
+        FolderEntry CreateFolder(string name, string fullname)
         {
             var existing = _subfolders.Find(x => x.FullName == fullname);
             if (existing != null) return existing;
@@ -182,7 +182,7 @@ namespace Quickr.Models.Keys
             return folder;
         }
 
-        private static int Compare(DbEntry a, DbEntry b)
+        static int Compare(DbEntry a, DbEntry b)
         {
             return string.Compare(a.Name, b.Name, StringComparison.Ordinal);
         }

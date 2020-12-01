@@ -4,7 +4,7 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class LuaScriptingPropertyPageModel: BasePropertyPageModel
+    class LuaScriptingPropertyPageModel: BasePropertyPageModel
     {
         public StringPropertyModel LuaTimeLimit { get; set; }
 

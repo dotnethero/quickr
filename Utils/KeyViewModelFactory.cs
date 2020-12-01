@@ -6,33 +6,36 @@ using System.Threading.Tasks;
 
 namespace Quickr.Utils
 {
-    internal class KeyViewModelFactory
+    class KeyViewModelFactory
     {
-        public BaseKeyViewModel Create(KeyEntry key, KeyType type, TimeSpan? ttl)
-        {
-            return type switch
-            {
-                KeyType.String => new StringViewModel(key, ttl, false),
-                KeyType.Set => new UnsortedSetViewModel(key, ttl, false),
-                KeyType.HashSet => new HashSetViewModel(key, ttl, false),
-                KeyType.List => new ListViewModel(key, ttl, false),
-                KeyType.SortedSet => new SortedSetViewModel(key, ttl, false),
-                _ => throw new ArgumentOutOfRangeException()
-            };
-        }
-
-        public async Task<BaseKeyViewModel> Load(KeyEntry key)
+        public async Task<KeyViewModel> LoadKey(KeyEntry key)
         {
             var (type, ttl) = await key.GetProperties();
-            return type switch
+            var properties = new PropertiesViewModel(key, ttl);
+            var value = LoadValueViewModel(key, type);
+            return new KeyViewModel(properties, value);
+        }
+
+        public BaseValueViewModel CreateValueViewModel(KeyEntry key, KeyType type) =>
+            type switch
             {
-                RedisType.String => new StringViewModel(key, ttl),
-                RedisType.Set => new UnsortedSetViewModel(key, ttl),
-                RedisType.Hash => new HashSetViewModel(key, ttl),
-                RedisType.List => new ListViewModel(key, ttl),
-                RedisType.SortedSet => new SortedSetViewModel(key, ttl),
+                KeyType.String => new StringViewModel(key),
+                KeyType.Set => new UnsortedSetViewModel(key),
+                KeyType.HashSet => new HashSetViewModel(key),
+                KeyType.List => new ListViewModel(key),
+                KeyType.SortedSet => new SortedSetViewModel(key),
                 _ => throw new ArgumentOutOfRangeException()
             };
-        }
+
+        static BaseValueViewModel LoadValueViewModel(KeyEntry key, RedisType type) =>
+            type switch
+            {
+                RedisType.String => new StringViewModel(key) as BaseValueViewModel,
+                RedisType.Set => new UnsortedSetViewModel(key),
+                RedisType.Hash => new HashSetViewModel(key),
+                RedisType.List => new ListViewModel(key),
+                RedisType.SortedSet => new SortedSetViewModel(key),
+                _ => throw new ArgumentOutOfRangeException()
+            };
     }
 }

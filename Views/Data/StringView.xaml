@@ -6,17 +6,6 @@
     xmlns:views="clr-namespace:Quickr.Views.Data"
     xmlns:data="clr-namespace:Quickr.ViewModels.Data"
     mc:Ignorable="d" 
-    d:DataContext="{d:DesignInstance Type=data:StringViewModel, IsDesignTimeCreatable=False}"
-    d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel Margin="5">
-        <views:PropertiesEditor
-            DataContext="{Binding Path=Properties}"
-            DockPanel.Dock="Top"
-            VerticalAlignment="Top"
-            Margin="5" />
-        <views:ValueEditor 
-            DataContext="{Binding Path=Value}" 
-            DockPanel.Dock="Bottom" 
-            Margin="5" />
-    </DockPanel>
+    d:DataContext="{d:DesignInstance Type=data:StringViewModel, IsDesignTimeCreatable=False}">
+    <views:ValueEditor DataContext="{Binding Path=Value}" Margin="5" />
 </UserControl>

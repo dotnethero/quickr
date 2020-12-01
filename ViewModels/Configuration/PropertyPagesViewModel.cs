@@ -4,7 +4,7 @@ using Quickr.Utils;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class PropertyPagesViewModel
+    class PropertyPagesViewModel
     {
         public ICommand SaveCommand { get; }
 
@@ -50,7 +50,7 @@ namespace Quickr.ViewModels.Configuration
             SaveCommand = new Command(Save);
         }
 
-        private void Save()
+        void Save()
         {
             NetworkPage.Save();
             GeneralPage.Save();

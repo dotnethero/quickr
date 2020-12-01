@@ -5,7 +5,7 @@ using Quickr.Services;
 
 namespace Quickr.ViewModels.Server
 {
-    internal class InfoViewModel : BaseViewModel
+    class InfoViewModel : BaseViewModel
     {
         protected RedisConnection Connection { get; }
         protected EndPoint Endpoint { get; }

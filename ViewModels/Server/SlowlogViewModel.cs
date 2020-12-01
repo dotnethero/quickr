@@ -4,7 +4,7 @@ using StackExchange.Redis;
 
 namespace Quickr.ViewModels.Server
 {
-    internal class SlowlogViewModel : BaseViewModel
+    class SlowlogViewModel : BaseViewModel
     {
         protected RedisConnection Connection { get; }
         protected EndPoint Endpoint { get; }

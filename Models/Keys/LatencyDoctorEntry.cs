@@ -3,7 +3,7 @@ using Quickr.Services;
 
 namespace Quickr.Models.Keys
 {
-    internal class LatencyDoctorEntry : SystemFolderEntry
+    class LatencyDoctorEntry : SystemFolderEntry
     {
         public EndPoint Endpoint { get; }
 

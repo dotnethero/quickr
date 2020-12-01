@@ -4,7 +4,7 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class LazyFreeingPropertyPageModel: BasePropertyPageModel
+    class LazyFreeingPropertyPageModel: BasePropertyPageModel
     {
         public YesNoPropertyModel LazyfreeLazyEviction { get; set; }
         public YesNoPropertyModel LazyfreeLazyExpire { get; set; }

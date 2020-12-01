@@ -1,13 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Quickr.Models.Keys;
 using Quickr.Utils;
-using Quickr.ViewModels.Editors;
 
 namespace Quickr.ViewModels.Data
 {
-    internal enum KeyType
+    enum KeyType
     {
         String,
         List,
@@ -16,14 +14,15 @@ namespace Quickr.ViewModels.Data
         HashSet,
     }
 
-    internal class CreateKeyViewModel: BaseViewModel
+    class CreateKeyViewModel: BaseViewModel
     {
-        private readonly FolderEntry _folder;
-        private readonly KeyViewModelFactory _keyFactory;
+        readonly FolderEntry _folder;
+        readonly KeyViewModelFactory _keyFactory;
+        readonly KeyEntry _keyEntry;
 
-        private int _tab;
-        private KeyType _type;
-        private BaseKeyViewModel _keyViewModel;
+        int _tab;
+        KeyType _type;
+        BaseValueViewModel _value;
 
         public ICommand PrevCommand { get; }
         public ICommand NextCommand { get; }
@@ -52,13 +51,13 @@ namespace Quickr.ViewModels.Data
             }
         }
 
-        public BaseKeyViewModel Key
+        public BaseValueViewModel Value
         {
-            get => _keyViewModel;
+            get => _value;
             set
             {
-                if (_keyViewModel != null) _folder.RemoveChild(_keyViewModel.Key);
-                _keyViewModel = value;
+                if (_value != null && !_value.Key.Exists) _folder.RemoveChild(_value.Key);
+                _value = value;
                 OnPropertyChanged();
             }
         }
@@ -69,41 +68,39 @@ namespace Quickr.ViewModels.Data
         {
             _folder = folder;
             _keyFactory = keyFactory;
+            _keyEntry = CreateModel(folder);
 
-            Properties = new PropertiesViewModel("", null);
+            Properties = new PropertiesViewModel(_keyEntry, null);
 
             PrevCommand = new Command(() => Tab--);
             NextCommand = new Command(() => Tab++);
         }
 
+
         public Task<bool> Save()
         {
-            Key.Key.IsSelected = true;
-            return Key.Save();
+            Value.Key.IsSelected = true;
+            return Value.Save();
         }
 
         public void Cancel()
         {
-            if (_keyViewModel != null)
-            {
-                _folder.RemoveChild(_keyViewModel.Key);
-            }
+            if (_value != null && !_value.Key.Exists) _folder.RemoveChild(_value.Key);
         }
 
-        private void OnTabChanged(int prev, int tab)
+        void OnTabChanged(int prev, int tab)
         {
             if (prev == 0 && tab == 1)
             {
-                CreateModel();
+                Value = _keyFactory.CreateValueViewModel(_keyEntry, Type);
             }
         }
 
-        private void CreateModel()
+        static KeyEntry CreateModel(FolderEntry folder)
         {
-            var requiredStart = _folder.IsRoot ? "" : _folder.FullName + Constants.RegionSeparator;
-            var fullname = requiredStart + Properties.Name;
-            var entry = _folder.AddChild(fullname);
-            Key = _keyFactory.Create(entry, Type, Properties.Expiration);
+            var requiredStart = folder.IsRoot ? "" : folder.FullName + Constants.RegionSeparator;
+            var fullname = requiredStart + "#new";
+            return folder.AddChild(fullname, false);
         }
     }
 }

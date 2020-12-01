@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,28 +9,29 @@ using Quickr.Utils;
 
 namespace Quickr.ViewModels.Data
 {
-    internal class ListViewModel: BaseCollectionViewModel<ListEntryViewModel>
+    class ListViewModel: BaseCollectionViewModel<ListEntryViewModel>
     {
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand SaveCommand { get; }
 
-        public ListViewModel(KeyEntry key, TimeSpan? ttl, bool load = true): base(key, ttl)
+        public ListViewModel(KeyEntry key): base(key)
         {
-            if (load) SetupAsync();
+            if (key.Exists) LoadAsync();
+
             AddCommand = new ParameterCommand(Add);
             DeleteCommand = new ParameterCommand(Delete);
             SaveCommand = new Command(async() => await Save());
         }
-        
-        private async void SetupAsync()
+
+        async void LoadAsync()
         {
             var entries = await Key.GetDatabase().GetListAsync(Key);
             var models = entries.Select(ListEntryViewModel.FromValue);
             Entries = new ObservableCollection<ListEntryViewModel>(models);
         }
 
-        private void Add(object parameter)
+        void Add(object parameter)
         {
             var item = ListEntryViewModel.Empty();
             Entries.Add(item);
@@ -45,7 +45,7 @@ namespace Quickr.ViewModels.Data
             }
         }
 
-        private async void Delete(object parameter)
+        async void Delete(object parameter)
         {
             if (parameter is IList items)
             {

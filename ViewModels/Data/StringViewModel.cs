@@ -1,15 +1,15 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Quickr.Models.Keys;
 using Quickr.ViewModels.Editors;
+using StackExchange.Redis;
 
 namespace Quickr.ViewModels.Data
 {
-    internal class StringViewModel: BaseKeyViewModel
+    class StringViewModel: BaseValueViewModel
     {
-        private ValueViewModel _value;
+        StringValueViewModel _value;
 
-        public ValueViewModel Value
+        public StringValueViewModel Value
         {
             get => _value;
             protected set
@@ -21,16 +21,15 @@ namespace Quickr.ViewModels.Data
 
         public override bool IsUnsaved => Value.IsValueChanged;
 
-        public StringViewModel(KeyEntry key, TimeSpan? ttl, bool load = true): base(key, ttl)
+        public StringViewModel(KeyEntry key): base(key)
         {
-            if (load) SetupAsync(); 
-            else Value = new ValueViewModel(string.Empty);
+            LoadAsync();
         }
-        
-        private async void SetupAsync()
+
+        async void LoadAsync()
         {
-            var str = await Key.GetDatabase().GetString(Key);
-            Value = new ValueViewModel(str);
+            var str = Key.Exists ? await Key.GetDatabase().GetString(Key) : RedisValue.EmptyString;
+            Value = new StringValueViewModel(str);
             Value.ValueSaved += async (sender, e) => await Save();
         }
 

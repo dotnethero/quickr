@@ -205,20 +205,8 @@
                 <GridSplitter Grid.Column="1" Background="AliceBlue" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
                 <ContentControl Grid.Column="2" DataContext="{Binding Current, Mode=OneWay}" Content="{Binding}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type data:StringViewModel}">
-                            <keyViews:StringView DataContext="{Binding}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type data:UnsortedSetViewModel}">
-                            <keyViews:UnsortedSetView DataContext="{Binding}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type data:SortedSetViewModel}">
-                            <keyViews:SortedSetView DataContext="{Binding}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type data:HashSetViewModel}">
-                            <keyViews:HashSetView DataContext="{Binding}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type data:ListViewModel}">
-                            <keyViews:ListView DataContext="{Binding}" />
+                        <DataTemplate DataType="{x:Type data:KeyViewModel}">
+                            <keyViews:KeyView DataContext="{Binding}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type vm:DatabaseViewModel}">
                             <views:DatabaseView DataContext="{Binding}" />

@@ -8,11 +8,11 @@ using StackExchange.Redis;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal abstract class BasePropertyPageModel
+    abstract class BasePropertyPageModel
     {
-        private readonly EndpointEntry _entry;
-        private readonly Dictionary<string, ConfigKeyValue> _config;
-        private readonly Dictionary<string, IPropertyModel> _mapping;
+        readonly EndpointEntry _entry;
+        readonly Dictionary<string, ConfigKeyValue> _config;
+        readonly Dictionary<string, IPropertyModel> _mapping;
 
         protected BasePropertyPageModel(EndpointEntry entry, Dictionary<string, ConfigKeyValue> config)
         {

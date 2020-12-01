@@ -4,7 +4,7 @@ using Quickr.Annotations;
 
 namespace Quickr.ViewModels
 {
-    internal abstract class BaseViewModel: INotifyPropertyChanged
+    abstract class BaseViewModel: INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

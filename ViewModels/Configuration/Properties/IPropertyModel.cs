@@ -1,6 +1,6 @@
 ﻿namespace Quickr.ViewModels.Configuration
 {
-    internal interface IPropertyModel
+    interface IPropertyModel
     {
         bool IsPropertyChanged { get; }
         bool IsSaveFailed { get; set; }

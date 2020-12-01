@@ -4,7 +4,7 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class NetworkPropertyPageModel: BasePropertyPageModel
+    class NetworkPropertyPageModel: BasePropertyPageModel
     {
         public StringPropertyModel Bind { get; set; }
         public StringPropertyModel Port { get; set; }

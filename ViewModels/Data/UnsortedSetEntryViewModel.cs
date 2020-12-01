@@ -2,7 +2,7 @@
 
 namespace Quickr.ViewModels.Data
 {
-    internal class UnsortedSetEntryViewModel : BaseEntryViewModel
+    class UnsortedSetEntryViewModel : BaseEntryViewModel
     {
         public static UnsortedSetEntryViewModel FromValue(RedisValue value) => new UnsortedSetEntryViewModel(value);
         public static UnsortedSetEntryViewModel Empty() => new UnsortedSetEntryViewModel();

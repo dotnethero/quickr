@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:editors="clr-namespace:Quickr.ViewModels.Editors"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance Type=editors:ValueViewModel}">
+             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance Type=editors:StringValueViewModel}">
     <Grid>
         <TextBox 
             MinHeight="200"

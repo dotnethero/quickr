@@ -51,9 +51,7 @@
                     Grid.Row="0"
                     Grid.Column="1"
                     DataContext="{Binding Path=Properties}" 
-                    IsButtonsVisible="False"
                     VerticalAlignment="Top"
-                    GroupBoxPadding="5,10"
                     Margin="0,0,6,0" />
                 <GroupBox 
                     Grid.Row="1"
@@ -97,7 +95,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <ContentControl DataContext="{Binding Key, Mode=OneWay}" Content="{Binding}" Grid.Row="0">
+                <ContentControl DataContext="{Binding Value, Mode=OneWay}" Content="{Binding}" Grid.Row="0">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type vm:StringViewModel}">
                             <views:StringView DataContext="{Binding}" />

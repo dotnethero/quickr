@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,29 +10,29 @@ using StackExchange.Redis;
 
 namespace Quickr.ViewModels.Data
 {
-    internal class SortedSetViewModel : BaseCollectionViewModel<SortedSetEntryViewModel>
+    class SortedSetViewModel : BaseCollectionViewModel<SortedSetEntryViewModel>
     {
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand SaveCommand { get; set; }
 
-        public SortedSetViewModel(KeyEntry key, TimeSpan? ttl, bool load = true): base(key, ttl)
+        public SortedSetViewModel(KeyEntry key): base(key)
         {
-            if (load) SetupAsync();
+            if (key.Exists) LoadAsync();
             
             AddCommand = new ParameterCommand(Add);
             DeleteCommand = new ParameterCommand(Delete);
             SaveCommand = new Command(async() => await Save());
         }
 
-        private async void SetupAsync()
+        async void LoadAsync()
         {
             var entries = await Key.GetDatabase().GetSortedSetAsync(Key);
             var models = entries.Select(SortedSetEntryViewModel.FromEntry);
             Entries = new ObservableCollection<SortedSetEntryViewModel>(models);
         }
 
-        private void Add(object parameter)
+        void Add(object parameter)
         {
             var item = SortedSetEntryViewModel.Empty();
             Entries.Add(item);
@@ -47,7 +46,7 @@ namespace Quickr.ViewModels.Data
             }
         }
 
-        private async void Delete(object parameter)
+        async void Delete(object parameter)
         {
             if (parameter is IList items)
             {

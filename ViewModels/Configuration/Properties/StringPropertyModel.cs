@@ -2,11 +2,11 @@
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class StringPropertyModel : BaseViewModel, IPropertyModel
+    class StringPropertyModel : BaseViewModel, IPropertyModel
     {
-        private string _original;
-        private string _value;
-        private bool _isSaveFailed;
+        string _original;
+        string _value;
+        bool _isSaveFailed;
 
         public string Value
         {

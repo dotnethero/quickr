@@ -6,13 +6,13 @@ using Quickr.Utils;
 
 namespace Quickr.ViewModels.Data
 {
-    internal abstract class BaseEntryViewModel : BaseViewModel // TODO: Create separate view
+    abstract class BaseEntryViewModel : BaseViewModel // TODO: Create separate view
     {
         public event EventHandler ValueSaved;
         public event EventHandler ValueDiscarded;
-        
-        private string _originalValue;
-        private string _currentValue;
+
+        string _originalValue;
+        string _currentValue;
 
         public string OriginalValue
         {

@@ -2,7 +2,7 @@
 
 namespace Quickr.ViewModels
 {
-    internal class DatabaseViewModel : BaseViewModel
+    class DatabaseViewModel : BaseViewModel
     {
         protected DatabaseEntry Entry { get; }
 
@@ -25,7 +25,7 @@ namespace Quickr.ViewModels
             Initialize();
         }
 
-        private async void Initialize()
+        async void Initialize()
         {
             KeyCount = await Entry.GetSize();
         }

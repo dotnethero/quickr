@@ -6,14 +6,8 @@
     xmlns:views="clr-namespace:Quickr.Views.Data"
     xmlns:data="clr-namespace:Quickr.ViewModels.Data"
     mc:Ignorable="d" 
-    d:DataContext="{d:DesignInstance Type=data:UnsortedSetViewModel, IsDesignTimeCreatable=False}"
-    d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel Margin="5" >
-        <views:PropertiesEditor
-            DataContext="{Binding Path=Properties}"
-            DockPanel.Dock="Top"
-            VerticalAlignment="Top"
-            Margin="5" />
+    d:DataContext="{d:DesignInstance Type=data:UnsortedSetViewModel, IsDesignTimeCreatable=False}">
+    <DockPanel>
         <Grid DockPanel.Dock="Top">
             <DataGrid
                 Name="Grid"

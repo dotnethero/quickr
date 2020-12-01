@@ -4,7 +4,7 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class ClientsPropertyPageModel: BasePropertyPageModel
+    class ClientsPropertyPageModel: BasePropertyPageModel
     {
         public StringPropertyModel MaxClients { get; set; }
 

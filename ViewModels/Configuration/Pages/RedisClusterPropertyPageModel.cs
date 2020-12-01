@@ -4,7 +4,7 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class RedisClusterPropertyPageModel: BasePropertyPageModel
+    class RedisClusterPropertyPageModel: BasePropertyPageModel
     {
         public YesNoPropertyModel ClusterEnabled { get; set; }
         public StringPropertyModel ClusterConfigFile { get; set; }

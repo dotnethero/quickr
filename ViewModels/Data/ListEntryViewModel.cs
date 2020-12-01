@@ -2,7 +2,7 @@
 
 namespace Quickr.ViewModels.Data
 {
-    internal class ListEntryViewModel : BaseEntryViewModel
+    class ListEntryViewModel : BaseEntryViewModel
     {
         public long Index { get; set; }
 

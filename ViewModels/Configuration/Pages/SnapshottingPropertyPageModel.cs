@@ -4,7 +4,7 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class SnapshottingPropertyPageModel: BasePropertyPageModel
+    class SnapshottingPropertyPageModel: BasePropertyPageModel
     {
         public StringPropertyModel SaveProperty { get; set; }
         public YesNoPropertyModel StopWritesOnBgSaveError { get; set; }

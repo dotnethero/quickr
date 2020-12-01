@@ -4,14 +4,14 @@ using Quickr.Services;
 
 namespace Quickr.Models.Keys
 {
-    internal class SystemFolderEntry : BaseEntry
+    class SystemFolderEntry : BaseEntry
     {
         public SystemFolderEntry(RedisConnection connection, string name) : base(connection, name)
         {
         }
     }
 
-    internal class InfoEntry : SystemFolderEntry
+    class InfoEntry : SystemFolderEntry
     {
         public EndPoint Endpoint { get; }
 
@@ -20,8 +20,8 @@ namespace Quickr.Models.Keys
             Endpoint = endpoint;
         }
     }
-    
-    internal class ClientsEntry : SystemFolderEntry
+
+    class ClientsEntry : SystemFolderEntry
     {
         public EndPoint Endpoint { get; }
 
@@ -30,8 +30,8 @@ namespace Quickr.Models.Keys
             Endpoint = endpoint;
         }
     }
-    
-    internal class ReplicasEntry : SystemFolderEntry
+
+    class ReplicasEntry : SystemFolderEntry
     {
         public List<EndpointEntry> Replicas { get; }
 

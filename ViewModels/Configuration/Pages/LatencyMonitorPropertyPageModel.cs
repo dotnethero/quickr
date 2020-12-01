@@ -4,7 +4,7 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class LatencyMonitorPropertyPageModel: BasePropertyPageModel
+    class LatencyMonitorPropertyPageModel: BasePropertyPageModel
     {
         public StringPropertyModel LatencyMonitorThreshold { get; set; }
 

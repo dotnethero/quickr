@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,29 +10,29 @@ using StackExchange.Redis;
 
 namespace Quickr.ViewModels.Data
 {
-    internal class HashSetViewModel: BaseCollectionViewModel<HashEntryViewModel>
+    class HashSetViewModel: BaseCollectionViewModel<HashEntryViewModel>
     {
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand SaveCommand { get; set; }
 
-        public HashSetViewModel(KeyEntry key, TimeSpan? ttl, bool load = true): base(key, ttl)
+        public HashSetViewModel(KeyEntry key): base(key)
         {
-            if (load) SetupAsync();
+            if (key.Exists) LoadAsync();
 
             AddCommand = new ParameterCommand(Add);
             DeleteCommand = new ParameterCommand(Delete);
             SaveCommand = new Command(async() => await Save());
         }
 
-        private async void SetupAsync()
+        async void LoadAsync()
         {
             var entries = await Key.GetDatabase().GetHashesAsync(Key);
             var models = entries.Select(HashEntryViewModel.FromEntry);
             Entries = new ObservableCollection<HashEntryViewModel>(models);
         }
 
-        private void Add(object parameter)
+        void Add(object parameter)
         {
             var item = HashEntryViewModel.Empty();
             Entries.Add(item);
@@ -47,7 +46,7 @@ namespace Quickr.ViewModels.Data
             }
         }
 
-        private async void Delete(object parameter)
+        async void Delete(object parameter)
         {
             if (parameter is IList items)
             {

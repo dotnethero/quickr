@@ -6,7 +6,7 @@ using StackExchange.Redis;
 
 namespace Quickr.Models.Keys
 {
-    internal class EndpointEntry : BaseEntry
+    class EndpointEntry : BaseEntry
     {
         public EndPoint Endpoint { get; }
         public List<SystemFolderEntry> Entries { get; }
@@ -30,7 +30,7 @@ namespace Quickr.Models.Keys
             Entries = CreateSystemFolders(connection, node.EndPoint, replicas);
         }
 
-        private static List<SystemFolderEntry> CreateSystemFolders(RedisConnection connection, EndPoint endpoint, IEnumerable<EndpointEntry> replicas)
+        static List<SystemFolderEntry> CreateSystemFolders(RedisConnection connection, EndPoint endpoint, IEnumerable<EndpointEntry> replicas)
         {
             return new List<SystemFolderEntry>
             {

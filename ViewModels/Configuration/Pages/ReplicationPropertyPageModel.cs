@@ -4,7 +4,7 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class ReplicationPropertyPageModel: BasePropertyPageModel
+    class ReplicationPropertyPageModel: BasePropertyPageModel
     {
         public StringPropertyModel ReplicaOf { get; set; }
         public StringPropertyModel MasterAuth { get; set; }

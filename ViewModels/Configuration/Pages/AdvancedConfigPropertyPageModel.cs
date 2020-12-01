@@ -4,7 +4,7 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class AdvancedConfigPropertyPageModel: BasePropertyPageModel
+    class AdvancedConfigPropertyPageModel: BasePropertyPageModel
     {
         public StringPropertyModel HashMaxZiplistEntries { get; set; }
         public StringPropertyModel HashMaxZiplistValue { get; set; }

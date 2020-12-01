@@ -3,11 +3,11 @@ using Quickr.Models.Configuration;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class YesNoPropertyModel: BaseViewModel, IPropertyModel
+    class YesNoPropertyModel: BaseViewModel, IPropertyModel
     {
-        private bool _original;
-        private bool _isYes;
-        private bool _isSaveFailed;
+        bool _original;
+        bool _isYes;
+        bool _isSaveFailed;
 
         public bool IsYes
         {

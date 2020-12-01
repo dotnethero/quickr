@@ -4,10 +4,10 @@ using Quickr.Services;
 
 namespace Quickr.Models.Keys
 {
-    internal class ServerEntry: BaseEntry
+    class ServerEntry: BaseEntry
     {
-        private List<DatabaseEntry> _databases = new List<DatabaseEntry>();
-        private List<EndpointEntry> _endpoints = new List<EndpointEntry>();
+        List<DatabaseEntry> _databases = new List<DatabaseEntry>();
+        List<EndpointEntry> _endpoints = new List<EndpointEntry>();
 
         public List<DatabaseEntry> Databases
         {

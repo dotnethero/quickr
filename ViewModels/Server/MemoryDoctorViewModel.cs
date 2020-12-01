@@ -3,7 +3,7 @@ using Quickr.Services;
 
 namespace Quickr.ViewModels.Server
 {
-    internal class MemoryDoctorViewModel : BaseViewModel
+    class MemoryDoctorViewModel : BaseViewModel
     {
         protected RedisConnection Connection { get; }
         protected EndPoint Endpoint { get; }

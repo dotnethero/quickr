@@ -4,7 +4,7 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class GeneralPropertyPageModel: BasePropertyPageModel
+    class GeneralPropertyPageModel: BasePropertyPageModel
     {
         public YesNoPropertyModel Daemonize { get; set; }
         public StringPropertyModel Supervised { get; set; }

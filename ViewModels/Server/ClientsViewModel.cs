@@ -4,7 +4,7 @@ using StackExchange.Redis;
 
 namespace Quickr.ViewModels.Server
 {
-    internal class ClientsViewModel : BaseViewModel
+    class ClientsViewModel : BaseViewModel
     {
         protected RedisConnection Connection { get; }
         protected EndPoint Endpoint { get; }

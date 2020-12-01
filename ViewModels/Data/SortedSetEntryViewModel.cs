@@ -2,10 +2,10 @@
 
 namespace Quickr.ViewModels.Data
 {
-    internal class SortedSetEntryViewModel : BaseEntryViewModel
+    class SortedSetEntryViewModel : BaseEntryViewModel
     {
-        private double _originalScore;
-        private double _currentScore;
+        double _originalScore;
+        double _currentScore;
 
         // ReSharper disable CompareOfFloatsByEqualityOperator
 

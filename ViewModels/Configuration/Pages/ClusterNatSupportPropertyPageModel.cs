@@ -4,7 +4,7 @@ using Quickr.Models.Keys;
 
 namespace Quickr.ViewModels.Configuration
 {
-    internal class ClusterNatSupportPropertyPageModel: BasePropertyPageModel
+    class ClusterNatSupportPropertyPageModel: BasePropertyPageModel
     {
         public StringPropertyModel ClusterAnnounceIp { get; set; }
         public StringPropertyModel ClusterAnnouncePort { get; set; }

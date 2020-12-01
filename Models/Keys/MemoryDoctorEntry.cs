@@ -3,7 +3,7 @@ using Quickr.Services;
 
 namespace Quickr.Models.Keys
 {
-    internal class MemoryDoctorEntry : SystemFolderEntry
+    class MemoryDoctorEntry : SystemFolderEntry
     {
         public EndPoint Endpoint { get; }
 

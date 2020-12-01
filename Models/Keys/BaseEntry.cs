@@ -5,13 +5,13 @@ using Quickr.Services;
 
 namespace Quickr.Models.Keys
 {
-    internal abstract class BaseEntry : INotifyPropertyChanged
+    abstract class BaseEntry : INotifyPropertyChanged
     {
         public RedisConnection Connection { get; } // TODO: hide
 
-        private string _name;
-        private bool _isSelected;
-        private bool _isExpanded;
+        string _name;
+        bool _isSelected;
+        bool _isExpanded;
 
         public string Name
         {
